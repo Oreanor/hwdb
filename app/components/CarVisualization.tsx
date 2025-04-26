@@ -1,17 +1,17 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { getFandomUrl, getImageUrl } from '../consts';
 
 // Simple debounce implementation
-const useDebounce = <T extends (...args: any[]) => void>(callback: T, delay: number) => {
-  const timeoutRef = useCallback<any>(() => {}, []);
+const useDebounce = (callback: (value: string) => void, delay: number) => {
+  const timeoutRef = useRef<number | undefined>(undefined);
 
-  return useCallback((...args: Parameters<T>) => {
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => callback(...args), delay);
-  }, [callback, delay, timeoutRef]);
+  return useCallback((value: string) => {
+    window.clearTimeout(timeoutRef.current);
+    timeoutRef.current = window.setTimeout(() => callback(value), delay);
+  }, [callback, delay]);
 };
 
 interface Car {
