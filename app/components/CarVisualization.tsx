@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { getFandomUrl, getImageUrl } from '../consts';
+import LazyImage from './LazyImage';
 
 // Simple debounce implementation
 const useDebounce = (callback: (value: string) => void, delay: number) => {
@@ -139,14 +140,10 @@ export default function CarVisualization() {
                 className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow flex flex-col"
               >
                 {imageUrl && (
-                  <img
+                  <LazyImage
                     src={imageUrl}
                     alt={carName}
-                    className="w-full h-32 object-contain rounded mb-1"
-                    onError={(e) => {
-                      console.error('Image load error:', imageUrl);
-                      e.currentTarget.style.display = 'none';
-                    }}
+                    className="w-full h-32 rounded mb-1"
                   />
                 )}
                 <h3 className="font-semibold text-sm mb-1">{carName}</h3>
