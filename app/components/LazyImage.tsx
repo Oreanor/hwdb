@@ -51,6 +51,10 @@ export default function LazyImage({ src, alt, className }: LazyImageProps) {
             onLoad={() => setIsLoaded(true)}
             onError={(e) => {
               console.error('Image load error:', src);
+              console.log(e);
+
+              // Handle the error by showing a placeholder or fallback imageco
+
             }}
           />
         )}
