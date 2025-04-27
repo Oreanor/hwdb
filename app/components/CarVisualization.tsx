@@ -1,19 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import Link from 'next/link';
-import { getFandomUrl, getImageUrl } from '../consts';
-import LazyImage from './LazyImage';
-
-// Simple debounce implementation
-const useDebounce = (callback: (value: string) => void, delay: number) => {
-  const timeoutRef = useRef<number | undefined>(undefined);
-
-  return useCallback((value: string) => {
-    window.clearTimeout(timeoutRef.current);
-    timeoutRef.current = window.setTimeout(() => callback(value), delay);
-  }, [callback, delay]);
-};
+import CarCard from './CarCard';
 
 interface Car {
   l: string;  // link (fandom_url)
@@ -35,12 +23,21 @@ export default function CarVisualization() {
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [stats, setStats] = useState<Stats>({ totalUnique: 0, yearStats: new Map() });
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleSearch = useCallback((value: string) => {
     setSearchTerm(value.toLowerCase());
   }, []);
 
-  const debouncedSearch = useDebounce(handleSearch, 300);
+  const handleYearSelect = (year: number) => {
+    setSelectedYear(year);
+    setSearchTerm('');
+    setSearchInput('');
+    if (containerRef.current) {
+      containerRef.current.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  };
 
   // Filter years and cars based on search term
   const filteredYearsData = useMemo(() => {
@@ -92,74 +89,97 @@ export default function CarVisualization() {
   }, []);
 
   const currentYearData = filteredYearsData.find(year => year.year === selectedYear);
+  const allSearchResults = useMemo(() => {
+    if (!searchTerm) return null;
+    
+    return filteredYearsData.flatMap(yearData => 
+      yearData.data.map((car, index) => ({
+        car,
+        year: yearData.year,
+        index
+      }))
+    );
+  }, [filteredYearsData, searchTerm]);
 
   return (
     <div className="flex h-screen">
       <div className="w-1/6 bg-gray-100 p-4 overflow-y-auto">
         <h2 className="font-bold mb-4">
-          Total: {stats.totalUnique}
+          Total records: {yearsData.reduce((sum, year) => sum + year.data.length, 0)}
         </h2>
-        <div className="mb-4">
+        <p className="text-sm text-gray-600 mb-4">
+          Unique models: {stats.totalUnique}
+        </p>
+        <div className="mb-4 flex gap-1">
           <input
             type="text"
             placeholder="Search cars..."
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            onChange={(e) => debouncedSearch(e.target.value)}
+            className="w-[calc(100%-2rem)] px-3 py-1.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+            onChange={(e) => setSearchInput(e.target.value)}
+            value={searchInput}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch(searchInput);
+              }
+            }}
           />
+          <button
+            onClick={() => handleSearch(searchInput)}
+            className="w-8 h-8 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-center cursor-pointer"
+            title="Search"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
         </div>
         <div className="space-y-2">
           {filteredYearsData.map((yearData) => (
             <button
               key={yearData.year}
-              onClick={() => setSelectedYear(yearData.year)}
-              className={`w-full p-2 rounded ${
+              onClick={() => handleYearSelect(yearData.year)}
+              className={`w-full p-2 rounded cursor-pointer ${
                 selectedYear === yearData.year
                   ? 'bg-blue-500 text-white'
                   : 'bg-white hover:bg-gray-200'
               }`}
             >
-              {yearData.year} ({yearData.data.length})
+              <span className="font-bold">{yearData.year}</span>{' '}
+              <span className="text-sm">
+                ( <span className="font-bold">{yearData.data.length}</span>/{stats.yearStats.get(yearData.year) || 0})
+              </span>
             </button>
           ))}
         </div>
       </div>
 
-      <div className="w-5/6 p-4 overflow-y-auto">
+      <div ref={containerRef} className="w-5/6 p-4 overflow-y-auto">
         <h2 className="text-xl font-bold mb-4">
-          Cars from {selectedYear} ({currentYearData?.data.length || 0} models)
+          {searchTerm 
+            ? `Search results: ${allSearchResults?.length || 0} models`
+            : `Cars from ${selectedYear} (${currentYearData?.data.length || 0} models)`
+          }
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-          {currentYearData?.data.map((car, index) => {
-            const carName = car.l ? decodeURIComponent(car.l.split('/').pop() || '').replace(/_/g, ' ') : 'Unknown Car';
-            const fandomUrl = car.l ? getFandomUrl(car.l.split('/').pop() || '') : '';
-            const imageUrl = car.i ? getImageUrl(car.i) : '';
-
-            return (
-              <div
+          {searchTerm ? (
+            allSearchResults?.map(({ car, year, index }) => (
+              <CarCard
+                key={`${year}-${index}`}
+                car={car}
+                year={year}
+                index={index}
+              />
+            ))
+          ) : (
+            currentYearData?.data.map((car, index) => (
+              <CarCard
                 key={`${selectedYear}-${index}`}
-                className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow flex flex-col"
-              >
-                {imageUrl && (
-                  <LazyImage
-                    src={imageUrl}
-                    alt={carName}
-                    className="w-full h-32 rounded mb-1"
-                  />
-                )}
-                <h3 className="font-semibold text-sm mb-1">{carName}</h3>
-                {fandomUrl && (
-                  <Link
-                    href={fandomUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:text-blue-700 text-xs"
-                  >
-                    View on Fandom
-                  </Link>
-                )}
-              </div>
-            );
-          })}
+                car={car}
+                year={selectedYear}
+                index={index}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>
