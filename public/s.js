@@ -1,100 +1,65 @@
 const https = require('https');
 const fs = require('fs');
 
-function fetch(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }, (res) => {
-      let data = '';
+// URL страницы с моделями 1973 года
+const listUrl = 'https://hotwheels.fandom.com/wiki/List_of_1973_Hot_Wheels';
 
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve(data));
+// Функция для получения страницы с моделями
+async function fetchData() {
+  const data = await fetchPage(listUrl);
+  const regex = /<div class="wikia-gallery-item".*?href="(\/wiki\/[a-zA-Z0-9_]+)".*?>(.*?)<\/a>/g;
+  const cars = [];
+  let match;
+
+  // Ищем все совпадения для моделей
+  while ((match = regex.exec(data)) !== null) {
+    const name = match[1].replace('/wiki/', '').trim(); // Используем относительную ссылку как имя
+    const articleUrl = 'https://hotwheels.fandom.com' + match[1];
+
+    // Загружаем страницу модели и извлекаем её информацию
+    await getModelDetails(articleUrl, name, cars);
+  }
+
+  // Сохраняем результат в JSON файл, когда все данные будут собраны
+  fs.writeFileSync('cars_with_details_1973.json', JSON.stringify(cars, null, 2), 'utf-8');
+  console.log('Данные успешно сохранены в cars_with_details_1973.json');
+}
+
+// Функция для загрузки страницы
+function fetchPage(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, (response) => {
+      let data = '';
+      response.on('data', (chunk) => {
+        data += chunk;
+      });
+      response.on('end', () => resolve(data));
     }).on('error', reject);
   });
 }
 
-async function fetchYearData(year) {
-  const url = `https://hotwheels.fandom.com/wiki/List_of_${year}_Hot_Wheels`;
-  console.log(`Fetching ${url}`);
+// Функция для получения деталей модели
+async function getModelDetails(url, name, cars) {
+  const pageData = await fetchPage(url);
 
-  try {
-    const html = await fetch(url);
-    const items = [];
+  // Мягкие регулярные выражения для извлечения данных
+  const descriptionMatch = pageData.match(/<h2.*?>Description<\/h2>.*?<div class="pi-data-value pi-font">(.*?)<\/div>/s);
+  const description = descriptionMatch ? descriptionMatch[1].trim() : 'Описание не найдено';
 
-    // Найти строки таблицы
-    const rowRegex = /<tr>(.*?)<\/tr>/gs;
-    const rows = html.match(rowRegex) || [];
+  const designerMatch = pageData.match(/<div class="pi-item pi-data.*?designer.*?">.*?<div class="pi-data-value pi-font">.*?<a.*?>(.*?)<\/a>/s);
+  const designer = designerMatch ? designerMatch[1].trim() : 'Неизвестен';
 
-    for (const rowHtml of rows) {
-      // Найти все картинки в строке
-      const imgs = [...rowHtml.matchAll(/<img[^>]+src="([^"]+)"[^>]*>/g)];
-      // Найти ссылку на модельку
-      const linkMatch = rowHtml.match(/<a[^>]+href="\/wiki\/([^"]+)"[^>]*>/);
+  const numberMatch = pageData.match(/<div class="pi-item pi-data.*?number.*?">.*?<div class="pi-data-value pi-font">(.*?)<\/div>/s);
+  const number = numberMatch ? numberMatch[1].trim() : 'Неизвестен';
 
-      if (linkMatch) {
-        const link = linkMatch[1];
-        let imgSrc = null;
-
-        // Если есть хотя бы одна картинка, берем вторую
-        if (imgs.length > 1) {
-          imgSrc = imgs[1][1]; // ВТОРАЯ картинка
-        }
-
-        // Если картинки нет, проверяем на наличие цвета или другого текста
-        if (!imgSrc) {
-          const colorMatch = rowHtml.match(/<td[^>]*>([^<]+)<\/td>/);
-          if (colorMatch) {
-            const colorText = colorMatch[1].trim().toLowerCase();
-            if (colorText !== "color" && colorText !== "") {
-              imgSrc = ""; // Ставим пустую ссылку, если цвет указан
-            }
-          }
-        }
-
-        // Если у нас есть ссылка и изображение
-        const imgPath = imgSrc ? imgSrc.split('/static.wikia.nocookie.net/hotwheels/')[1] : null;
-        const cbParam = (imgSrc && imgSrc.split('cb=')[1] || '').split('&')[0];
-
-        if (imgPath) {
-          items.push({
-            l: link.trim(),
-            i: imgPath.split('?')[0] + '/revision/latest' + (cbParam ? `?cb=${cbParam}` : '')
-          });
-        } else {
-          // Если картинки нет, ставим пустую ссылку
-          items.push({
-            l: link.trim(),
-            i: ''
-          });
-        }
-      }
-    }
-
-    return {
-      year,
-      data: items
-    };
-
-  } catch (err) {
-    console.error(`Failed to fetch ${year}:`, err.message);
-    return {
-      year,
-      data: []
-    };
-  }
+  // Добавляем модель в массив
+  cars.push({
+    name: name,
+    designer: designer,
+    number: number,
+    description: description,
+  });
 }
 
-async function main() {
-  const year = 1977; // Только для 1977 года
-  const result = [];
-
-  const yearData = await fetchYearData(year);
-  if (yearData.data.length === 0) {
-    console.warn(`No data for year ${year}`);
-  }
-  result.push(yearData);
-
-  fs.writeFileSync('hotwheels_1977.json', JSON.stringify(result, null, 2));
-  console.log('Done! Saved to hotwheels_1977.json');
-}
-
-main();
+// Запускаем функцию
+fetchData();

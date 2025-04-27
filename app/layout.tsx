@@ -25,10 +25,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon_16x16.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon_32x32.png" />
-        <link rel="icon" type="image/png" sizes="64x64" href="/favicon_64x64.png" />
-        <link rel="icon" type="image/png" sizes="128x128" href="/favicon_128x128.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon_16x16.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon_32x32.png" />
+        <link rel="icon" type="image/png" sizes="64x64" href="/favicon/favicon_64x64.png" />
+        <link rel="icon" type="image/png" sizes="128x128" href="/favicon/favicon_128x128.png" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
