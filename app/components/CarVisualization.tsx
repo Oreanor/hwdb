@@ -146,7 +146,7 @@ export default function CarVisualization() {
             >
               <span className="font-bold">{yearData.year}</span>{' '}
               <span className="text-sm">
-                ( <span className="font-bold">{yearData.data.length}</span>/{stats.yearStats.get(yearData.year) || 0})
+                ({yearData.data.length}/{stats.yearStats.get(yearData.year) || 0})
               </span>
             </button>
           ))}
@@ -168,6 +168,7 @@ export default function CarVisualization() {
                 car={car}
                 year={year}
                 index={index}
+                showYear={true}
               />
             ))
           ) : (

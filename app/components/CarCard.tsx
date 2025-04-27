@@ -11,9 +11,10 @@ interface CarCardProps {
   };
   year: number | null;
   index: number;
+  showYear?: boolean;
 }
 
-export default function CarCard({ car, year, index }: CarCardProps) {
+export default function CarCard({ car, year, index, showYear }: CarCardProps) {
   const carName = car.l ? decodeURIComponent(car.l.split('/').pop() || '').replace(/_/g, ' ') : 'Unknown Car';
   const fandomUrl = car.l ? getFandomUrl(car.l.split('/').pop() || '') : '';
   const imageUrl = car.i ? getImageUrl(car.i) : '';
@@ -38,7 +39,10 @@ export default function CarCard({ car, year, index }: CarCardProps) {
       key={`${year}-${index}`}
       className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow flex flex-col items-start text-left"
     >
-      {year && <p className="font-semibold text-sm mb-1">{year}</p>}
+      <div className="flex w-full items-center mb-1">
+        <h3 className="font-semibold text-sm flex-1">{showYear && year && <span className="text-md text-blue-400 font-semibold mr-2">{year}</span>}{carName}</h3>
+        
+      </div>
       {imageUrl && !isImageNotAvailable ? (
         <LazyImage
           src={imageUrl}
@@ -48,7 +52,7 @@ export default function CarCard({ car, year, index }: CarCardProps) {
       ) : (
         <CarSilhouette />
       )}
-      <h3 className="font-semibold text-sm mb-1">{carName}</h3>
+      
       
       {fandomUrl && (
         <Link
