@@ -1,69 +1,72 @@
-'use client';
-
-import Link from 'next/link';
-import { getFandomUrl, getImageUrl } from '../consts';
-import LazyImage from './LazyImage';
+import { useState } from 'react';
+import Image from 'next/image';
+import CarIcon from './CarIcon';
+import { getImageUrl as getFullImageUrl, formatCarName } from '../utils/utils';
+import CarOverlay from './CarOverlay';
+import { CarData } from '../types';
 
 interface CarCardProps {
-  car: {
-    l: string;
-    i?: string;
-  };
-  year: number | null;
-  index: number;
-  showYear?: boolean;
+  car: CarData;
+  selectedYear: string;
 }
 
-export default function CarCard({ car, year, index, showYear }: CarCardProps) {
-  const carName = car.l ? decodeURIComponent(car.l.split('/').pop() || '').replace(/_/g, ' ') : 'Unknown Car';
-  const fandomUrl = car.l ? getFandomUrl(car.l.split('/').pop() || '') : '';
-  const imageUrl = car.i ? getImageUrl(car.i) : '';
-  const isImageNotAvailable = car.i?.includes('Image_Not_Available');
+const getImageUrl = (car: CarData, selectedYear: string): string | undefined => {
+  if (selectedYear === 'All') {
+    // When searching, get the first available image from any year
+    const firstImage = car.d.find(item => item.p && !item.p.includes('Image_Not_Available'));
+    if (!firstImage?.p) {
+      return undefined;
+    }
+    return getFullImageUrl(firstImage.p);
+  }
+  
+  // When viewing by year, get image for specific year
+  const firstImage = car.d.find(item => item.y === selectedYear && item.p && !item.p.includes('Image_Not_Available'));
+  if (!firstImage?.p) {
+    return undefined;
+  }
+  return getFullImageUrl(firstImage.p);
+};
 
-  const CarSilhouette = () => (
-    <div className="w-full h-32 rounded mb-1 bg-gray-100 flex items-center justify-center">
-      <svg
-        className="w-16 h-16 text-gray-300"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-      >
-        <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.85 7h10.29l1.08 3.11H5.77L6.85 7zM19 17H5v-5h14v5z" />
-        <circle cx="7.5" cy="14.5" r="1.5" />
-        <circle cx="16.5" cy="14.5" r="1.5" />
-      </svg>
-    </div>
-  );
+const CarCard: React.FC<CarCardProps> = ({ car, selectedYear }) => {
+  const [showOverlay, setShowOverlay] = useState(false);
+  const formattedName = formatCarName(car.lnk);
+  const imageUrl = getImageUrl(car, selectedYear);
 
   return (
-    <div
-      key={`${year}-${index}`}
-      className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow flex flex-col items-start text-left"
-    >
-      <div className="flex w-full items-center mb-1">
-        <h3 className="font-semibold text-sm flex-1">{showYear && year && <span className="text-md text-blue-400 font-semibold mr-2">{year}</span>}{carName}</h3>
-        
+    <>
+      <div 
+        className="bg-white rounded-lg shadow hover:translate-y-[-2px] transition-transform overflow-hidden p-2 cursor-pointer"
+        onClick={() => setShowOverlay(true)}
+      >
+        <div className="relative w-full pb-[75%]">
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={formattedName}
+              fill
+              objectFit="contain"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center p-2">
+              <CarIcon />
+            </div>
+          )}
+        </div>
+        <div className="pt-1">
+          <h3 className="text-xs font-semibold text-blue-600 mb-1">{formattedName}</h3>
+        </div>
       </div>
-      {imageUrl && !isImageNotAvailable ? (
-        <LazyImage
-          src={imageUrl}
-          alt={carName}
-          className="w-full h-32 rounded mb-1"
+
+      {showOverlay && (
+        <CarOverlay 
+          car={car} 
+          onClose={() => setShowOverlay(false)} 
         />
-      ) : (
-        <CarSilhouette />
       )}
-      
-      
-      {fandomUrl && (
-        <Link
-          href={fandomUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-500 hover:text-blue-700 text-xs"
-        >
-          View on Fandom
-        </Link>
-      )}
-    </div>
+    </>
   );
-} 
+};
+
+export default CarCard; 
