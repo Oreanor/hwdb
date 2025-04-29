@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import CarCard from './components/CarCard';
 import { CarData } from './types';
 import { fetchCars } from './services/carService';
+
 
 
 export default function Home() {
@@ -16,14 +18,11 @@ export default function Home() {
 
 
   useEffect(() => {
-    if (selectedYear !== 'All') {
-      setSearchQuery('');
-    }
 
     const loadCars = async () => {
       try {
         setLoading(true);
-        const data = await fetchCars(selectedYear === 'All' ? '' : selectedYear, selectedYear === 'All' ? searchQuery : '');
+        const data = await fetchCars(selectedYear === 'All' ? '' : selectedYear);
         setCars(data);
         setError(null);
       } catch (err) {
@@ -33,7 +32,7 @@ export default function Home() {
       }
     };
 
-    if (selectedYear !== 'All' || searchQuery.length >= 3) {
+    if (selectedYear !== 'All') {
       loadCars();
     }
   }, [selectedYear]);
@@ -41,6 +40,7 @@ export default function Home() {
   const handleSearch = async () => {
     if (searchQuery.length < 3) return;
     setSelectedYear('All');
+    
     try {
       setLoading(true);
       const data = await fetchCars('', searchQuery);
@@ -49,6 +49,7 @@ export default function Home() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
+      setSearchQuery('');
       setLoading(false);
     }
   };
@@ -64,7 +65,15 @@ export default function Home() {
   return (
     <div className="p-5 min-h-screen flex flex-col gap-5">
       <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-10 p-5 flex items-center gap-3">
-        <img src="/logo.png" alt="Logo" className="h-10" />
+        <div className="relative h-10 w-10">
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            fill
+            objectFit="contain"
+            sizes="40px"
+          />
+        </div>
         <h1 className="text-3xl font-bold">HWDB</h1>
         <div className="flex items-center border border-gray-300 rounded">
           <input
