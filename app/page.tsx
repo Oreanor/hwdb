@@ -109,7 +109,7 @@ export default function Home() {
   };
 
   return (
-    <div className="h-screen w-full flex flex-col">
+    <div className="h-screen w-full flex flex-col bg-white dark:bg-gray-900">
       <div className="h-[80px]">
         <TopPanel
           selectedField={selectedField}
@@ -126,13 +126,13 @@ export default function Home() {
 
       <div className="flex-1 overflow-y-auto p-4">
         {error && (
-          <div className="p-4 mb-4 text-red-700 rounded">
+          <div className="p-4 mb-4 text-red-700 dark:text-red-400 rounded">
             {error}
           </div>
         )}
         
         {loading ? (
-          <div className="flex-1 flex items-center justify-center text-lg text-gray-600 h-full">
+          <div className="flex-1 flex items-center justify-center text-lg text-gray-600 dark:text-gray-400 h-full">
             Loading...
           </div>
         ) : cars.length > 0 ? (
@@ -145,7 +145,7 @@ export default function Home() {
             )}
             <button
               onClick={handleBackClick}
-              className={`flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 cursor-pointer ${!selectedModel ? 'invisible' : ''}`}
+              className={`flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 cursor-pointer ${!selectedModel ? 'invisible' : ''}`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />

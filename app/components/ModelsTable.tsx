@@ -32,7 +32,7 @@ interface TableRowProps {
 const TableRow = memo(({ car, item, index, availableFields, collapsedColumns, onImageClick }: TableRowProps) => {
   const imageUrl = useMemo(() => getImageUrl(item), [item]);
   return (
-    <tr key={`${car.lnk}-${index}`} className="hover:bg-gray-50">
+    <tr key={`${car.lnk}-${index}`} className="hover:bg-gray-50 dark:hover:bg-gray-700">
       <td className="p-2 whitespace-nowrap">
         {imageUrl && (
           <div 
@@ -52,8 +52,8 @@ const TableRow = memo(({ car, item, index, availableFields, collapsedColumns, on
       {availableFields.map(field => (
         <td 
           key={field.key} 
-          className={`p-2 text-sm text-gray-900 ${
-            collapsedColumns.has(field.key) ? 'w-[40px] min-w-[40px] max-w-[40px] p-0 bg-gray-50 overflow-hidden' : 'break-words'
+          className={`p-2 text-sm text-gray-900 dark:text-gray-200 ${
+            collapsedColumns.has(field.key) ? 'w-[40px] min-w-[40px] max-w-[40px] p-0 bg-gray-50 dark:bg-gray-700 overflow-hidden' : 'break-words'
           }`}
         >
           <div className={collapsedColumns.has(field.key) ? 'h-0 overflow-hidden' : ''}>
@@ -85,16 +85,16 @@ const TableHeader = memo(({
 
   return (
     <th 
-      className={`p-2 text-left text-sm font-semibold text-gray-900 whitespace-nowrap ${
-        isCollapsed ? 'w-[30px] min-w-[30px] max-w-[30px] p-0 bg-gray-50 overflow-hidden' : ''
-      } border-r border-gray-200`}
+      className={`p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap ${
+        isCollapsed ? 'w-[30px] min-w-[30px] max-w-[30px] p-0 bg-gray-50 dark:bg-gray-700 overflow-hidden' : ''
+      } border-r border-gray-200 dark:border-gray-600`}
     >
       <div className="flex items-center justify-between">
         {isCollapsed ? (
-          <span className="text-gray-600">{field.label[0]}</span>
+          <span className="text-gray-600 dark:text-gray-400">{field.label[0]}</span>
         ) : (
           <span 
-            className="cursor-pointer hover:text-gray-600"
+            className="cursor-pointer hover:text-gray-600 dark:hover:text-gray-400"
             onClick={() => onSort(field.key)}
           >
             {field.label}
@@ -107,7 +107,7 @@ const TableHeader = memo(({
         )}
         <button
           onClick={() => onToggleCollapse(field.key)}
-          className="text-gray-400 hover:text-gray-600 cursor-pointer font-bold"
+          className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 cursor-pointer font-bold"
         >
           {isCollapsed ? '→' : '←'}
         </button>
@@ -224,10 +224,10 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200 table-fixed">
-        <thead className="bg-gray-50">
+      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 table-fixed">
+        <thead className="bg-gray-50 dark:bg-gray-700">
           <tr>
-            <th className="p-2 text-left text-sm font-semibold text-gray-900 whitespace-nowrap w-[100px] border-r border-gray-200">
+            <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap w-[100px] border-r border-gray-200 dark:border-gray-600">
               Image
             </th>
             {availableFields.map(field => (
@@ -242,7 +242,7 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
             ))}
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-600">
           {visibleRows}
         </tbody>
       </table>

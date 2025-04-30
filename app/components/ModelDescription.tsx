@@ -45,17 +45,17 @@ export default function ModelDescription({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2 p-2">
-        <h1 className="text-xl font-bold">{formatCarName(model.lnk)}</h1>
-        <div className="text-sm"><span className='font-bold'>Number: </span>{model.num}</div>
-        <div className="text-sm"><span className='font-bold'>Designer: </span>{model.ds}</div>
-        <div className="text-sm max-w-[1000px]">
+        <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">{formatCarName(model.lnk)}</h1>
+        <div className="text-sm text-gray-800 dark:text-gray-200"><span className='font-bold'>Number: </span>{model.num}</div>
+        <div className="text-sm text-gray-800 dark:text-gray-200"><span className='font-bold'>Designer: </span>{model.ds}</div>
+        <div className="text-sm max-w-[1000px] text-gray-800 dark:text-gray-200">
           <span className='font-bold'>Description: </span>
           {expandedDescription ? (
             <>
               <span>{decodeHtmlEntities(model.dsc)}</span>
               <button
                 onClick={() => setExpandedDescription(false)}
-                className="ml-2 underline hover:text-gray-600 text-xs cursor-pointer"
+                className="ml-2 underline hover:text-gray-600 dark:hover:text-gray-400 text-xs cursor-pointer"
               >
                 Less
               </button>
@@ -68,7 +68,7 @@ export default function ModelDescription({
               {model.dsc && model.dsc.length > 100 && (
                 <button
                   onClick={() => setExpandedDescription(true)}
-                  className="ml-2 underline hover:text-gray-600 text-xs cursor-pointer"
+                  className="ml-2 underline hover:text-gray-600 dark:hover:text-gray-400 text-xs cursor-pointer"
                 >
                   More
                 </button>

@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function WelcomeMessage() {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center text-gray-600 h-full">
+    <div className="flex-1 flex flex-col items-center justify-center text-gray-600 dark:text-gray-400 h-full">
       <div className="w-32 h-32 mb-4 relative">
         <Image
           src="/logo.png"

@@ -20,7 +20,7 @@ export default function ModelCard({ car, onModelClick, selectedYear }: ModelCard
 
   return (
     <div 
-      className="flex flex-col items-center p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer"
+      className="flex flex-col items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer"
       onClick={() => onModelClick(car)}
     >
       <div className="relative w-full aspect-square mb-2">
@@ -34,8 +34,8 @@ export default function ModelCard({ car, onModelClick, selectedYear }: ModelCard
           />
         )}
       </div>
-      <p className="text-sm text-center font-bold">
-        {formattedName} <span className="text-gray-500 font-medium text-xs">({variantCount})</span>
+      <p className="text-sm text-center font-bold text-gray-900 dark:text-gray-100">
+        {formattedName} <span className="text-gray-500 dark:text-gray-400 font-medium text-xs">({variantCount})</span>
       </p>
     </div>
   );
