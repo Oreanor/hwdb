@@ -3,7 +3,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import ModelsTable from './components/ModelsTable';
-import RthIcon from './components/RthIcon';
 import TopPanel from './components/TopPanel';
 import { CarData } from './types';
 import { fetchCars } from './services/carService';
