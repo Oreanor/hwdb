@@ -1,58 +1,63 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import Image from 'next/image';
-import CarCard from './components/CarCard';
+import ModelsTable from './components/ModelsTable';
+import RthIcon from './components/RthIcon';
+import TopPanel from './components/TopPanel';
 import { CarData } from './types';
 import { fetchCars } from './services/carService';
+import { SEARCH_FIELDS, FIELD_ORDER } from './consts';
+import ModelsGrid from './components/ModelsGrid';
 
-
+type SortConfig = {
+  field: string;
+  direction: 'asc' | 'desc';
+} | null;
 
 export default function Home() {
   const [cars, setCars] = useState<CarData[]>([]);
-  const [selectedYear, setSelectedYear] = useState('1968');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedField, setSelectedField] = useState<string | undefined>(SEARCH_FIELDS[0].key);
+  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [sortConfig, setSortConfig] = useState<SortConfig>(null);
+  const [isCompactView, setIsCompactView] = useState(false);
 
+  // Получаем только те поля, которые есть в данных
+  const availableFields = useMemo(() => 
+    FIELD_ORDER.filter(field => 
+      cars.some(car => car.d.some(item => item[field.key] !== undefined))
+    ),
+    [cars]
+  );
 
-
-  useEffect(() => {
-
-    const loadCars = async () => {
-      try {
-        setLoading(true);
-        const data = await fetchCars(selectedYear === 'All' ? '' : selectedYear);
-        setCars(data);
-        setError(null);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (selectedYear !== 'All') {
-      loadCars();
+  const handleSearch = useCallback(async (year?: string) => {
+    // Используем переданный год или текущий из состояния
+    const searchYear = year ?? selectedYear;
+    
+    // Если выбран конкретный год - поиск разрешен всегда
+    // Если год не выбран (все годы) - нужен поисковый запрос не менее 3 символов
+    if (!searchYear && searchQuery.length < 3) {
+      setError('Please enter at least 3 characters for search or select a specific year');
+      setCars([]); // Очищаем результаты
+      return;
     }
-  }, [selectedYear]);
-
-  const handleSearch = async () => {
-    if (searchQuery.length < 3) return;
-    setSelectedYear('All');
     
     try {
       setLoading(true);
-      const data = await fetchCars('', searchQuery);
-      setCars(data);
       setError(null);
+      const data = await fetchCars(selectedField, searchQuery, searchYear);
+      setCars(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
+      setCars([]); // Очищаем результаты при ошибке
     } finally {
-      setSearchQuery('');
       setLoading(false);
     }
-  };
+  }, [selectedField, searchQuery, selectedYear]);
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -60,54 +65,37 @@ export default function Home() {
     }
   };
 
-  const years = Array.from({ length: 57 }, (_, i) => (1968 + i).toString());
+  const handleYearChange = (year: string) => {
+    setSelectedYear(year);
+    // Передаем новое значение года напрямую в handleSearch
+    handleSearch(year);
+  };
+
+  const handleImageClick = (url: string) => {
+    setSelectedImage(url);
+  };
 
   return (
     <div className="p-5 min-h-screen flex flex-col gap-5">
-      <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-10 p-5 flex items-center gap-3">
-        <div className="relative h-10 w-10">
-          <Image
-            src="/logo.png"
-            alt="Logo"
-            fill
-            objectFit="contain"
-            sizes="40px"
-          />
-        </div>
-        <h1 className="text-3xl font-bold">HWDB</h1>
-        <div className="flex items-center border border-gray-300 rounded">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyPress={handleKeyPress}
-            className="px-3 py-2 focus:outline-none"
-          />
-          <button
-            onClick={handleSearch}
-            className="px-3 py-2 bg-blue-500 text-white rounded-r hover:bg-blue-600"
-          >
-            🔍
-          </button>
-        </div>
-        <select
-          value={selectedYear}
-          onChange={(e) => setSelectedYear(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
-        >
-          <option value="All">All</option>
-          {years.map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
-      </div>
+      <TopPanel
+        selectedField={selectedField}
+        selectedYear={selectedYear}
+        searchQuery={searchQuery}
+        sortConfig={sortConfig}
+        isCompactView={isCompactView}
+        availableFields={availableFields}
+        onFieldChange={setSelectedField}
+        onYearChange={handleYearChange}
+        onSearchChange={setSearchQuery}
+        onSortChange={setSortConfig}
+        onCompactViewChange={setIsCompactView}
+        onSearch={() => handleSearch()}
+        onKeyPress={handleKeyPress}
+      />
 
       <div className="pt-24 flex-1 flex flex-col min-w-0 overflow-y-auto">
         {error && (
-          <div className="p-4 mb-4 bg-red-100 text-red-700 rounded">
+          <div className="p-4 mb-4 text-red-700 rounded">
             {error}
           </div>
         )}
@@ -116,11 +104,53 @@ export default function Home() {
           <div className="flex-1 flex items-center justify-center text-lg text-gray-600">
             Loading...
           </div>
+        ) : cars.length > 0 ? (
+          <div className="flex-1">
+            {selectedImage && (
+              <div 
+                className="fixed inset-0 flex items-center justify-center z-50"
+                onClick={() => setSelectedImage(null)}
+              >
+                <div className="relative w-3/4 h-3/4 p-4">
+                  <div className="relative w-full h-full rounded-lg overflow-hidden shadow-2xl border-4 border-white bg-white">
+                    <Image
+                      src={selectedImage}
+                      alt="Enlarged car image"
+                      fill
+                      style={{ objectFit: 'contain' }}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+            {isCompactView ? (
+              <ModelsGrid 
+                cars={cars}
+                selectedYear={selectedYear}
+                onImageClick={handleImageClick}
+              />
+            ) : (
+              <ModelsTable 
+                cars={cars} 
+                onImageClick={handleImageClick} 
+                sortConfig={sortConfig}
+              />
+            )}
+          </div>
         ) : (
-          <div className="flex-1 overflow-y-auto p-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {cars.map((car) => (
-              <CarCard key={car.lnk} car={car} selectedYear={selectedYear} />
-            ))}
+          <div className="flex-1 flex flex-col items-center justify-center text-gray-600">
+            <div className="w-16 h-16 mb-4 relative">
+              <Image
+                src="/rth-logo.webp"
+                alt="RTH Logo"
+                fill
+                style={{ objectFit: 'contain' }}
+                sizes="64px"
+              />
+            </div>
+            <p className="text-2xl mb-2">Welcome to HWDB</p>
+            <p className="text-sm">Enter your search query to find Hot Wheels models</p>
           </div>
         )}
       </div>

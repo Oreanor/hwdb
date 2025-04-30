@@ -2,14 +2,18 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { CarData } from '../../types';
+import { formatCarName } from '../../utils/utils';
+import { MAIN_OBJECT_FIELDS, VARIANT_FIELDS } from '../../consts';
+
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const year = searchParams.get('y');
-    const search = searchParams.get('s');
+    const field = searchParams.get('field');
+    const value = searchParams.get('value');
+    const year = searchParams.get('year');
 
-    console.log('Request params:', { year, search });
+    console.log('Request params:', { field, value, year });
 
     // Читаем данные из файла
     const filePath = path.join(process.cwd(), 'public', 'carsdata.json');
@@ -31,21 +35,55 @@ export async function GET(request: Request) {
 
     let filteredData = carsData;
 
-    // Фильтрация по году
+    // Сначала фильтруем по году, если он указан
     if (year) {
-      console.log('Filtering by year:', year);
-      filteredData = filteredData.filter(car => 
-        car.d.some(item => item.y === year)
-      );
-      console.log('Cars after year filter:', filteredData.length);
+      filteredData = filteredData.map(car => ({
+        ...car,
+        d: car.d.filter(item => item.y === year)
+      })).filter(car => car.d.length > 0);
     }
 
-    // Поиск по названию
-    if (search) {
-      const searchTerm = search.toLowerCase();
-      filteredData = filteredData.filter(car => 
-        car.lnk.toLowerCase().includes(searchTerm)
-      );
+    // Затем применяем поиск по полю, если оно указано
+    if (field && value) {
+      const searchValue = value.toLowerCase();
+      console.log('Searching by field:', field, 'value:', searchValue);
+      
+      filteredData = filteredData.map(car => {
+        // Проверяем, является ли поле одним из полей основного объекта
+        const mainObjectField = MAIN_OBJECT_FIELDS[field];
+        
+        if (mainObjectField) {
+          // Для поля name форматируем значение перед сравнением
+          const fieldValue = mainObjectField === 'lnk' 
+            ? formatCarName(car[mainObjectField]).toLowerCase()
+            : (car[mainObjectField] as string)?.toLowerCase();
+
+          if (fieldValue?.includes(searchValue)) {
+            return car;
+          }
+          return { ...car, d: [] };
+        }
+        
+        // Проверяем, является ли поле одним из полей вариантов
+        const variantField = VARIANT_FIELDS[field];
+        if (!variantField) {
+          console.warn('Unknown field:', field);
+          return { ...car, d: [] };
+        }
+        
+        // Ищем в массиве вариантов
+        const filteredVariants = car.d.filter(item => {
+          const fieldValue = item[variantField];
+          if (typeof fieldValue === 'string') {
+            return fieldValue.toLowerCase().includes(searchValue);
+          }
+          return false;
+        });
+        
+        return { ...car, d: filteredVariants };
+      }).filter(car => car.d.length > 0);
+      
+      console.log('Cars after search:', filteredData.length);
     }
 
     return NextResponse.json(filteredData);

@@ -21,4 +21,3 @@ export type CarData = {
   dsc?: string;
   d: CarDataItem[];
 };
-  
