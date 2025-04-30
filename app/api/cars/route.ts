@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { CarData } from '../../types';
-import { formatCarName } from '../../utils/utils';
 import { MAIN_OBJECT_FIELDS, VARIANT_FIELDS } from '../../consts';
 
 
@@ -35,12 +34,12 @@ export async function GET(request: Request) {
 
     let filteredData = carsData;
 
-    // Сначала фильтруем по году, если он указан
+    // Если указан год, фильтруем только те машины, у которых есть хотя бы один вариант с этим годом
+    // но сохраняем все года для каждой модели
     if (year) {
-      filteredData = filteredData.map(car => ({
-        ...car,
-        d: car.d.filter(item => item.y === year)
-      })).filter(car => car.d.length > 0);
+      filteredData = filteredData.filter(car => 
+        car.d.some(item => item.y === year)
+      );
     }
 
     // Затем применяем поиск по полю, если оно указано
@@ -49,15 +48,24 @@ export async function GET(request: Request) {
       console.log('Searching by field:', field, 'value:', searchValue);
       
       filteredData = filteredData.map(car => {
+        // Для поля lnk делаем точное сравнение
+        if (field === 'link') {
+          return car.lnk === value ? car : { ...car, d: [] };
+        }
+
+        // Для поля year ищем в вариантах
+        if (field === 'year') {
+          // Если у модели есть хотя бы один вариант с указанным годом,
+          // возвращаем модель целиком
+          return car.d.some(item => item.y === value) ? car : { ...car, d: [] };
+        }
+
         // Проверяем, является ли поле одним из полей основного объекта
         const mainObjectField = MAIN_OBJECT_FIELDS[field];
         
         if (mainObjectField) {
-          // Для поля name форматируем значение перед сравнением
-          const fieldValue = mainObjectField === 'lnk' 
-            ? formatCarName(car[mainObjectField]).toLowerCase()
-            : (car[mainObjectField] as string)?.toLowerCase();
-
+          // Для остальных полей форматируем значение перед сравнением
+          const fieldValue = (car[mainObjectField] as string)?.toLowerCase();
           if (fieldValue?.includes(searchValue)) {
             return car;
           }
@@ -71,8 +79,8 @@ export async function GET(request: Request) {
           return { ...car, d: [] };
         }
         
-        // Ищем в массиве вариантов
-        const filteredVariants = car.d.filter(item => {
+        // Проверяем наличие совпадений в вариантах, но возвращаем все варианты если есть хотя бы одно совпадение
+        const hasMatchingVariant = car.d.some(item => {
           const fieldValue = item[variantField];
           if (typeof fieldValue === 'string') {
             return fieldValue.toLowerCase().includes(searchValue);
@@ -80,7 +88,7 @@ export async function GET(request: Request) {
           return false;
         });
         
-        return { ...car, d: filteredVariants };
+        return hasMatchingVariant ? car : { ...car, d: [] };
       }).filter(car => car.d.length > 0);
       
       console.log('Cars after search:', filteredData.length);

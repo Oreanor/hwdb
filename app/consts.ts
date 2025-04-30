@@ -50,5 +50,6 @@ export const VARIANT_FIELDS: Record<string, keyof CarDataItem> = {
   'color': 'c',
   'wheels': 'Wh',
   'country': 'Cn',
-  'base': 'Bs'
+  'base': 'Bs',
+  'year': 'y'
 };

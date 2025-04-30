@@ -1,5 +1,5 @@
-import { FANDOM_BASE_URL, FANDOM_IMAGE_BASE_URL } from '../consts';
-import { CarDataItem } from '../types';
+import { FANDOM_BASE_URL, FANDOM_IMAGE_BASE_URL } from './consts';
+import { CarDataItem } from './types';
 
 export const getFandomUrl = (path: string) => {
     return `${FANDOM_BASE_URL}${path}`;
@@ -28,3 +28,15 @@ export const getImageUrl = (item: CarDataItem): string | undefined => {
 export const formatCarName = (name: string) => {
     return decodeURIComponent(name.replace(/_/g, ' '));
 }; 
+
+export const decodeHtmlEntities = (text: string | undefined): string => {
+    if (!text) return '-';
+    return text
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&#160;/g, ' ');
+};
