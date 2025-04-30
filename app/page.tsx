@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import TopPanel from './components/TopPanel';
 import WelcomeMessage from './components/WelcomeMessage';
 import ImageModal from './components/ImageModal';
 import { CarData } from './types';
-import { fetchCars } from './services/carService';
-import { SEARCH_FIELDS } from './consts';
+import { fetchCars, fetchCarByLnk } from './services/carService';
+import { SEARCH_FIELDS, YEARS } from './consts';
 import ModelsGrid from './components/ModelsGrid';
 import ModelDescription from './components/ModelDescription';
 
@@ -93,8 +93,16 @@ export default function Home() {
     setSelectedImage(url);
   };
 
-  const handleModelClick = (car: CarData) => {
-    setSelectedModel(car);
+  const handleModelClick = async (car: CarData) => {
+    try {
+      setLoading(true);
+      const fullCarData = await fetchCarByLnk(car.lnk);
+      setSelectedModel(fullCarData);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleBackClick = () => {
@@ -108,9 +116,23 @@ export default function Home() {
     setCars([]);
   };
 
+  const availableYears = useMemo(() => {
+    if (selectedModel) {
+      // Get unique years from the selected model's variants using Set
+      const years = Array.from(new Set(
+        selectedModel.d
+          .map(item => item.y)
+          .filter((year: string) => year && year !== 'FTE') // Exclude empty years and FTE
+      )).sort();
+      return years;
+    }
+    // If no model is selected, return all years
+    return YEARS.map(year => year.value);
+  }, [selectedModel]);
+
   return (
     <div className="h-screen w-full flex flex-col bg-white dark:bg-gray-900">
-      <div className="h-[80px]">
+      <div className="h-[56px] sm:h-[80px]">
         <TopPanel
           selectedField={selectedField}
           selectedYear={selectedYear}
@@ -121,10 +143,11 @@ export default function Home() {
           onSearch={() => handleSearch()}
           onKeyPress={handleKeyPress}
           onLogoClick={handleLogoClick}
+          availableYears={availableYears}
         />
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-2 sm:p-4">
         {error && (
           <div className="p-4 mb-4 text-red-700 dark:text-red-400 rounded">
             {error}
@@ -155,12 +178,10 @@ export default function Home() {
             {selectedModel && (
               <ModelDescription 
                 model={selectedModel}
-                cars={cars}
                 onImageClick={handleImageClick}
                 sortConfig={sortConfig}
                 onSortChange={setSortConfig}
                 selectedYear={selectedYear}
-                onYearChange={handleYearChange}
               />
             )}
             <div className={selectedModel ? 'hidden' : ''}>

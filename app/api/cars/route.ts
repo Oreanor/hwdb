@@ -35,7 +35,6 @@ export async function GET(request: Request) {
     let filteredData = carsData;
 
     // Если указан год, фильтруем только те машины, у которых есть хотя бы один вариант с этим годом
-    // но сохраняем все года для каждой модели
     if (year) {
       filteredData = filteredData.filter(car => 
         car.d.some(item => item.y === year)
@@ -50,14 +49,16 @@ export async function GET(request: Request) {
       filteredData = filteredData.map(car => {
         // Для поля lnk делаем точное сравнение
         if (field === 'link') {
-          return car.lnk === value ? car : { ...car, d: [] };
+          return car.lnk === value ? { ...car, d: car.d.map(item => ({ y: item.y, p: item.p })) } : { ...car, d: [] };
         }
 
         // Для поля year ищем в вариантах
         if (field === 'year') {
           // Если у модели есть хотя бы один вариант с указанным годом,
-          // возвращаем модель целиком
-          return car.d.some(item => item.y === value) ? car : { ...car, d: [] };
+          // возвращаем модель с сокращенными вариантами
+          return car.d.some(item => item.y === value) 
+            ? { ...car, d: car.d.map(item => ({ y: item.y, p: item.p })) } 
+            : { ...car, d: [] };
         }
 
         // Проверяем, является ли поле одним из полей основного объекта
@@ -67,7 +68,7 @@ export async function GET(request: Request) {
           // Для остальных полей форматируем значение перед сравнением
           const fieldValue = (car[mainObjectField] as string)?.toLowerCase();
           if (fieldValue?.includes(searchValue)) {
-            return car;
+            return { ...car, d: car.d.map(item => ({ y: item.y, p: item.p })) };
           }
           return { ...car, d: [] };
         }
@@ -79,7 +80,7 @@ export async function GET(request: Request) {
           return { ...car, d: [] };
         }
         
-        // Проверяем наличие совпадений в вариантах, но возвращаем все варианты если есть хотя бы одно совпадение
+        // Проверяем наличие совпадений в вариантах
         const hasMatchingVariant = car.d.some(item => {
           const fieldValue = item[variantField];
           if (typeof fieldValue === 'string') {
@@ -88,10 +89,16 @@ export async function GET(request: Request) {
           return false;
         });
         
-        return hasMatchingVariant ? car : { ...car, d: [] };
+        return hasMatchingVariant ? { ...car, d: car.d.map(item => ({ y: item.y, p: item.p })) } : { ...car, d: [] };
       }).filter(car => car.d.length > 0);
       
       console.log('Cars after search:', filteredData.length);
+    } else {
+      // Если нет поиска, просто возвращаем сокращенные варианты
+      filteredData = filteredData.map(car => ({
+        ...car,
+        d: car.d.map(item => ({ y: item.y, p: item.p }))
+      }));
     }
 
     return NextResponse.json(filteredData);

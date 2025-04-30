@@ -1,9 +1,8 @@
 import { CarData } from '../types';
 import { formatCarName } from '../utils';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import ModelsTable from './ModelsTable';
 import { decodeHtmlEntities } from '../utils';
-import TopPanel from './TopPanel';
 
 type SortConfig = {
   field: string;
@@ -12,35 +11,20 @@ type SortConfig = {
 
 interface ModelDescriptionProps {
   model: CarData;
-  cars: CarData[];
   onImageClick: (url: string) => void;
   sortConfig: SortConfig;
   onSortChange: (config: SortConfig | ((prev: SortConfig) => SortConfig)) => void;
   selectedYear?: string;
-  onYearChange: (year: string) => void;
 }
 
 export default function ModelDescription({ 
   model, 
-  cars, 
   onImageClick, 
   sortConfig, 
   onSortChange,
   selectedYear,
-  onYearChange
 }: ModelDescriptionProps) {
   const [expandedDescription, setExpandedDescription] = useState(false);
-
-  const availableYears = useMemo(() => {
-    // Получаем все года из всех вариантов модели
-    const allYears = model.d
-      .map(item => item.y)
-      .filter(year => year && year !== 'FTE') // Исключаем пустые года и FTE
-      .filter((year, index, self) => self.indexOf(year) === index) // Убираем дубликаты
-      .sort((a, b) => b.localeCompare(a)); // Сортируем по убыванию
-    
-    return allYears;
-  }, [model]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -78,22 +62,11 @@ export default function ModelDescription({
         </div>
       </div>
       <ModelsTable 
-        cars={cars.filter(car => car.lnk === model.lnk)}
+        cars={[model]}
         onImageClick={onImageClick}
         sortConfig={sortConfig}
         onSortChange={onSortChange}
         selectedYear={selectedYear}
-      />
-      <TopPanel
-        selectedField=""
-        selectedYear={selectedYear || ''}
-        searchQuery=""
-        onFieldChange={() => {}}
-        onYearChange={onYearChange}
-        onSearchChange={() => {}}
-        onSearch={() => {}}
-        onKeyPress={() => {}}
-        availableYears={availableYears}
       />
     </div>
   );

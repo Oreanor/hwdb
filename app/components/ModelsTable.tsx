@@ -49,18 +49,22 @@ const TableRow = memo(({ car, item, index, availableFields, collapsedColumns, on
           </div>
         )}
       </td>
-      {availableFields.map(field => (
-        <td 
-          key={field.key} 
-          className={`p-2 text-sm text-gray-900 dark:text-gray-200 ${
-            collapsedColumns.has(field.key) ? 'w-[40px] min-w-[40px] max-w-[40px] p-0 bg-gray-50 dark:bg-gray-700 overflow-hidden' : 'break-words'
-          }`}
-        >
-          <div className={collapsedColumns.has(field.key) ? 'h-0 overflow-hidden' : ''}>
-            {(item[field.key] as string) || '-'}
-          </div>
-        </td>
-      ))}
+      {availableFields.map(field => {
+        const value = item[field.key] || '-';
+        
+        return (
+          <td 
+            key={field.key} 
+            className={`p-2 text-sm text-gray-900 dark:text-gray-200 ${
+              collapsedColumns.has(field.key) ? 'w-[40px] min-w-[40px] max-w-[40px] p-0 bg-gray-50 dark:bg-gray-700 overflow-hidden' : 'break-words'
+            }`}
+          >
+            <div className={collapsedColumns.has(field.key) ? 'h-0 overflow-hidden' : ''}>
+              {value}
+            </div>
+          </td>
+        );
+      })}
     </tr>
   );
 });

@@ -18,12 +18,21 @@ export default function ModelCard({ car, onModelClick, selectedYear }: ModelCard
     ? car.d.filter(item => item.y === selectedYear).length 
     : car.d.length;
 
+  // Получаем первый и последний год
+  const years = car.d
+    .map(item => item.y)
+    .filter(year => year && year !== 'FTE') // Исключаем пустые года и FTE
+    .sort();
+  const firstYear = years[0];
+  const lastYear = years[years.length - 1];
+  const yearsDisplay = firstYear === lastYear ? firstYear : `${firstYear}–${lastYear}`;
+
   return (
     <div 
-      className="flex flex-col items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer"
+      className="flex flex-col items-center p-2 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer"
       onClick={() => onModelClick(car)}
     >
-      <div className="relative w-full aspect-square mb-2">
+      <div className="relative w-full aspect-[4/3] mb-1">
         {imageUrl && (
           <Image
             src={imageUrl}
@@ -34,9 +43,12 @@ export default function ModelCard({ car, onModelClick, selectedYear }: ModelCard
           />
         )}
       </div>
-      <p className="text-sm text-center font-bold text-gray-900 dark:text-gray-100">
+      <p className="text-sm text-center font-bold text-gray-900 dark:text-gray-100 line-clamp-1">
         {formattedName} <span className="text-gray-500 dark:text-gray-400 font-medium text-xs">({variantCount})</span>
       </p>
+      <p className='text-xs text-gray-400 dark:text-gray-400'># {car.num}</p>
+
+      <p className="text-xs text-gray-500 dark:text-gray-400">{yearsDisplay}</p>
     </div>
   );
 } 
