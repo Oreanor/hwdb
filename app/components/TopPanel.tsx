@@ -52,15 +52,16 @@ export default function TopPanel({
           onChange={(e) => onYearChange(e.target.value)}
           className="h-7 xs:h-8 sm:h-9 px-0.5 xs:px-1 sm:px-3 py-0 text-xs xs:text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer bg-white dark:bg-gray-700 dark:text-gray-200 min-w-[60px] xs:min-w-[70px] sm:min-w-[80px]"
         >
+          <option value="">All Years</option>
           {YEARS.map((year) => (
-            <option 
-              key={year.value} 
-              value={year.value}
-              disabled={!isYearAvailable(year.value)}
-              className={!isYearAvailable(year.value) ? 'text-gray-200 dark:text-gray-600' : ''}
-            >
-              {year.label}
-            </option>
+            isYearAvailable(year.value) && year.value !== '' && (
+              <option 
+                key={year.value} 
+                value={year.value}
+              >
+                {year.label}
+              </option>
+            )
           ))}
         </select>
         <select
@@ -74,7 +75,7 @@ export default function TopPanel({
             </option>
           ))}
         </select>
-        <div className="flex flex-1 items-center border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 min-w-[100px] xs:min-w-[120px] sm:min-w-[150px]">
+        <div className="flex flex-1 items-center border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 min-w-[100px] xs:min-w-[120px] sm:min-w-[150px] max-w-[50%]">
           <input
             type="text"
             placeholder="Search..."
@@ -85,7 +86,7 @@ export default function TopPanel({
           />
           <button
             onClick={onSearch}
-            className="h-7 xs:h-8 sm:h-9 px-1 xs:px-2 sm:px-3 py-0 text-xs xs:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 border-l border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center justify-center"
+            className="h-7 xs:h-8 sm:h-9 px-1 xs:px-2 sm:px-3 py-0 text-xs xs:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 border-l border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center justify-center cursor-pointer"
           >
             <SearchIcon />
           </button>

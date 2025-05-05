@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { CarData } from '../../types';
 import { MAIN_OBJECT_FIELDS, VARIANT_FIELDS } from '../../consts';
+import { formatCarName } from '../../utils';
 
 
 export async function GET(request: Request) {
@@ -42,7 +43,7 @@ export async function GET(request: Request) {
     }
 
     // Затем применяем поиск по полю, если оно указано
-    if (field && value) {
+    if (field && value && value.trim() !== '') {
       const searchValue = value.toLowerCase();
       console.log('Searching by field:', field, 'value:', searchValue);
       
@@ -50,6 +51,14 @@ export async function GET(request: Request) {
         // Для поля lnk делаем точное сравнение
         if (field === 'link') {
           return car.lnk === value ? { ...car, d: car.d.map(item => ({ y: item.y, p: item.p })) } : { ...car, d: [] };
+        }
+
+        // Для поля name ищем в lnk и форматированном lnk
+        if (field === 'name') {
+          const formattedName = formatCarName(car.lnk).toLowerCase();
+          return (formattedName.includes(searchValue))
+            ? { ...car, d: car.d.map(item => ({ y: item.y, p: item.p })) }
+            : { ...car, d: [] };
         }
 
         // Для поля year ищем в вариантах
@@ -94,12 +103,12 @@ export async function GET(request: Request) {
       
       console.log('Cars after search:', filteredData.length);
     } else {
-      // Если нет поиска, просто возвращаем сокращенные варианты
-      filteredData = filteredData.map(car => ({
-        ...car,
-        d: car.d.map(item => ({ y: item.y, p: item.p }))
-      }));
+      // Если нет поиска или value пустое, возвращаем пустой массив
+      filteredData = [];
     }
+
+    // Финальный фильтр: если ни у одной машины нет вариантов, возвращаем пустой массив
+    filteredData = filteredData.filter(car => car.d && car.d.length > 0);
 
     return NextResponse.json(filteredData);
   } catch (error) {

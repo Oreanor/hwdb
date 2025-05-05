@@ -27,6 +27,7 @@ export default function Home() {
   const [selectedModel, setSelectedModel] = useState<CarData | null>(null);
 
   const handleSearch = useCallback(async (year?: string) => {
+    console.log('handleSearch', year);
     // Используем переданный год или текущий из состояния
     const searchYear = year ?? selectedYear;
     
@@ -107,6 +108,7 @@ export default function Home() {
 
   const handleBackClick = () => {
     setSelectedModel(null);
+      handleSearch();
   };
 
   const handleLogoClick = () => {
@@ -166,15 +168,15 @@ export default function Home() {
                 onClose={() => setSelectedImage(null)}
               />
             )}
-            <button
+                    <button
               onClick={handleBackClick}
               className={`flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 cursor-pointer ${!selectedModel ? 'invisible' : ''}`}
-            >
+                    >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
               Back to models
-            </button>
+                    </button>
             {selectedModel && (
               <ModelDescription 
                 model={selectedModel}

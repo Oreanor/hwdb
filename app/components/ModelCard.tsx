@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { CarData } from '../types';
 import { getImageUrl, formatCarName } from '../utils';
+import { memo, useMemo } from 'react';
 
 interface ModelCardProps {
   car: CarData;
@@ -8,21 +9,30 @@ interface ModelCardProps {
   selectedYear?: string;
 }
 
-export default function ModelCard({ car, onModelClick, selectedYear }: ModelCardProps) {
-  const firstVariantWithImage = car.d.find(item => getImageUrl(item));
+const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear }: ModelCardProps) {
+  const firstVariantWithImage = useMemo(
+    () => car.d.find(item => getImageUrl(item)),
+    [car.d]
+  );
   const imageUrl = firstVariantWithImage ? getImageUrl(firstVariantWithImage) : undefined;
   const formattedName = formatCarName(car.lnk);
 
   // Считаем количество вариантов с учетом выбранного года
-  const variantCount = selectedYear 
-    ? car.d.filter(item => item.y === selectedYear).length 
-    : car.d.length;
+  const variantCount = useMemo(
+    () => selectedYear 
+      ? car.d.filter(item => item.y === selectedYear).length 
+      : car.d.length,
+    [car.d, selectedYear]
+  );
 
   // Получаем первый и последний год
-  const years = car.d
-    .map(item => item.y)
-    .filter(year => year && year !== 'FTE') // Исключаем пустые года и FTE
-    .sort();
+  const years = useMemo(
+    () => car.d
+      .map(item => item.y)
+      .filter(year => year && year !== 'FTE')
+      .sort(),
+    [car.d]
+  );
   const firstYear = years[0];
   const lastYear = years[years.length - 1];
   const yearsDisplay = firstYear === lastYear ? firstYear : `${firstYear}–${lastYear}`;
@@ -46,9 +56,10 @@ export default function ModelCard({ car, onModelClick, selectedYear }: ModelCard
       <p className="text-sm text-center font-bold text-gray-900 dark:text-gray-100 line-clamp-1">
         {formattedName} <span className="text-gray-500 dark:text-gray-400 font-medium text-xs">({variantCount})</span>
       </p>
-      <p className='text-xs text-gray-400 dark:text-gray-400'># {car.num}</p>
 
       <p className="text-xs text-gray-500 dark:text-gray-400">{yearsDisplay}</p>
     </div>
   );
-} 
+});
+
+export default ModelCard; 

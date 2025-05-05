@@ -1,5 +1,6 @@
 import { CarData } from '../types';
 import ModelCard from './ModelCard';
+import { memo } from 'react';
 
 interface ModelsGridProps {
   cars: CarData[];
@@ -7,17 +8,23 @@ interface ModelsGridProps {
   selectedYear?: string;
 }
 
-export default function ModelsGrid({ cars, onModelClick, selectedYear }: ModelsGridProps) {
+const ModelsGrid = memo(function ModelsGrid({ cars, onModelClick, selectedYear }: ModelsGridProps) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-      {cars.map((car) => (
-        <ModelCard
-          key={car.lnk}
-          car={car}
-          onModelClick={onModelClick}
-          selectedYear={selectedYear}
-        />
-      ))}
+    <div className="w-full h-[calc(100vh-200px)] overflow-x-hidden">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
+        {cars.map((car) => (
+          <ModelCard
+            key={car.lnk}
+            car={car}
+            onModelClick={onModelClick}
+            selectedYear={selectedYear}
+          />
+        ))}
+      </div>
     </div>
   );
-} 
+});
+
+ModelsGrid.displayName = 'ModelsGrid';
+
+export default ModelsGrid; 

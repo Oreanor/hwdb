@@ -21,3 +21,8 @@ export type CarData = {
   dsc?: string;
   d: CarDataItem[];
 };
+
+export type SortConfig = {
+  field: string;
+  direction: 'asc' | 'desc';
+} | null;
