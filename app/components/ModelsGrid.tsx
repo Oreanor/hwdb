@@ -10,7 +10,7 @@ interface ModelsGridProps {
 
 const ModelsGrid = memo(function ModelsGrid({ cars, onModelClick, selectedYear }: ModelsGridProps) {
   return (
-    <div className="w-full h-[calc(100vh-200px)] overflow-x-hidden">
+    <div className="w-full h-full overflow-x-hidden">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2">
         {cars.map((car) => (
           <ModelCard
