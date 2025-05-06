@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useMemo, memo } from 'react';
+import { useMemo, memo, useState } from 'react';
 import { CarData, CarDataItem, SortConfig } from '../types';
 import { getImageUrl } from '../utils';
 import { FIELD_ORDER } from '../consts';
@@ -112,6 +112,8 @@ const CollectionTable: React.FC<CollectionTableProps> = ({
   sortConfig,
   onSortChange,
 }) => {
+  const [updateTrigger, setUpdateTrigger] = useState(0);
+
   const availableFields = useMemo(() => 
     FIELD_ORDER.filter(field => 
       cars.some(car => car.d.some(item => item[field.key] !== undefined))
@@ -134,13 +136,14 @@ const CollectionTable: React.FC<CollectionTableProps> = ({
   const handleRemoveFromCollection = (car: CarData, index: number) => {
     if (window.confirm('Delete this model from collection?')) {
       removeFromCollection({ lnk: car.lnk, variantIndex: index });
+      setUpdateTrigger(prev => prev + 1);
     }
   };
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const collectionItems = useMemo(() => {
     const collection = getCollection();
     return collection.map(item => ({ lnk: item.lnk, variantIndex: item.variantIndex, item: cars.find(c => c.lnk === item.lnk)?.d[item.variantIndex] }));
-  }, [cars]);
+  }, [cars, updateTrigger]);
 
   return (
     <div className="w-full overflow-x-auto">
