@@ -12,7 +12,9 @@ interface TopPanelProps {
   onSearch: () => void;
   onKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onLogoClick?: () => void;
+  onCollectionClick?: () => void;
   availableYears?: string[];
+  showCollection: boolean;
 }
 
 export default function TopPanel({
@@ -25,7 +27,9 @@ export default function TopPanel({
   onSearch,
   onKeyPress,
   onLogoClick,
-  availableYears
+  onCollectionClick,
+  availableYears,
+  showCollection
 }: TopPanelProps) {
 
   const isYearAvailable = (year: string) => {
@@ -33,7 +37,7 @@ export default function TopPanel({
   }
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-10 p-2 xs:p-3 sm:p-5 flex gap-2 sm:gap-3">
+    <div className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-10 p-2 xs:p-3 sm:p-5 flex gap-4 sm:gap-6">
       <div className="flex items-center gap-1 xs:gap-2 sm:gap-3 cursor-pointer" onClick={onLogoClick}>
         <div className="relative h-7 xs:h-8 sm:h-9 w-7 xs:w-8 sm:w-9">
           <Image
@@ -91,6 +95,16 @@ export default function TopPanel({
             <SearchIcon />
           </button>
         </div>
+        <button
+          onClick={onCollectionClick}
+          className={`h-7 xs:h-8 sm:h-9 px-2 xs:px-3 sm:px-4 py-0 text-xs xs:text-sm border rounded-md transition-colors flex items-center justify-center cursor-pointer ${
+            showCollection
+              ? 'bg-blue-500 text-white border-blue-600 hover:bg-blue-600'
+              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
+          }`}
+        >
+          My Collection
+        </button>
       </div>
     </div>
   );

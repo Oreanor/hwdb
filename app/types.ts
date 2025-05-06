@@ -26,3 +26,8 @@ export type SortConfig = {
   field: string;
   direction: 'asc' | 'desc';
 } | null;
+
+export interface CollectionItem {
+  lnk: string;
+  variantIndex: number;
+}

@@ -3,11 +3,7 @@ import { formatCarName } from '../utils';
 import { useState } from 'react';
 import ModelsTable from './ModelsTable';
 import { decodeHtmlEntities } from '../utils';
-
-type SortConfig = {
-  field: string;
-  direction: 'asc' | 'desc';
-} | null;
+import { SortConfig } from '../types';
 
 interface ModelDescriptionProps {
   model: CarData;
@@ -26,6 +22,8 @@ export default function ModelDescription({
 }: ModelDescriptionProps) {
   const [expandedDescription, setExpandedDescription] = useState(false);
 
+  const description = decodeHtmlEntities(model.dsc);  
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2 p-2">
@@ -33,32 +31,15 @@ export default function ModelDescription({
         <div className="text-sm text-gray-800 dark:text-gray-200"><span className='font-bold'>Number: </span>{model.num}</div>
         <div className="text-sm text-gray-800 dark:text-gray-200"><span className='font-bold'>Designer: </span>{model.ds}</div>
         <div className="text-sm max-w-[1000px] text-gray-800 dark:text-gray-200">
-          <span className='font-bold'>Description: </span>
-          {expandedDescription ? (
-            <>
-              <span>{decodeHtmlEntities(model.dsc)}</span>
-              <button
-                onClick={() => setExpandedDescription(false)}
+          <span><span className='font-bold'>Description: </span>{expandedDescription ? description : <>{description.substring(0, 100)}...</>}
+
+            {description && description.length > 100 && <button
+                onClick={() => setExpandedDescription(!expandedDescription)}
                 className="ml-2 underline hover:text-gray-600 dark:hover:text-gray-400 text-xs cursor-pointer"
               >
-                Less
-              </button>
-            </>
-          ) : (
-            <>
-              <span className="inline-block">
-                {model.dsc && model.dsc.length > 100 ? `${decodeHtmlEntities(model.dsc).substring(0, 100)}...` : decodeHtmlEntities(model.dsc)}
-              </span>
-              {model.dsc && model.dsc.length > 100 && (
-                <button
-                  onClick={() => setExpandedDescription(true)}
-                  className="ml-2 underline hover:text-gray-600 dark:hover:text-gray-400 text-xs cursor-pointer"
-                >
-                  More
-                </button>
-              )}
-            </>
-          )}
+                {expandedDescription ? "Less" : "More"}
+              </button>}
+          </span>
         </div>
       </div>
       <ModelsTable 

@@ -6,9 +6,12 @@ import WelcomeMessage from './components/WelcomeMessage';
 import ImageModal from './components/ImageModal';
 import { CarData } from './types';
 import { fetchCars, fetchCarByLnk } from './services/carService';
-import { SEARCH_FIELDS, YEARS } from './consts';
+import { YEARS } from './consts';
 import ModelsGrid from './components/ModelsGrid';
 import ModelDescription from './components/ModelDescription';
+import { getCollection } from './utils/collection';
+import CollectionTable from './components/CollectionTable';
+import { formatCarName } from './utils';
 
 type SortConfig = {
   field: string;
@@ -20,16 +23,50 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedField, setSelectedField] = useState<string | undefined>(SEARCH_FIELDS[0].key);
+  const [selectedField, setSelectedField] = useState<string>('name');
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
   const [selectedModel, setSelectedModel] = useState<CarData | null>(null);
+  const [showCollection, setShowCollection] = useState(false);
 
   const handleSearch = useCallback(async (year?: string) => {
     console.log('handleSearch', year);
     // Используем переданный год или текущий из состояния
     const searchYear = year ?? selectedYear;
+    
+    // Если мы в режиме коллекции, фильтруем на фронте
+    if (showCollection) {
+      const collection = getCollection();
+      const lnk = collection.map(item => item.lnk);
+      const allCars: CarData[] = await Promise.all(
+        lnk.map(link => fetchCarByLnk(link))
+      );
+      
+      // Фильтруем по году и поисковому запросу
+      let filteredCars = allCars;
+      
+      if (searchYear) {
+        filteredCars = filteredCars.map(car => ({
+          ...car,
+          d: car.d.filter(item => item.y === searchYear)
+        })).filter(car => car.d.length > 0);
+      }
+      
+      if (searchQuery) {
+        const searchValue = searchQuery.toLowerCase();
+        filteredCars = filteredCars.map(car => {
+          if (selectedField === 'name') {
+            const formattedName = formatCarName(car.lnk).toLowerCase();
+            return formattedName.includes(searchValue) ? car : { ...car, d: [] };
+          }
+          return car;
+        }).filter(car => car.d.length > 0);
+      }
+      
+      setCars(filteredCars);
+      return;
+    }
     
     // Если выбран конкретный год и нет поискового запроса - показываем все модели за этот год
     if (searchYear && !searchQuery) {
@@ -74,7 +111,7 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }, [selectedField, searchQuery, selectedYear]);
+  }, [selectedField, searchQuery, selectedYear, showCollection]);
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -111,10 +148,40 @@ export default function Home() {
       handleSearch();
   };
 
+  const handleCollectionClick = async () => {
+    setLoading(true);
+    try {
+      setSelectedYear('');
+      setSearchQuery('');
+    setSelectedModel(null);
+
+      if (!showCollection) {
+        // Сбрасываем год и поиск при входе в режим коллекции
+        
+        const collection = getCollection();
+        const lnk = collection.map(item => item.lnk);
+        const allCars: CarData[] = await Promise.all(
+          lnk.map(link => fetchCarByLnk(link))
+        );
+        setCars(allCars);
+      } else {
+        // Сбрасываем год и поиск при выходе из режима коллекции
+        setCars([]);
+      }
+      setShowCollection(!showCollection);
+    } catch (error) {
+      console.error('Error loading collection:', error);
+      setError(error instanceof Error ? error.message : 'Failed to load collection');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleLogoClick = () => {
     setSelectedYear('');
     setSearchQuery('');
     setSelectedModel(null);
+    setShowCollection(false);
     setCars([]);
   };
 
@@ -145,7 +212,9 @@ export default function Home() {
           onSearch={() => handleSearch()}
           onKeyPress={handleKeyPress}
           onLogoClick={handleLogoClick}
+          onCollectionClick={handleCollectionClick}
           availableYears={availableYears}
+          showCollection={showCollection}
         />
       </div>
 
@@ -177,22 +246,31 @@ export default function Home() {
               </svg>
               Back to models
                     </button>
-            {selectedModel && (
-              <ModelDescription 
-                model={selectedModel}
-                onImageClick={handleImageClick}
-                sortConfig={sortConfig}
-                onSortChange={setSortConfig}
-                selectedYear={selectedYear}
-              />
-            )}
-            <div className={selectedModel ? 'hidden' : ''}>
-              <ModelsGrid 
-                cars={cars}
-                onModelClick={handleModelClick}
-                selectedYear={selectedYear}
-              />
-            </div>
+           
+              {showCollection ? (
+                <CollectionTable
+                  cars={cars}
+                  onImageClick={handleImageClick}
+                  sortConfig={sortConfig}
+                  onSortChange={setSortConfig}
+                />
+              ) : (
+                <>{selectedModel ? (
+                  <ModelDescription 
+                    model={selectedModel}
+                    onImageClick={handleImageClick}
+                    sortConfig={sortConfig}
+                    onSortChange={setSortConfig}
+                    selectedYear={selectedYear}
+                  />
+                ) : (<ModelsGrid 
+                  cars={cars}
+                  onModelClick={handleModelClick}
+                  selectedYear={selectedYear}
+                />)}
+                </>
+                
+              )}
           </div>
         ) : (
           <WelcomeMessage />

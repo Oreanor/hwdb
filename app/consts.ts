@@ -53,3 +53,6 @@ export const VARIANT_FIELDS: Record<string, keyof CarDataItem> = {
   'base': 'Bs',
   'year': 'y'
 };
+
+export const COLLAPSED_COLUMNS_COOKIE = 'hwdb_collapsed_columns';
+export const ITEMS_PER_PAGE = 1000;

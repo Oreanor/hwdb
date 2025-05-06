@@ -3,19 +3,18 @@ import fs from 'fs';
 import path from 'path';
 import { CarData } from '../../types';
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const lnk = searchParams.get('lnk');
+    const { links } = await request.json();
 
-    if (!lnk) {
+    if (!Array.isArray(links) || links.length === 0) {
       return NextResponse.json(
-        { error: 'Missing lnk parameter' },
+        { error: 'Invalid input: links must be a non-empty array' },
         { status: 400 }
       );
     }
 
-    // Читаем данные из файла
+    // Read data from file
     const filePath = path.join(process.cwd(), 'public', 'carsdata.json');
     
     if (!fs.existsSync(filePath)) {
@@ -28,17 +27,17 @@ export async function GET(request: Request) {
     const fileContent = fs.readFileSync(filePath, 'utf8');
     const carsData: CarData[] = JSON.parse(fileContent);
 
-    // Ищем модель по lnk
-    const car = carsData.find(car => car.lnk === lnk);
+    // Find all cars matching the provided links
+    const cars = carsData.filter(car => links.includes(car.lnk));
 
-    if (!car) {
+    if (cars.length === 0) {
       return NextResponse.json(
-        { error: 'Car not found' },
+        { error: 'No cars found for the provided links' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(car);
+    return NextResponse.json(cars);
   } catch (error) {
     console.error('Error processing request:', error);
     return NextResponse.json(

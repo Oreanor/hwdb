@@ -10,7 +10,7 @@ export const fetchCars = async (field?: string, value?: string, year?: string): 
     params.append('year', year);
   }
   
-  const response = await fetch(`/api/cars?${params.toString()}`);
+  const response = await fetch(`/api/search?${params.toString()}`);
   if (!response.ok) {
     throw new Error('Failed to fetch data');
   }
@@ -18,12 +18,17 @@ export const fetchCars = async (field?: string, value?: string, year?: string): 
 };
 
 export const fetchCarByLnk = async (lnk: string): Promise<CarData> => {
-  const params = new URLSearchParams();
-  params.append('lnk', lnk);
+  const response = await fetch('/api/car', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ links: [lnk] }),
+  });
   
-  const response = await fetch(`/api/car?${params.toString()}`);
   if (!response.ok) {
     throw new Error('Failed to fetch car data');
   }
-  return response.json();
-}; 
+  const cars = await response.json();
+  return cars[0];
+};

@@ -11,8 +11,10 @@ interface ModelCardProps {
 
 const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear }: ModelCardProps) {
   const firstVariantWithImage = useMemo(
-    () => car.d.find(item => getImageUrl(item)),
-    [car.d]
+    () => selectedYear 
+      ? car.d.find(item => item.y === selectedYear && getImageUrl(item))
+      : car.d.find(item => getImageUrl(item)),
+    [car.d, selectedYear]
   );
   const imageUrl = firstVariantWithImage ? getImageUrl(firstVariantWithImage) : undefined;
   const formattedName = formatCarName(car.lnk);

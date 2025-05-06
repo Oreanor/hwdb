@@ -1,16 +1,12 @@
 import Image from 'next/image';
-import { useState, useMemo, memo, } from 'react';
-import { CarData, CarDataItem } from '../types';
+import { useState, useMemo, memo, useEffect } from 'react';
+import { CarData, CarDataItem, SortConfig, CollectionItem } from '../types';
 import { getImageUrl } from '../utils';
-import { FIELD_ORDER } from '../consts';
+import { FIELD_ORDER, COLLAPSED_COLUMNS_COOKIE, ITEMS_PER_PAGE } from '../consts';
+import { addToCollection, removeFromCollection, isInCollection } from '../utils/collection';
 
-const COLLAPSED_COLUMNS_COOKIE = 'hwdb_collapsed_columns';
-const ITEMS_PER_PAGE = 1000;
 
-type SortConfig = {
-  field: string;
-  direction: 'asc' | 'desc';
-} | null;
+
 
 interface ModelsTableProps {
   cars: CarData[];
@@ -31,8 +27,59 @@ interface TableRowProps {
 
 const TableRow = memo(({ car, item, index, availableFields, collapsedColumns, onImageClick }: TableRowProps) => {
   const imageUrl = useMemo(() => getImageUrl(item), [item]);
+  const [isCollected, setIsCollected] = useState(() => 
+    isInCollection({ lnk: car.lnk, variantIndex: index })
+  );
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const newIsCollected = isInCollection({ lnk: car.lnk, variantIndex: index });
+      if (newIsCollected !== isCollected) {
+        setIsCollected(newIsCollected);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('collectionChanged', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('collectionChanged', handleStorageChange);
+    };
+  }, [car.lnk, index, isCollected]);
+
+  const handleCollectionClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const collectionItem: CollectionItem = { lnk: car.lnk, variantIndex: index };
+    if (isCollected) {
+      removeFromCollection(collectionItem);
+      setIsCollected(false);
+    } else {
+      addToCollection(collectionItem);
+      setIsCollected(true);
+    }
+  };
+
   return (
-    <tr key={`${car.lnk}-${index}`} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+    <tr 
+      key={`${car.lnk}-${index}`} 
+      className={`hover:bg-gray-50 dark:hover:bg-gray-700 ${
+        isCollected ? 'bg-gray-100 dark:bg-gray-700' : ''
+      }`}
+    >
+      <td className="p-2 whitespace-nowrap">
+        <button 
+          className={`w-6 h-6 transition-colors cursor-pointer ${
+            isCollected 
+              ? 'text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300' 
+              : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'
+          }`}
+          onClick={handleCollectionClick}
+        >
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+          </svg>
+        </button>
+      </td>
       <td className="p-2 whitespace-nowrap">
         {imageUrl && (
           <div 
@@ -231,6 +278,9 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 table-fixed">
         <thead className="bg-gray-50 dark:bg-gray-700">
           <tr>
+            <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap w-[40px] border-r border-gray-200 dark:border-gray-600">
+              Add
+            </th>
             <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap w-[100px] border-r border-gray-200 dark:border-gray-600">
               Image
             </th>
