@@ -139,7 +139,6 @@ const CollectionTable: React.FC<CollectionTableProps> = ({
       setUpdateTrigger(prev => prev + 1);
     }
   };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const collectionItems = useMemo(() => {
     const collection = getCollection();
     return collection.map(item => ({ lnk: item.lnk, variantIndex: item.variantIndex, item: cars.find(c => c.lnk === item.lnk)?.d[item.variantIndex] }));
