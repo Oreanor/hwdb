@@ -1,3 +1,5 @@
+import 'next-auth';
+
 export type CarDataItem = {
   y: string;
   N?: string;
@@ -31,3 +33,15 @@ export interface CollectionItem {
   lnk: string;
   variantIndex: number;
 }
+
+
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      id?: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    }
+  }
+} 

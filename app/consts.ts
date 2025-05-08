@@ -1,4 +1,5 @@
 import { CarData, CarDataItem } from "./types";
+import { Language } from "./i18n";
 
 export const FANDOM_BASE_URL = 'https://hotwheels.fandom.com/wiki/';
 export const FANDOM_IMAGE_BASE_URL = 'https://static.wikia.nocookie.net/hotwheels/images/';
@@ -56,3 +57,12 @@ export const VARIANT_FIELDS: Record<string, keyof CarDataItem> = {
 
 export const COLLAPSED_COLUMNS_COOKIE = 'hwdb_collapsed_columns';
 export const ITEMS_PER_PAGE = 1000;
+
+export const LANGUAGES: { code: Language; label: string }[] = [
+  { code: 'ru', label: 'РУ' },
+  { code: 'en', label: 'EN' },
+  { code: 'de', label: 'DE' },
+  { code: 'es', label: 'ES' },
+  { code: 'fr', label: 'FR' },
+  { code: 'pt', label: 'PT' }
+];

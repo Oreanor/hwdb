@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { t } from '../i18n';
 
 export default function WelcomeMessage() {
   return (
@@ -12,8 +13,8 @@ export default function WelcomeMessage() {
           sizes="128px"
         />
       </div>
-      <p className="text-2xl mb-2">Welcome to HWDB</p>
-      <p className="text-sm">Enter your search query to find Hot Wheels models</p>
+      <p className="text-2xl mb-2">{t('welcome.title')}</p>
+      <p className="text-sm">{t('welcome.subtitle')}</p>
     </div>
   );
 } 

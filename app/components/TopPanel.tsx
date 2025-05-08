@@ -1,6 +1,14 @@
+'use client';
+
 import Image from 'next/image';
-import { SEARCH_FIELDS, YEARS } from '../consts';
+import { SEARCH_FIELDS, YEARS, LANGUAGES } from '../consts';
 import SearchIcon from './icons/SearchIcon';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { t, setLanguage, getLanguage } from '../i18n';
+import { Language } from '../i18n';
+import { useEffect, useState } from 'react';
+
+
 
 interface TopPanelProps {
   selectedField: string | undefined;
@@ -12,9 +20,10 @@ interface TopPanelProps {
   onSearch: () => void;
   onKeyPress: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onLogoClick?: () => void;
-  onCollectionClick?: () => void;
+  onCollectionClick: () => void;
   availableYears?: string[];
   showCollection: boolean;
+  onLanguageChange?: (lang: Language) => void;
 }
 
 export default function TopPanel({
@@ -29,12 +38,34 @@ export default function TopPanel({
   onLogoClick,
   onCollectionClick,
   availableYears,
-  showCollection
+  showCollection,
+  onLanguageChange
 }: TopPanelProps) {
+  const { data: session, status } = useSession();
+  const [currentLang, setCurrentLang] = useState<Language>(getLanguage());
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem('hwdb_language');
+    if (savedLang && (savedLang === 'ru' || savedLang === 'en' || savedLang === 'de' || savedLang === 'es' || savedLang === 'fr' || savedLang === 'pt')) {
+      setLanguage(savedLang as Language);
+      setCurrentLang(savedLang as Language);
+    }
+    setIsInitialized(true);
+  }, []);
+
+  const handleLanguageChange = (lang: Language) => {
+    setLanguage(lang);
+    setCurrentLang(lang);
+    localStorage.setItem('hwdb_language', lang);
+    onLanguageChange?.(lang);
+  };
 
   const isYearAvailable = (year: string) => {
     return availableYears ? availableYears.includes(year) : true;
   }
+
+  const isLoading = !isInitialized || status === 'loading';
 
   return (
     <div className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-10 p-2 xs:p-3 sm:p-5 flex gap-4 sm:gap-6">
@@ -56,7 +87,7 @@ export default function TopPanel({
           onChange={(e) => onYearChange(e.target.value)}
           className="h-7 xs:h-8 sm:h-9 px-0.5 xs:px-1 sm:px-3 py-0 text-xs xs:text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer bg-white dark:bg-gray-700 dark:text-gray-200 min-w-[60px] xs:min-w-[70px] sm:min-w-[80px]"
         >
-          <option value="">All Years</option>
+          <option value="">{t('common.allYears')}</option>
           {YEARS.map((year) => (
             isYearAvailable(year.value) && year.value !== '' && (
               <option 
@@ -75,14 +106,14 @@ export default function TopPanel({
         >
           {SEARCH_FIELDS.map((field) => (
             <option key={field.key} value={field.key}>
-              {field.label}
+              {t(`search.fields.${field.key}`)}
             </option>
           ))}
         </select>
         <div className="flex flex-1 items-center border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 min-w-[100px] xs:min-w-[120px] sm:min-w-[150px] max-w-[50%]">
           <input
             type="text"
-            placeholder="Search..."
+            placeholder={t('common.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             onKeyDown={onKeyPress}
@@ -95,16 +126,54 @@ export default function TopPanel({
             <SearchIcon />
           </button>
         </div>
-        <button
-          onClick={onCollectionClick}
-          className={`h-7 xs:h-8 sm:h-9 px-2 xs:px-3 sm:px-4 py-0 text-xs xs:text-sm border rounded-md transition-colors flex items-center justify-center cursor-pointer ${
-            showCollection
-              ? 'bg-blue-500 text-white border-blue-600 hover:bg-blue-600'
-              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
-          }`}
-        >
-          My Collection
-        </button>
+      </div>
+      <div className="flex items-center gap-2 ml-auto">
+        {isLoading ? (
+          <div className="h-7 xs:h-8 sm:h-9 w-7 xs:w-8 sm:w-9 flex items-center justify-center">
+            <div className="w-4 h-4 border-2 border-gray-300 dark:border-gray-600 border-t-blue-500 rounded-full animate-spin"></div>
+          </div>
+        ) : (
+          <>
+            {!session ? (
+              <button
+                onClick={() => signIn('google')}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 transition-colors cursor-pointer"
+              >
+                {t('auth.login')}
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={onCollectionClick}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
+                    !showCollection
+                      ? 'bg-blue-500 text-white'
+                      : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                  }`}
+                >
+                  {!showCollection ? t('auth.myCollection') : t('common.back')}
+                </button>
+                <button
+                  onClick={() => signOut({ callbackUrl: window.location.href })}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+                >
+                  {t('auth.logout')}
+                </button>
+              </>
+            )}
+            <select
+              value={currentLang}
+              onChange={(e) => handleLanguageChange(e.target.value as Language)}
+              className="h-7 xs:h-8 sm:h-9 px-1 xs:px-2 sm:px-3 py-0 text-xs xs:text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer bg-white dark:bg-gray-700 dark:text-gray-200"
+            >
+              {LANGUAGES.map(({ code, label }) => (
+                <option key={code} value={code}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
       </div>
     </div>
   );

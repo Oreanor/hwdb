@@ -1,0 +1,320 @@
+{
+  "ru": {
+    "common": {
+      "loading": "Загрузка...",
+      "error": "Ошибка",
+      "back": "Назад",
+      "more": "Больше",
+      "less": "Меньше",
+      "search": "Поиск",
+      "searchPlaceholder": "Поиск...",
+      "allYears": "Все годы",
+      "viewOnFandom": "Посмотреть на HW Fandom",
+      "languages": {
+        "ru": "РУ",
+        "en": "EN",
+        "de": "DE",
+        "es": "ES",
+        "fr": "FR",
+        "pt": "PT"
+      }
+    },
+    "auth": {
+      "login": "Войти",
+      "logout": "Выйти",
+      "myCollection": "Моя коллекция"
+    },
+    "model": {
+      "number": "Номер",
+      "designer": "Дизайнер",
+      "description": "Описание",
+      "backToModels": "Назад к моделям"
+    },
+    "search": {
+      "fields": {
+        "name": "Название",
+        "designer": "Дизайнер",
+        "description": "Описание",
+        "series": "Серия",
+        "color": "Цвет",
+        "base": "Основание",
+        "wheels": "Колеса",
+        "country": "Страна"
+      },
+      "errors": {
+        "minChars": "Пожалуйста, введите минимум 3 символа для поиска или выберите конкретный год",
+        "failedToLoad": "Не удалось загрузить данные",
+        "failedToLoadCollection": "Не удалось загрузить коллекцию"
+      }
+    },
+    "welcome": {
+      "title": "Добро пожаловать в HWDB",
+      "subtitle": "Введите поисковый запрос, чтобы найти модели Hot Wheels"
+    }
+  },
+  "en": {
+    "common": {
+      "loading": "Loading...",
+      "error": "Error",
+      "back": "Back",
+      "more": "More",
+      "less": "Less",
+      "search": "Search",
+      "searchPlaceholder": "Search...",
+      "allYears": "All Years",
+      "viewOnFandom": "View on HW Fandom",
+      "languages": {
+        "ru": "RU",
+        "en": "EN",
+        "de": "DE",
+        "es": "ES",
+        "fr": "FR",
+        "pt": "PT"
+      }
+    },
+    "auth": {
+      "login": "Login",
+      "logout": "Logout",
+      "myCollection": "My Collection"
+    },
+    "model": {
+      "number": "Number",
+      "designer": "Designer",
+      "description": "Description",
+      "backToModels": "Back to models"
+    },
+    "search": {
+      "fields": {
+        "name": "Name",
+        "designer": "Designer",
+        "description": "Description",
+        "series": "Series",
+        "color": "Color",
+        "base": "Base",
+        "wheels": "Wheels",
+        "country": "Country"
+      },
+      "errors": {
+        "minChars": "Please enter at least 3 characters for search or select a specific year",
+        "failedToLoad": "Failed to load data",
+        "failedToLoadCollection": "Failed to load collection"
+      }
+    },
+    "welcome": {
+      "title": "Welcome to HWDB",
+      "subtitle": "Enter your search query to find Hot Wheels models"
+    }
+  },
+  "de": {
+    "common": {
+      "loading": "Laden...",
+      "error": "Fehler",
+      "back": "Zurück",
+      "more": "Mehr",
+      "less": "Weniger",
+      "search": "Suchen",
+      "searchPlaceholder": "Suchen...",
+      "allYears": "Alle Jahre",
+      "viewOnFandom": "Auf HW Fandom ansehen",
+      "languages": {
+        "ru": "RU",
+        "en": "EN",
+        "de": "DE",
+        "es": "ES",
+        "fr": "FR",
+        "pt": "PT"
+      }
+    },
+    "auth": {
+      "login": "Anmelden",
+      "logout": "Abmelden",
+      "myCollection": "Meine Sammlung"
+    },
+    "model": {
+      "number": "Nummer",
+      "designer": "Designer",
+      "description": "Beschreibung",
+      "backToModels": "Zurück zu Modellen"
+    },
+    "search": {
+      "fields": {
+        "name": "Name",
+        "designer": "Designer",
+        "description": "Beschreibung",
+        "series": "Serie",
+        "color": "Farbe",
+        "base": "Basis",
+        "wheels": "Räder",
+        "country": "Land"
+      },
+      "errors": {
+        "minChars": "Bitte geben Sie mindestens 3 Zeichen für die Suche ein oder wählen Sie ein bestimmtes Jahr aus",
+        "failedToLoad": "Daten konnten nicht geladen werden",
+        "failedToLoadCollection": "Sammlung konnte nicht geladen werden"
+      }
+    },
+    "welcome": {
+      "title": "Willkommen bei HWDB",
+      "subtitle": "Geben Sie Ihre Suchanfrage ein, um Hot Wheels Modelle zu finden"
+    }
+  },
+  "es": {
+    "common": {
+      "loading": "Cargando...",
+      "error": "Error",
+      "back": "Atrás",
+      "more": "Más",
+      "less": "Menos",
+      "search": "Buscar",
+      "searchPlaceholder": "Buscar...",
+      "allYears": "Todos los años",
+      "viewOnFandom": "Ver en HW Fandom",
+      "languages": {
+        "ru": "RU",
+        "en": "EN",
+        "de": "DE",
+        "es": "ES",
+        "fr": "FR",
+        "pt": "PT"
+      }
+    },
+    "auth": {
+      "login": "Iniciar sesión",
+      "logout": "Cerrar sesión",
+      "myCollection": "Mi colección"
+    },
+    "model": {
+      "number": "Número",
+      "designer": "Diseñador",
+      "description": "Descripción",
+      "backToModels": "Volver a modelos"
+    },
+    "search": {
+      "fields": {
+        "name": "Nombre",
+        "designer": "Diseñador",
+        "description": "Descripción",
+        "series": "Serie",
+        "color": "Color",
+        "base": "Base",
+        "wheels": "Ruedas",
+        "country": "País"
+      },
+      "errors": {
+        "minChars": "Por favor, ingrese al menos 3 caracteres para buscar o seleccione un año específico",
+        "failedToLoad": "Error al cargar los datos",
+        "failedToLoadCollection": "Error al cargar la colección"
+      }
+    },
+    "welcome": {
+      "title": "Bienvenido a HWDB",
+      "subtitle": "Ingrese su búsqueda para encontrar modelos de Hot Wheels"
+    }
+  },
+  "fr": {
+    "common": {
+      "loading": "Chargement...",
+      "error": "Erreur",
+      "back": "Retour",
+      "more": "Plus",
+      "less": "Moins",
+      "search": "Rechercher",
+      "searchPlaceholder": "Rechercher...",
+      "allYears": "Toutes les années",
+      "viewOnFandom": "Voir sur HW Fandom",
+      "languages": {
+        "ru": "RU",
+        "en": "EN",
+        "de": "DE",
+        "es": "ES",
+        "fr": "FR",
+        "pt": "PT"
+      }
+    },
+    "auth": {
+      "login": "Connexion",
+      "logout": "Déconnexion",
+      "myCollection": "Ma collection"
+    },
+    "model": {
+      "number": "Numéro",
+      "designer": "Designer",
+      "description": "Description",
+      "backToModels": "Retour aux modèles"
+    },
+    "search": {
+      "fields": {
+        "name": "Nom",
+        "designer": "Designer",
+        "description": "Description",
+        "series": "Série",
+        "color": "Couleur",
+        "base": "Base",
+        "wheels": "Roues",
+        "country": "Pays"
+      },
+      "errors": {
+        "minChars": "Veuillez saisir au moins 3 caractères pour la recherche ou sélectionner une année spécifique",
+        "failedToLoad": "Échec du chargement des données",
+        "failedToLoadCollection": "Échec du chargement de la collection"
+      }
+    },
+    "welcome": {
+      "title": "Bienvenue sur HWDB",
+      "subtitle": "Entrez votre recherche pour trouver des modèles Hot Wheels"
+    }
+  },
+  "pt": {
+    "common": {
+      "loading": "Carregando...",
+      "error": "Erro",
+      "back": "Voltar",
+      "more": "Mais",
+      "less": "Menos",
+      "search": "Pesquisar",
+      "searchPlaceholder": "Pesquisar...",
+      "allYears": "Todos os anos",
+      "viewOnFandom": "Ver no HW Fandom",
+      "languages": {
+        "ru": "RU",
+        "en": "EN",
+        "de": "DE",
+        "es": "ES",
+        "fr": "FR",
+        "pt": "PT"
+      }
+    },
+    "auth": {
+      "login": "Entrar",
+      "logout": "Sair",
+      "myCollection": "Minha coleção"
+    },
+    "model": {
+      "number": "Número",
+      "designer": "Designer",
+      "description": "Descrição",
+      "backToModels": "Voltar aos modelos"
+    },
+    "search": {
+      "fields": {
+        "name": "Nome",
+        "designer": "Designer",
+        "description": "Descrição",
+        "series": "Série",
+        "color": "Cor",
+        "base": "Base",
+        "wheels": "Rodas",
+        "country": "País"
+      },
+      "errors": {
+        "minChars": "Por favor, digite pelo menos 3 caracteres para pesquisar ou selecione um ano específico",
+        "failedToLoad": "Falha ao carregar dados",
+        "failedToLoadCollection": "Falha ao carregar coleção"
+      }
+    },
+    "welcome": {
+      "title": "Bem-vindo ao HWDB",
+      "subtitle": "Digite sua pesquisa para encontrar modelos Hot Wheels"
+    }
+  }
+} 

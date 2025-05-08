@@ -1,10 +1,11 @@
 import Image from 'next/image';
-import { useMemo, memo, useState } from 'react';
+import { useMemo, memo } from 'react';
 import { CarData, CarDataItem, SortConfig } from '../types';
 import { getImageUrl } from '../utils';
 import { FIELD_ORDER } from '../consts';
 import { removeFromCollection, getCollection } from '../utils/collection';
 import { formatCarName } from '../utils';
+import PlusIcon from './icons/PlusIcon';
 
 interface CollectionTableProps {
   cars: CarData[];
@@ -33,9 +34,7 @@ const TableRow = memo(({ car, item, index, availableFields, onImageClick, onRemo
           className="w-6 h-6 text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors cursor-pointer"
           onClick={() => onRemoveFromCollection(car, index)}
         >
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 18L18 6M6 6L18 18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-          </svg>
+          <PlusIcon />
         </button>
       </td>
       <td className="p-2 text-sm text-gray-900 dark:text-gray-200 break-words">
@@ -112,7 +111,7 @@ const CollectionTable: React.FC<CollectionTableProps> = ({
   sortConfig,
   onSortChange,
 }) => {
-  const [updateTrigger, setUpdateTrigger] = useState(0);
+
 
   const availableFields = useMemo(() => 
     FIELD_ORDER.filter(field => 
@@ -136,13 +135,12 @@ const CollectionTable: React.FC<CollectionTableProps> = ({
   const handleRemoveFromCollection = (car: CarData, index: number) => {
     if (window.confirm('Delete this model from collection?')) {
       removeFromCollection({ lnk: car.lnk, variantIndex: index });
-      setUpdateTrigger(prev => prev + 1);
     }
   };
   const collectionItems = useMemo(() => {
     const collection = getCollection();
     return collection.map(item => ({ lnk: item.lnk, variantIndex: item.variantIndex, item: cars.find(c => c.lnk === item.lnk)?.d[item.variantIndex] }));
-  }, [cars, updateTrigger]);
+  }, [cars]);
 
   return (
     <div className="w-full overflow-x-auto">

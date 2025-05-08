@@ -4,6 +4,7 @@ import { useState } from 'react';
 import ModelsTable from './ModelsTable';
 import { decodeHtmlEntities } from '../utils';
 import { SortConfig } from '../types';
+import { t } from '../i18n';
 
 interface ModelDescriptionProps {
   model: CarData;
@@ -28,16 +29,24 @@ export default function ModelDescription({
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2 p-2">
         <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">{formatCarName(model.lnk)}</h1>
-        <div className="text-sm text-gray-800 dark:text-gray-200"><span className='font-bold'>Number: </span>{model.num}</div>
-        <div className="text-sm text-gray-800 dark:text-gray-200"><span className='font-bold'>Designer: </span>{model.ds}</div>
+        <a 
+          href={`https://hotwheels.fandom.com/wiki/${model.lnk}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+        >
+          {t('common.viewOnFandom')}
+        </a>
+        <div className="text-sm text-gray-800 dark:text-gray-200"><span className='font-bold'>{t('model.number')}: </span>{model.num}</div>
+        <div className="text-sm text-gray-800 dark:text-gray-200"><span className='font-bold'>{t('model.designer')}: </span>{model.ds}</div>
         <div className="text-sm max-w-[1000px] text-gray-800 dark:text-gray-200">
-          <span><span className='font-bold'>Description: </span>{expandedDescription ? description : <>{description.substring(0, 100)}...</>}
+          <span><span className='font-bold'>{t('model.description')}: </span>{expandedDescription ? description : <>{description.substring(0, 100)}...</>}
 
             {description && description.length > 100 && <button
                 onClick={() => setExpandedDescription(!expandedDescription)}
                 className="ml-2 underline hover:text-gray-600 dark:hover:text-gray-400 text-xs cursor-pointer"
               >
-                {expandedDescription ? "Less" : "More"}
+                {expandedDescription ? t('common.less') : t('common.more')}
               </button>}
           </span>
         </div>

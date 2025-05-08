@@ -4,7 +4,7 @@ import { CarData, CarDataItem, SortConfig, CollectionItem } from '../types';
 import { getImageUrl } from '../utils';
 import { FIELD_ORDER, COLLAPSED_COLUMNS_COOKIE, ITEMS_PER_PAGE } from '../consts';
 import { addToCollection, removeFromCollection, isInCollection } from '../utils/collection';
-
+import PlusIcon from './icons/PlusIcon';
 
 
 
@@ -75,9 +75,7 @@ const TableRow = memo(({ car, item, index, availableFields, collapsedColumns, on
           }`}
           onClick={handleCollectionClick}
         >
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-          </svg>
+          <PlusIcon />
         </button>
       </td>
       <td className="p-2 whitespace-nowrap">
