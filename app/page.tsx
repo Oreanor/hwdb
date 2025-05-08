@@ -6,7 +6,7 @@ import WelcomeMessage from './components/WelcomeMessage';
 import ImageModal from './components/ImageModal';
 import { CarData } from './types';
 import { fetchCars, fetchCarByLnk } from './services/carService';
-import { YEARS } from './consts';
+import { YEARS, MAIN_OBJECT_FIELDS, VARIANT_FIELDS } from './consts';
 import ModelsGrid from './components/ModelsGrid';
 import ModelDescription from './components/ModelDescription';
 import { getCollection } from './utils/collection';
@@ -37,30 +37,48 @@ export default function Home() {
     
     // Если мы в режиме коллекции, фильтруем на фронте
     if (showCollection) {
-      const collection = getCollection();
-      const lnk = collection.map(item => item.lnk);
-      const allCars: CarData[] = await Promise.all(
-        lnk.map(link => fetchCarByLnk(link))
-      );
-      
+     
       // Фильтруем по году и поисковому запросу
-      let filteredCars = allCars;
+      let filteredCars = cars;
       
       if (searchYear) {
         filteredCars = filteredCars.map(car => ({
           ...car,
           d: car.d.filter(item => item.y === searchYear)
-        })).filter(car => car.d.length > 0);
+        }));
       }
       
       if (searchQuery) {
         const searchValue = searchQuery.toLowerCase();
+        const searchWords = searchValue.split(/\s+/).filter(word => word.length > 0);
         filteredCars = filteredCars.map(car => {
           if (selectedField === 'name') {
             const formattedName = formatCarName(car.lnk).toLowerCase();
-            return formattedName.includes(searchValue) ? car : { ...car, d: [] };
+            return searchWords.every(word => formattedName.includes(word)) ? car : { ...car, d: [] };
           }
-          return car;
+          
+          // Для остальных полей основного объекта
+          const mainObjectField = MAIN_OBJECT_FIELDS[selectedField];
+          if (mainObjectField) {
+            const fieldValue = (car[mainObjectField] as string)?.toLowerCase();
+            return fieldValue && searchWords.every(word => fieldValue.includes(word)) ? car : { ...car, d: [] };
+          }
+          
+          // Для полей вариантов
+          const variantField = VARIANT_FIELDS[selectedField];
+          if (variantField) {
+            const hasMatchingVariant = car.d.some(item => {
+              const fieldValue = item[variantField];
+              if (typeof fieldValue === 'string') {
+                const lowerFieldValue = fieldValue.toLowerCase();
+                return searchWords.every(word => lowerFieldValue.includes(word));
+              }
+              return false;
+            });
+            return hasMatchingVariant ? car : { ...car, d: [] };
+          }
+          
+          return { ...car, d: [] };
         }).filter(car => car.d.length > 0);
       }
       

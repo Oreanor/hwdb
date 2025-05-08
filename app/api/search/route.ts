@@ -45,7 +45,8 @@ export async function GET(request: Request) {
     // Затем применяем поиск по полю, если оно указано
     if (field && value && value.trim() !== '') {
       const searchValue = value.toLowerCase();
-      console.log('Searching by field:', field, 'value:', searchValue);
+      const searchWords = searchValue.split(/\s+/).filter(word => word.length > 0);
+      console.log('Searching by field:', field, 'words:', searchWords);
       
       filteredData = filteredData.map(car => {
         // Для поля lnk делаем точное сравнение
@@ -56,7 +57,7 @@ export async function GET(request: Request) {
         // Для поля name ищем в lnk и форматированном lnk
         if (field === 'name') {
           const formattedName = formatCarName(car.lnk).toLowerCase();
-          return (formattedName.includes(searchValue))
+          return searchWords.every(word => formattedName.includes(word))
             ? { ...car, d: car.d.map(item => ({ y: item.y, p: item.p })) }
             : { ...car, d: [] };
         }
@@ -76,7 +77,7 @@ export async function GET(request: Request) {
         if (mainObjectField) {
           // Для остальных полей форматируем значение перед сравнением
           const fieldValue = (car[mainObjectField] as string)?.toLowerCase();
-          if (fieldValue?.includes(searchValue)) {
+          if (fieldValue && searchWords.every(word => fieldValue.includes(word))) {
             return { ...car, d: car.d.map(item => ({ y: item.y, p: item.p })) };
           }
           return { ...car, d: [] };
@@ -93,7 +94,8 @@ export async function GET(request: Request) {
         const hasMatchingVariant = car.d.some(item => {
           const fieldValue = item[variantField];
           if (typeof fieldValue === 'string') {
-            return fieldValue.toLowerCase().includes(searchValue);
+            const lowerFieldValue = fieldValue.toLowerCase();
+            return searchWords.every(word => lowerFieldValue.includes(word));
           }
           return false;
         });

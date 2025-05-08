@@ -31,7 +31,7 @@ const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear }: M
   const years = useMemo(
     () => car.d
       .map(item => item.y)
-      .filter(year => year && year !== 'FTE')
+      .filter(year => year)
       .sort(),
     [car.d]
   );
