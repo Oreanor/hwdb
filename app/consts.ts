@@ -64,5 +64,7 @@ export const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'de', label: 'DE' },
   { code: 'es', label: 'ES' },
   { code: 'fr', label: 'FR' },
-  { code: 'pt', label: 'PT' }
+  { code: 'pt', label: 'PT' },
+  { code: 'nl', label: 'NL' },
+  { code: 'uk', label: 'UA' }
 ];

@@ -9,15 +9,7 @@
       "search": "Поиск",
       "searchPlaceholder": "Поиск...",
       "allYears": "Все годы",
-      "viewOnFandom": "Посмотреть на HW Fandom",
-      "languages": {
-        "ru": "РУ",
-        "en": "EN",
-        "de": "DE",
-        "es": "ES",
-        "fr": "FR",
-        "pt": "PT"
-      }
+      "viewOnFandom": "Посмотреть на HW Fandom"
     },
     "auth": {
       "login": "Войти",
@@ -62,15 +54,7 @@
       "search": "Search",
       "searchPlaceholder": "Search...",
       "allYears": "All Years",
-      "viewOnFandom": "View on HW Fandom",
-      "languages": {
-        "ru": "RU",
-        "en": "EN",
-        "de": "DE",
-        "es": "ES",
-        "fr": "FR",
-        "pt": "PT"
-      }
+      "viewOnFandom": "View on HW Fandom"
     },
     "auth": {
       "login": "Login",
@@ -115,15 +99,7 @@
       "search": "Suchen",
       "searchPlaceholder": "Suchen...",
       "allYears": "Alle Jahre",
-      "viewOnFandom": "Auf HW Fandom ansehen",
-      "languages": {
-        "ru": "RU",
-        "en": "EN",
-        "de": "DE",
-        "es": "ES",
-        "fr": "FR",
-        "pt": "PT"
-      }
+      "viewOnFandom": "Auf HW Fandom ansehen"
     },
     "auth": {
       "login": "Anmelden",
@@ -168,15 +144,7 @@
       "search": "Buscar",
       "searchPlaceholder": "Buscar...",
       "allYears": "Todos los años",
-      "viewOnFandom": "Ver en HW Fandom",
-      "languages": {
-        "ru": "RU",
-        "en": "EN",
-        "de": "DE",
-        "es": "ES",
-        "fr": "FR",
-        "pt": "PT"
-      }
+      "viewOnFandom": "Ver en HW Fandom"
     },
     "auth": {
       "login": "Iniciar sesión",
@@ -221,15 +189,7 @@
       "search": "Rechercher",
       "searchPlaceholder": "Rechercher...",
       "allYears": "Toutes les années",
-      "viewOnFandom": "Voir sur HW Fandom",
-      "languages": {
-        "ru": "RU",
-        "en": "EN",
-        "de": "DE",
-        "es": "ES",
-        "fr": "FR",
-        "pt": "PT"
-      }
+      "viewOnFandom": "Voir sur HW Fandom"
     },
     "auth": {
       "login": "Connexion",
@@ -274,15 +234,7 @@
       "search": "Pesquisar",
       "searchPlaceholder": "Pesquisar...",
       "allYears": "Todos os anos",
-      "viewOnFandom": "Ver no HW Fandom",
-      "languages": {
-        "ru": "RU",
-        "en": "EN",
-        "de": "DE",
-        "es": "ES",
-        "fr": "FR",
-        "pt": "PT"
-      }
+      "viewOnFandom": "Ver no HW Fandom"
     },
     "auth": {
       "login": "Entrar",
@@ -315,6 +267,96 @@
     "welcome": {
       "title": "Bem-vindo ao HWDB",
       "subtitle": "Digite sua pesquisa para encontrar modelos Hot Wheels"
+    }
+  },
+  "nl": {
+    "common": {
+      "loading": "Laden...",
+      "error": "Fout",
+      "back": "Terug",
+      "more": "Meer",
+      "less": "Minder",
+      "search": "Zoeken",
+      "searchPlaceholder": "Zoeken...",
+      "allYears": "Alle jaren",
+      "viewOnFandom": "Bekijk op HW Fandom"
+    },
+    "auth": {
+      "login": "Inloggen",
+      "logout": "Uitloggen",
+      "myCollection": "Mijn collectie"
+    },
+    "model": {
+      "number": "Nummer",
+      "designer": "Ontwerper",
+      "description": "Beschrijving",
+      "backToModels": "Terug naar modellen"
+    },
+    "search": {
+      "fields": {
+        "name": "Naam",
+        "designer": "Ontwerper",
+        "description": "Beschrijving",
+        "series": "Serie",
+        "color": "Kleur",
+        "base": "Basis",
+        "wheels": "Wielen",
+        "country": "Land"
+      },
+      "errors": {
+        "minChars": "Voer minimaal 3 tekens in voor zoeken of selecteer een specifiek jaar",
+        "failedToLoad": "Gegevens laden mislukt",
+        "failedToLoadCollection": "Collectie laden mislukt"
+      }
+    },
+    "welcome": {
+      "title": "Welkom bij HWDB",
+      "subtitle": "Voer uw zoekopdracht in om Hot Wheels modellen te vinden"
+    }
+  },
+  "uk": {
+    "common": {
+      "loading": "Завантаження...",
+      "error": "Помилка",
+      "back": "Назад",
+      "more": "Більше",
+      "less": "Менше",
+      "search": "Пошук",
+      "searchPlaceholder": "Пошук...",
+      "allYears": "Всі роки",
+      "viewOnFandom": "Переглянути на HW Fandom"
+    },
+    "auth": {
+      "login": "Увійти",
+      "logout": "Вийти",
+      "myCollection": "Моя колекція"
+    },
+    "model": {
+      "number": "Номер",
+      "designer": "Дизайнер",
+      "description": "Опис",
+      "backToModels": "Назад до моделей"
+    },
+    "search": {
+      "fields": {
+        "name": "Назва",
+        "designer": "Дизайнер",
+        "description": "Опис",
+        "series": "Серія",
+        "color": "Колір",
+        "base": "Основа",
+        "wheels": "Колеса",
+        "country": "Країна"
+      },
+      "errors": {
+        "minChars": "Введіть щонайменше 3 символи для пошуку або виберіть конкретний рік",
+        "failedToLoad": "Не вдалося завантажити дані",
+        "failedToLoadCollection": "Не вдалося завантажити колекцію"
+      }
+    },
+    "welcome": {
+      "title": "Ласкаво просимо до HWDB",
+      "subtitle": "Введіть запит для пошуку моделей Hot Wheels"
     }
   }
 } 

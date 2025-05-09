@@ -1,6 +1,6 @@
 import translations from './translations.json';
 
-export type Language = 'ru' | 'en' | 'de' | 'es' | 'fr' | 'pt';
+export type Language = 'ru' | 'en' | 'de' | 'es' | 'fr' | 'pt' | 'nl' | 'uk';
 export type TranslationKey = string;
 
 export type TranslationValue = string | { [key: string]: TranslationValue };
