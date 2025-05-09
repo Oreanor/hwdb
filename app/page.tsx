@@ -15,6 +15,7 @@ import { formatCarName } from './utils';
 import { useSession } from 'next-auth/react';
 import { signIn } from 'next-auth/react';
 import { t } from './i18n';
+import { removeFromCollection } from './services/collectionService';
 
 export default function Home() {
   const [cars, setCars] = useState<CarData[]>([]);
@@ -323,6 +324,21 @@ export default function Home() {
     );
   }, []);
 
+  // Удаление варианта из коллекции
+  const handleRemoveFromCollection = async (id: string) => {
+    if (!session?.user?.id) return;
+    if (window.confirm('Delete this model from collection?')) {
+      try {
+        const updatedVariantsIds = await removeFromCollection(session.user.id, id);
+        const updatedVariants = await fetchVariantsByIds(updatedVariantsIds);
+        setOriginalCollectionCars(updatedVariants);
+        setCars(updatedVariants);
+      } catch (error) {
+        console.error('Error removing from collection:', error);
+      }
+    }
+  };
+
   return (
     <div className="h-screen w-full flex flex-col bg-white dark:bg-gray-900">
       <div className="h-[56px] sm:h-[80px]">
@@ -378,7 +394,7 @@ export default function Home() {
                 onImageClick={handleImageClick}
                 sortConfig={sortConfig}
                 onSortChange={setSortConfig}
-                onCollectionUpdate={setCars}
+                onRemoveFromCollection={handleRemoveFromCollection}
                 selectedYear={selectedYear}
               />
             ) : (

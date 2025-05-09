@@ -11,7 +11,7 @@ interface CollectionTableProps {
   onImageClick: (url: string) => void;
   sortConfig: SortConfig;
   onSortChange: (config: SortConfig | ((prev: SortConfig) => SortConfig)) => void;
-  onCollectionUpdate: (cars: CarData[]) => void;
+  onRemoveFromCollection: (id: string) => void;
   selectedYear?: string;
 }
 
@@ -22,10 +22,10 @@ interface TableRowProps {
   availableFields: Array<(typeof FIELD_ORDER)[number]>;
   collapsedColumns: Set<string>;
   onImageClick: (url: string) => void;
-  onCollectionClick: (car: CarData) => void;
+  onRemoveFromCollection: (id: string) => void;
 }
 
-const TableRow = memo(({ car, item, index, availableFields, collapsedColumns, onImageClick, onCollectionClick }: TableRowProps) => {
+const TableRow = memo(({ car, item, index, availableFields, collapsedColumns, onImageClick, onRemoveFromCollection }: TableRowProps) => {
   const imageUrl = useMemo(() => getImageUrl(item), [item]);
   const { data: session } = useSession();
 
@@ -38,7 +38,7 @@ const TableRow = memo(({ car, item, index, availableFields, collapsedColumns, on
         <td className="p-2 whitespace-nowrap">
           <button 
             className="w-6 h-6 text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors cursor-pointer"
-            onClick={() => onCollectionClick(car)}
+            onClick={() => onRemoveFromCollection(item.id!)}
           >
             <MinusIcon />
           </button>
@@ -86,7 +86,7 @@ const CollectionTable: React.FC<CollectionTableProps> = ({
   onImageClick, 
   sortConfig,
   onSortChange,
-  onCollectionUpdate,
+  onRemoveFromCollection,
   selectedYear
 }) => {
   const { data: session } = useSession();
@@ -181,10 +181,10 @@ const CollectionTable: React.FC<CollectionTableProps> = ({
           availableFields={availableFields}
           collapsedColumns={collapsedColumns}
           onImageClick={onImageClick}
-          onCollectionClick={() => onCollectionUpdate([car])}
+          onRemoveFromCollection={onRemoveFromCollection}
         />
       ));
-  }, [allRows, availableFields, collapsedColumns, onImageClick, onCollectionUpdate]);
+  }, [allRows, availableFields, collapsedColumns, onImageClick, onRemoveFromCollection]);
 
   return (
     <div className="overflow-x-auto">

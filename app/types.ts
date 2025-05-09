@@ -15,7 +15,6 @@ export type CarDataItem = {
   Nt?: string;
   p?: string;
   id?: string;
-  lnk?: string;
 };
 
 export type CarData = {
