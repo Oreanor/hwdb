@@ -15,7 +15,6 @@ import { formatCarName } from './utils';
 import { useSession } from 'next-auth/react';
 import { signIn } from 'next-auth/react';
 import { t } from './i18n';
-import { removeFromCollection } from './services/collectionService';
 
 export default function Home() {
   const [cars, setCars] = useState<CarData[]>([]);
