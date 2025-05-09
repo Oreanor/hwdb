@@ -39,11 +39,15 @@ export const addToCollection = async (userId: string, id: string): Promise<strin
 // Удалить вариант из коллекции и вернуть обновлённый массив id
 export const removeFromCollection = async (userId: string, id: string): Promise<string[]> => {
   const current = await getCollection(userId);
+  if (current.length === 0) return []; // Коллекции нет — возвращаем пустой массив
+
   const newCollection = current.filter(x => x !== id);
+
   const { error } = await supabase
     .from('collections')
     .update({ car_data: newCollection })
     .eq('user_id', userId);
+
   if (error) throw error;
   return newCollection;
 }; 
