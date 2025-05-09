@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import TopPanel from './components/TopPanel';
 import WelcomeMessage from './components/WelcomeMessage';
 import ImageModal from './components/ImageModal';
@@ -167,6 +167,17 @@ export default function Home() {
       setLoading(true);
       const fullCarData = await fetchCarByLnk(car.lnk);
       setSelectedModel(fullCarData);
+      // Добавляем состояние в историю
+      window.history.pushState(
+        { 
+          view: 'model',
+          model: car.lnk,
+          year: selectedYear,
+          searchQuery,
+          selectedField
+        }, 
+        ''
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : t('search.errors.failedToLoad'));
     } finally {
@@ -176,7 +187,17 @@ export default function Home() {
 
   const handleBackClick = () => {
     setSelectedModel(null);
-      handleSearch();
+    handleSearch();
+    // Добавляем состояние в историю
+    window.history.pushState(
+      { 
+        view: 'grid',
+        year: selectedYear,
+        searchQuery,
+        selectedField
+      }, 
+      ''
+    );
   };
 
   const handleCollectionClick = async () => {
@@ -192,17 +213,36 @@ export default function Home() {
       setSelectedModel(null);
 
       if (!showCollection) {
-        const collection = await getCollection(session.user.id); // collection: number[]
+        const collection = await getCollection(session.user.id);
         let variants: CarData[] = [];
         if (collection.length > 0) {
-          // Получаем все варианты по id одним запросом
           variants = await fetchVariantsByIds(collection);
         }
         setOriginalCollectionCars(variants);
         setCars(variants);
+        // Добавляем состояние в историю
+        window.history.pushState(
+          { 
+            view: 'collection',
+            year: '',
+            searchQuery: '',
+            selectedField
+          }, 
+          ''
+        );
       } else {
         setCars([]);
         setOriginalCollectionCars([]);
+        // Добавляем состояние в историю
+        window.history.pushState(
+          { 
+            view: 'grid',
+            year: selectedYear,
+            searchQuery,
+            selectedField
+          }, 
+          ''
+        );
       }
       setShowCollection(!showCollection);
     } catch (error) {
@@ -219,6 +259,16 @@ export default function Home() {
     setSelectedModel(null);
     setShowCollection(false);
     setCars([]);
+    // Добавляем состояние в историю
+    window.history.pushState(
+      { 
+        view: 'welcome',
+        year: '',
+        searchQuery: '',
+        selectedField: 'name'
+      }, 
+      ''
+    );
   };
 
   const availableYears = useMemo(() => {
@@ -235,6 +285,43 @@ export default function Home() {
     return YEARS.map(year => year.value);
   }, [selectedModel]);
 
+  // Обработчик навигации по истории
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      const state = event.state;
+      if (!state) return;
+
+      setSelectedYear(state.year || '');
+      setSearchQuery(state.searchQuery || '');
+      setSelectedField(state.selectedField || 'name');
+      setShowCollection(state.view === 'collection');
+
+      if (state.view === 'model' && state.model) {
+        fetchCarByLnk(state.model).then(setSelectedModel);
+      } else {
+        setSelectedModel(null);
+        if (state.view === 'grid' || state.view === 'collection') {
+          handleSearch(state.year);
+        }
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [handleSearch]);
+
+  // Инициализация начального состояния
+  useEffect(() => {
+    window.history.replaceState(
+      { 
+        view: 'welcome',
+        year: '',
+        searchQuery: '',
+        selectedField: 'name'
+      }, 
+      ''
+    );
+  }, []);
 
   return (
     <div className="h-screen w-full flex flex-col bg-white dark:bg-gray-900">
