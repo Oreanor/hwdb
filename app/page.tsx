@@ -5,7 +5,7 @@ import TopPanel from './components/TopPanel';
 import WelcomeMessage from './components/WelcomeMessage';
 import ImageModal from './components/ImageModal';
 import { CarData, SortConfig } from './types';
-import { fetchCars, fetchCarByLnk } from './services/carService';
+import { fetchCars, fetchCarByLnk, fetchVariantsByIds } from './services/carService';
 import { YEARS, MAIN_OBJECT_FIELDS, VARIANT_FIELDS } from './consts';
 import ModelsGrid from './components/ModelsGrid';
 import ModelDescription from './components/ModelDescription';
@@ -15,9 +15,11 @@ import { formatCarName } from './utils';
 import { useSession } from 'next-auth/react';
 import { signIn } from 'next-auth/react';
 import { t } from './i18n';
+import { removeFromCollection } from './services/collectionService';
 
 export default function Home() {
   const [cars, setCars] = useState<CarData[]>([]);
+  const [originalCollectionCars, setOriginalCollectionCars] = useState<CarData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -34,25 +36,32 @@ export default function Home() {
     setLanguageKey(prev => prev + 1);
   };
 
-  const handleSearch = useCallback(async (year?: string) => {
+  const handleSearch = useCallback(async (year?: string | React.MouseEvent) => {
     console.log('handleSearch', year);
     // Используем переданный год или текущий из состояния
-    const searchYear = year ?? selectedYear;
+    const searchYear = typeof year === 'string' ? year : selectedYear;
     
     // Если мы в режиме коллекции, фильтруем на фронте
     if (showCollection) {
-     
       // Фильтруем по году и поисковому запросу
-      let filteredCars = cars;
+      let filteredCars = originalCollectionCars;
+      
+      // Если нет ни года, ни поискового запроса - показываем все
+      if (!searchYear && !searchQuery) {
+        setCars(originalCollectionCars);
+        return;
+      }
       
       if (searchYear) {
+        console.log('1 searchYear', searchYear);
         filteredCars = filteredCars.map(car => ({
           ...car,
           d: car.d.filter(item => item.y === searchYear)
-        }));
+        })).filter(car => car.d.length > 0);
       }
       
-      if (searchQuery) {
+      if (searchQuery && searchQuery.length > 0) {
+        console.log('2 searchQuery', searchQuery);
         const searchValue = searchQuery.toLowerCase();
         const searchWords = searchValue.split(/\s+/).filter(word => word.length > 0);
         filteredCars = filteredCars.map(car => {
@@ -86,6 +95,7 @@ export default function Home() {
         }).filter(car => car.d.length > 0);
       }
       
+      console.log('filteredCars2', filteredCars);
       setCars(filteredCars);
       return;
     }
@@ -133,7 +143,7 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }, [selectedField, searchQuery, selectedYear, showCollection, cars]);
+  }, [selectedField, searchQuery, selectedYear, showCollection, originalCollectionCars]);
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -146,7 +156,7 @@ export default function Home() {
     // Если мы не в просмотре конкретной модели - делаем новый поиск
     if (!selectedModel) {
       handleSearch(year);
-    }
+    } 
   };
 
   const handleImageClick = (url: string) => {
@@ -183,10 +193,17 @@ export default function Home() {
       setSelectedModel(null);
 
       if (!showCollection) {
-        const collection = await getCollection(session.user.id);
-        setCars(collection);
+        const collection = await getCollection(session.user.id); // collection: number[]
+        let variants: CarData[] = [];
+        if (collection.length > 0) {
+          // Получаем все варианты по id одним запросом
+          variants = await fetchVariantsByIds(collection);
+        }
+        setOriginalCollectionCars(variants);
+        setCars(variants);
       } else {
         setCars([]);
+        setOriginalCollectionCars([]);
       }
       setShowCollection(!showCollection);
     } catch (error) {
@@ -218,6 +235,7 @@ export default function Home() {
     // If no model is selected, return all years
     return YEARS.map(year => year.value);
   }, [selectedModel]);
+
 
   return (
     <div className="h-screen w-full flex flex-col bg-white dark:bg-gray-900">
@@ -274,6 +292,8 @@ export default function Home() {
                 onImageClick={handleImageClick}
                 sortConfig={sortConfig}
                 onSortChange={setSortConfig}
+                onCollectionUpdate={setCars}
+                selectedYear={selectedYear}
               />
             ) : (
               <>{selectedModel ? (

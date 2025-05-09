@@ -36,3 +36,18 @@ export const fetchCarByLnk = async (lnk: string): Promise<CarData> => {
   const cars = await fetchCarsByLinks([lnk]);
   return cars[0];
 };
+
+// Получить варианты по массиву id (hwid)
+export const fetchVariantsByIds = async (ids: string[]): Promise<CarData[]> => {
+  const response = await fetch('/api/variants', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ ids }),
+  });
+  if (!response.ok) {
+    throw new Error('Failed to fetch variants by ids');
+  }
+  return response.json();
+};

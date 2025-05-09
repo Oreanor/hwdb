@@ -1,10 +1,11 @@
 import Image from 'next/image';
-import { useState, useMemo, memo, useEffect } from 'react';
-import { CarData, CarDataItem, SortConfig, CollectionItem } from '../types';
+import { useState, useMemo, memo, useEffect, useCallback } from 'react';
+import { CarData, CarDataItem, SortConfig } from '../types';
 import { getImageUrl } from '../utils';
 import { FIELD_ORDER, COLLAPSED_COLUMNS_COOKIE, ITEMS_PER_PAGE } from '../consts';
-import { addToCollection, removeFromCollection, isInCollection } from '../utils/collection';
+import { addToCollection, removeFromCollection, getCollection } from '../services/collectionService';
 import PlusIcon from './icons/PlusIcon';
+import { useSession } from 'next-auth/react';
 
 
 
@@ -23,41 +24,13 @@ interface TableRowProps {
   availableFields: Array<(typeof FIELD_ORDER)[number]>;
   collapsedColumns: Set<string>;
   onImageClick: (url: string) => void;
+  isCollected: boolean;
+  onCollectionClick: (car: CarData) => void;
 }
 
-const TableRow = memo(({ car, item, index, availableFields, collapsedColumns, onImageClick }: TableRowProps) => {
+const TableRow = memo(({ car, item, index, availableFields, collapsedColumns, onImageClick, isCollected, onCollectionClick }: TableRowProps) => {
   const imageUrl = useMemo(() => getImageUrl(item), [item]);
-  const [isCollected, setIsCollected] = useState(() => 
-    isInCollection({ lnk: car.lnk, variantIndex: index })
-  );
-
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const newIsCollected = isInCollection({ lnk: car.lnk, variantIndex: index });
-      if (newIsCollected !== isCollected) {
-        setIsCollected(newIsCollected);
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('collectionChanged', handleStorageChange);
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('collectionChanged', handleStorageChange);
-    };
-  }, [car.lnk, index, isCollected]);
-
-  const handleCollectionClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const collectionItem: CollectionItem = { lnk: car.lnk, variantIndex: index };
-    if (isCollected) {
-      removeFromCollection(collectionItem);
-      setIsCollected(false);
-    } else {
-      addToCollection(collectionItem);
-      setIsCollected(true);
-    }
-  };
+  const { data: session } = useSession();
 
   return (
     <tr 
@@ -66,18 +39,20 @@ const TableRow = memo(({ car, item, index, availableFields, collapsedColumns, on
         isCollected ? 'bg-gray-100 dark:bg-gray-700' : ''
       }`}
     >
-      <td className="p-2 whitespace-nowrap">
-        <button 
-          className={`w-6 h-6 transition-colors cursor-pointer ${
-            isCollected 
-              ? 'text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300' 
-              : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'
-          }`}
-          onClick={handleCollectionClick}
-        >
-          <PlusIcon />
-        </button>
-      </td>
+      {session?.user && (
+        <td className="p-2 whitespace-nowrap">
+          <button 
+            className={`w-6 h-6 transition-colors cursor-pointer ${
+              isCollected 
+                ? 'text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300' 
+                : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'
+            }`}
+            onClick={() => onCollectionClick(car)}
+          >
+            <PlusIcon />
+          </button>
+        </td>
+      )}
       <td className="p-2 whitespace-nowrap">
         {imageUrl && (
           <div 
@@ -96,7 +71,6 @@ const TableRow = memo(({ car, item, index, availableFields, collapsedColumns, on
       </td>
       {availableFields.map(field => {
         const value = item[field.key] || '-';
-        
         return (
           <td 
             key={field.key} 
@@ -174,12 +148,37 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
   onSortChange,
   selectedYear
 }) => {
-
+  const { data: session } = useSession();
   const [collapsedColumns, setCollapsedColumns] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set();
     const saved = localStorage.getItem(COLLAPSED_COLUMNS_COOKIE);
     return new Set(saved ? JSON.parse(saved) : []);
   });
+  const [collection, setCollection] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (session?.user?.id) {
+      getCollection(session.user.id).then(setCollection);
+    } else {
+      setCollection([]);
+    }
+  }, [session?.user?.id]);
+
+  const handleCollectionClick = useCallback(async (itemId: string) => {
+    if (!session?.user?.id) return;
+    const isCollected = collection.includes(itemId);
+    try {
+      let updated: string[];
+      if (isCollected) {
+        updated = await removeFromCollection(session.user.id, itemId);
+      } else {
+        updated = await addToCollection(session.user.id, itemId);
+      }
+      setCollection(updated);
+    } catch (error) {
+      console.error('Error updating collection:', error);
+    }
+  }, [session?.user?.id, collection]);
 
   const availableFields = useMemo(() => 
     FIELD_ORDER.filter(field => 
@@ -267,18 +266,22 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
           availableFields={availableFields}
           collapsedColumns={collapsedColumns}
           onImageClick={onImageClick}
+          isCollected={collection.some(c => c === item.id)}
+          onCollectionClick={() => item.id && handleCollectionClick(item.id)}
         />
       ));
-  }, [allRows, availableFields, collapsedColumns, onImageClick]);
+  }, [allRows, availableFields, collapsedColumns, onImageClick, collection, handleCollectionClick]);
 
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 table-fixed">
         <thead className="bg-gray-50 dark:bg-gray-700">
           <tr>
-            <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap w-[40px] border-r border-gray-200 dark:border-gray-600">
-              Add
-            </th>
+            {session?.user && (
+              <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap w-[40px] border-r border-gray-200 dark:border-gray-600">
+                Add
+              </th>
+            )}
             <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap w-[100px] border-r border-gray-200 dark:border-gray-600">
               Image
             </th>

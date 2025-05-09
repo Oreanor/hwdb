@@ -1,7 +1,7 @@
 import { supabase } from '../lib/supabase';
-import { CarData } from '../types';
 
-export const getCollection = async (userId: string): Promise<CarData[]> => {
+// Получить коллекцию пользователя (массив id)
+export const getCollection = async (userId: string): Promise<string[]> => {
   const { data, error } = await supabase
     .from('collections')
     .select('car_data')
@@ -12,35 +12,38 @@ export const getCollection = async (userId: string): Promise<CarData[]> => {
     throw error;
   }
 
-  return data.map(item => item.car_data);
+  return data && data.length > 0 && Array.isArray(data[0].car_data) ? data[0].car_data : [];
 };
 
-export const addToCollection = async (userId: string, car: CarData): Promise<void> => {
-  const { error } = await supabase
-    .from('collections')
-    .insert([
-      {
-        user_id: userId,
-        car_data: car,
-        car_link: car.lnk
-      }
-    ]);
+// Добавить вариант в коллекцию и вернуть обновлённый массив id
+export const addToCollection = async (userId: string, id: string): Promise<string[]> => {
+  const current = await getCollection(userId);
+  if (current.includes(id)) return current;
+  const newCollection = [...current, id];
 
-  if (error) {
-    console.error('Error adding to collection:', error);
-    throw error;
+  if (current.length === 0) {
+    const { error } = await supabase
+      .from('collections')
+      .insert([{ user_id: userId, car_data: newCollection }]);
+    if (error) throw error;
+  } else {
+    const { error } = await supabase
+      .from('collections')
+      .update({ car_data: newCollection })
+      .eq('user_id', userId);
+    if (error) throw error;
   }
+  return newCollection;
 };
 
-export const removeFromCollection = async (userId: string, carLink: string): Promise<void> => {
+// Удалить вариант из коллекции и вернуть обновлённый массив id
+export const removeFromCollection = async (userId: string, id: string): Promise<string[]> => {
+  const current = await getCollection(userId);
+  const newCollection = current.filter(x => x !== id);
   const { error } = await supabase
     .from('collections')
-    .delete()
-    .eq('user_id', userId)
-    .eq('car_link', carLink);
-
-  if (error) {
-    console.error('Error removing from collection:', error);
-    throw error;
-  }
+    .update({ car_data: newCollection })
+    .eq('user_id', userId);
+  if (error) throw error;
+  return newCollection;
 }; 

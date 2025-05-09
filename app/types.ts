@@ -14,6 +14,8 @@ export type CarDataItem = {
   Cn?: string;
   Nt?: string;
   p?: string;
+  id?: string;
+  lnk?: string;
 };
 
 export type CarData = {
@@ -28,12 +30,6 @@ export type SortConfig = {
   field: string;
   direction: 'asc' | 'desc';
 } | null;
-
-export interface CollectionItem {
-  lnk: string;
-  variantIndex: number;
-}
-
 
 declare module 'next-auth' {
   interface Session {

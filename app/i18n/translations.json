@@ -9,7 +9,8 @@
       "search": "Поиск",
       "searchPlaceholder": "Поиск...",
       "allYears": "Все годы",
-      "viewOnFandom": "Посмотреть на HW Fandom"
+      "viewOnFandom": "Посмотреть на HW Fandom",
+      "allModels": "Все модели"
     },
     "auth": {
       "login": "Войти",
@@ -54,7 +55,8 @@
       "search": "Search",
       "searchPlaceholder": "Search...",
       "allYears": "All Years",
-      "viewOnFandom": "View on HW Fandom"
+      "viewOnFandom": "View on HW Fandom",
+      "allModels": "All Models"
     },
     "auth": {
       "login": "Login",
@@ -99,7 +101,8 @@
       "search": "Suchen",
       "searchPlaceholder": "Suchen...",
       "allYears": "Alle Jahre",
-      "viewOnFandom": "Auf HW Fandom ansehen"
+      "viewOnFandom": "Auf HW Fandom ansehen",
+      "allModels": "Alle Modelle"
     },
     "auth": {
       "login": "Anmelden",
@@ -144,7 +147,8 @@
       "search": "Buscar",
       "searchPlaceholder": "Buscar...",
       "allYears": "Todos los años",
-      "viewOnFandom": "Ver en HW Fandom"
+      "viewOnFandom": "Ver en HW Fandom",
+      "allModels": "Todos los modelos"
     },
     "auth": {
       "login": "Iniciar sesión",
@@ -189,7 +193,8 @@
       "search": "Rechercher",
       "searchPlaceholder": "Rechercher...",
       "allYears": "Toutes les années",
-      "viewOnFandom": "Voir sur HW Fandom"
+      "viewOnFandom": "Voir sur HW Fandom",
+      "allModels": "Tous les modèles"
     },
     "auth": {
       "login": "Connexion",
@@ -234,7 +239,8 @@
       "search": "Pesquisar",
       "searchPlaceholder": "Pesquisar...",
       "allYears": "Todos os anos",
-      "viewOnFandom": "Ver no HW Fandom"
+      "viewOnFandom": "Ver no HW Fandom",
+      "allModels": "Todos os modelos"
     },
     "auth": {
       "login": "Entrar",
@@ -279,7 +285,8 @@
       "search": "Zoeken",
       "searchPlaceholder": "Zoeken...",
       "allYears": "Alle jaren",
-      "viewOnFandom": "Bekijk op HW Fandom"
+      "viewOnFandom": "Bekijk op HW Fandom",
+      "allModels": "Alle modellen"
     },
     "auth": {
       "login": "Inloggen",
@@ -324,7 +331,8 @@
       "search": "Пошук",
       "searchPlaceholder": "Пошук...",
       "allYears": "Всі роки",
-      "viewOnFandom": "Переглянути на HW Fandom"
+      "viewOnFandom": "Переглянути на HW Fandom",
+      "allModels": "Всі моделі"
     },
     "auth": {
       "login": "Увійти",
