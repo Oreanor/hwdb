@@ -293,6 +293,8 @@ export default function Home() {
         );
       } else {
         setFilteredCollectionCars([]);
+        setCars([]);
+
         // Добавляем состояние в историю
         window.history.pushState(
           { 
