@@ -41,8 +41,9 @@
       }
     },
     "welcome": {
-      "title": "Добро пожаловать в HWDB",
-      "subtitle": "Введите поисковый запрос, чтобы найти модели Hot Wheels"
+      "title": "Hot Wheels Database",
+      "subtitle": "Эта база данных сделана на основе данных с Hot Wheels Fandom для более удобного просмотра и добавления в свою коллекцию.",
+      "subtitle2": "Вы можете просматривать данные без авторизации, но для того чтобы добавить модель в свою коллекцию, вам необходимо авторизоваться."
     }
   },
   "en": {
@@ -87,8 +88,9 @@
       }
     },
     "welcome": {
-      "title": "Welcome to HWDB",
-      "subtitle": "Enter your search query to find Hot Wheels models"
+      "title": "Hot Wheels Database",
+      "subtitle": "This database is based on data from Hot Wheels Fandom for more convenient viewing and adding to your own collection.",
+      "subtitle2": "You can browse the data without logging in, but to add a model to your collection, you need to log in."
     }
   },
   "de": {
@@ -133,8 +135,9 @@
       }
     },
     "welcome": {
-      "title": "Willkommen bei HWDB",
-      "subtitle": "Geben Sie Ihre Suchanfrage ein, um Hot Wheels Modelle zu finden"
+      "title": "Hot Wheels Database",
+      "subtitle": "Diese Datenbank basiert auf Daten von Hot Wheels Fandom und dient der komfortableren Ansicht und dem Hinzufügen zu deiner eigenen Sammlung.",
+      "subtitle2": "Du kannst die Daten ohne Anmeldung durchsuchen, aber um ein Modell zu deiner Sammlung hinzuzufügen, musst du dich anmelden."
     }
   },
   "es": {
@@ -179,8 +182,9 @@
       }
     },
     "welcome": {
-      "title": "Bienvenido a HWDB",
-      "subtitle": "Ingrese su búsqueda para encontrar modelos de Hot Wheels"
+      "title": "Hot Wheels Database",
+      "subtitle": "Esta base de datos está hecha a partir de los datos de Hot Wheels Fandom para una visualización y adición más cómoda a tu propia colección.",
+      "subtitle2": "Puedes ver los datos sin iniciar sesión, pero para añadir un modelo a tu colección necesitas iniciar sesión."
     }
   },
   "fr": {
@@ -225,8 +229,9 @@
       }
     },
     "welcome": {
-      "title": "Bienvenue sur HWDB",
-      "subtitle": "Entrez votre recherche pour trouver des modèles Hot Wheels"
+      "title": "Hot Wheels Database",
+      "subtitle": "Cette base de données est basée sur les données de Hot Wheels Fandom pour une consultation et un ajout plus pratiques à votre propre collection.",
+      "subtitle2": "Vous pouvez parcourir les données sans vous connecter, mais pour ajouter un modèle à votre collection, vous devez vous connecter."
     }
   },
   "pt": {
@@ -271,8 +276,9 @@
       }
     },
     "welcome": {
-      "title": "Bem-vindo ao HWDB",
-      "subtitle": "Digite sua pesquisa para encontrar modelos Hot Wheels"
+      "title": "Hot Wheels Database",
+      "subtitle": "Esta base de dados é feita com base nos dados do Hot Wheels Fandom para uma visualização e adição mais conveniente à sua própria coleção.",
+      "subtitle2": "Você pode navegar pelos dados sem fazer login, mas para adicionar um modelo à sua coleção, é necessário fazer login."
     }
   },
   "nl": {
@@ -317,8 +323,9 @@
       }
     },
     "welcome": {
-      "title": "Welkom bij HWDB",
-      "subtitle": "Voer uw zoekopdracht in om Hot Wheels modellen te vinden"
+      "title": "Hot Wheels Database",
+      "subtitle": "Deze database is gebaseerd op gegevens van Hot Wheels Fandom voor gemakkelijker bekijken en toevoegen aan je eigen collectie.",
+      "subtitle2": "Je kunt de gegevens bekijken zonder in te loggen, maar om een model aan je collectie toe te voegen, moet je inloggen."
     }
   },
   "uk": {
@@ -363,8 +370,9 @@
       }
     },
     "welcome": {
-      "title": "Ласкаво просимо до HWDB",
-      "subtitle": "Введіть запит для пошуку моделей Hot Wheels"
+      "title": "Hot Wheels Database",
+      "subtitle": "Ця база даних створена на основі даних з Hot Wheels Fandom для зручнішого перегляду та додавання у власну колекцію.",
+      "subtitle2": "Ви можете переглядати дані без авторизації, але щоб додати модель у свою колекцію, потрібно авторизуватися."
     }
   }
 } 

@@ -1,12 +1,10 @@
 import Image from 'next/image';
-import { useState, useMemo, memo, useEffect, useCallback } from 'react';
+import { useState, useMemo, memo } from 'react';
 import { CarData, CarDataItem, SortConfig } from '../types';
-import { getImageUrl } from '../utils';
-import { FIELD_ORDER, COLLAPSED_COLUMNS_COOKIE, ITEMS_PER_PAGE } from '../consts';
-import { addToCollection, removeFromCollection, getCollection } from '../services/collectionService';
+import { formatCarName, getImageUrl } from '../utils';
+import { FIELD_ORDER, COLLAPSED_COLUMNS_COOKIE } from '../consts';
 import PlusIcon from './icons/PlusIcon';
 import { useSession } from 'next-auth/react';
-
 
 
 interface ModelsTableProps {
@@ -15,26 +13,27 @@ interface ModelsTableProps {
   sortConfig: SortConfig;
   onSortChange: (config: SortConfig | ((prev: SortConfig) => SortConfig)) => void;
   selectedYear?: string;
+  onAddToCollection?: (id: string) => void;
+  collection: string[];
 }
 
 interface TableRowProps {
   car: CarData;
   item: CarDataItem;
   index: number;
-  availableFields: Array<(typeof FIELD_ORDER)[number]>;
   collapsedColumns: Set<string>;
   onImageClick: (url: string) => void;
   isCollected: boolean;
-  onCollectionClick: (car: CarData) => void;
+  onAddToCollection?: (id: string) => void;
 }
 
-const TableRow = memo(({ car, item, index, availableFields, collapsedColumns, onImageClick, isCollected, onCollectionClick }: TableRowProps) => {
+const TableRow = memo(({ car, item, collapsedColumns, onImageClick, isCollected, onAddToCollection }: TableRowProps) => {
   const imageUrl = useMemo(() => getImageUrl(item), [item]);
   const { data: session } = useSession();
 
   return (
     <tr 
-      key={`${car.lnk}-${index}`} 
+      key={`${item.id}`} 
       className={`hover:bg-gray-50 dark:hover:bg-gray-700 ${
         isCollected ? 'bg-gray-100 dark:bg-gray-700' : ''
       }`}
@@ -47,29 +46,32 @@ const TableRow = memo(({ car, item, index, availableFields, collapsedColumns, on
                 ? 'text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300' 
                 : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'
             }`}
-            onClick={() => onCollectionClick(car)}
+            onClick={() => onAddToCollection && item.id && onAddToCollection(item.id)}
           >
             <PlusIcon />
           </button>
         </td>
       )}
       <td className="p-2 whitespace-nowrap">
-        {imageUrl && (
-          <div 
-            className="w-16 h-16 relative cursor-pointer"
-            onClick={() => onImageClick(imageUrl)}
-          >
-            <Image
-              src={imageUrl}
-              alt={`${car.lnk} - ${item.y}`}
-              fill
-              style={{ objectFit: 'contain' }}
-              sizes="64px"
-            />
-          </div>
-        )}
+        {imageUrl ? (
+            <div 
+              className="w-16 h-12 relative cursor-pointer"
+              onClick={() => onImageClick(imageUrl)}
+            >
+              <Image
+                src={imageUrl}
+                alt={`${formatCarName(car.lnk)}`}
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="64px"
+              />
+            </div>
+          ) : (
+            <div className="w-16 h-12 bg-gray-100 dark:bg-gray-700" />
+          )}
+       
       </td>
-      {availableFields.map(field => {
+      {FIELD_ORDER.map(field => {
         const value = item[field.key] || '-';
         return (
           <td 
@@ -146,7 +148,9 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
   onImageClick, 
   sortConfig,
   onSortChange,
-  selectedYear
+  selectedYear,
+  onAddToCollection,
+  collection
 }) => {
   const { data: session } = useSession();
   const [collapsedColumns, setCollapsedColumns] = useState<Set<string>>(() => {
@@ -154,38 +158,8 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
     const saved = localStorage.getItem(COLLAPSED_COLUMNS_COOKIE);
     return new Set(saved ? JSON.parse(saved) : []);
   });
-  const [collection, setCollection] = useState<string[]>([]);
 
-  useEffect(() => {
-    if (session?.user?.id) {
-      getCollection(session.user.id).then(setCollection);
-    } else {
-      setCollection([]);
-    }
-  }, [session?.user?.id]);
-
-  const handleCollectionClick = useCallback(async (itemId: string) => {
-    if (!session?.user?.id) return;
-    const isCollected = collection.includes(itemId);
-    try {
-      let updated: string[];
-      if (isCollected) {
-        updated = await removeFromCollection(session.user.id, itemId);
-      } else {
-        updated = await addToCollection(session.user.id, itemId);
-      }
-      setCollection(updated);
-    } catch (error) {
-      console.error('Error updating collection:', error);
-    }
-  }, [session?.user?.id, collection]);
-
-  const availableFields = useMemo(() => 
-    FIELD_ORDER.filter(field => 
-      cars.some(car => car.d.some(item => item[field.key] !== undefined))
-    ),
-    [cars]
-  );
+  
 
   const handleSort = (field: string) => {
     if (collapsedColumns.has(field)) {
@@ -254,23 +228,20 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
   }, [cars, sortConfig, selectedYear]);
 
   const visibleRows = useMemo(() => {
-    const startIndex =  0;
     return allRows
-      .slice(startIndex, startIndex + ITEMS_PER_PAGE)
       .map(({ car, item, index }) => (
         <TableRow
           key={`${car.lnk}-${index}`}
           car={car}
           item={item}
           index={index}
-          availableFields={availableFields}
           collapsedColumns={collapsedColumns}
           onImageClick={onImageClick}
           isCollected={collection.some(c => c === item.id)}
-          onCollectionClick={() => item.id && handleCollectionClick(item.id)}
+          onAddToCollection={() => onAddToCollection && item.id && onAddToCollection(item.id)}
         />
       ));
-  }, [allRows, availableFields, collapsedColumns, onImageClick, collection, handleCollectionClick]);
+  }, [allRows, collapsedColumns, onImageClick, collection, onAddToCollection]);
 
   return (
     <div className="overflow-x-auto">
@@ -285,7 +256,7 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
             <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap w-[100px] border-r border-gray-200 dark:border-gray-600">
               Image
             </th>
-            {availableFields.map(field => (
+            {FIELD_ORDER.map(field => (
               <TableHeader
                 key={field.key}
                 field={field}

@@ -5,6 +5,7 @@ import ModelsTable from './ModelsTable';
 import { decodeHtmlEntities } from '../utils';
 import { SortConfig } from '../types';
 import { t } from '../i18n';
+import { FANDOM_BASE_URL } from '../consts';
 
 interface ModelDescriptionProps {
   model: CarData;
@@ -12,6 +13,8 @@ interface ModelDescriptionProps {
   sortConfig: SortConfig;
   onSortChange: (config: SortConfig | ((prev: SortConfig) => SortConfig)) => void;
   selectedYear?: string;
+  onAddToCollection: (id: string) => void;
+  collection: string[];
 }
 
 export default function ModelDescription({ 
@@ -20,6 +23,8 @@ export default function ModelDescription({
   sortConfig, 
   onSortChange,
   selectedYear,
+  onAddToCollection,
+  collection
 }: ModelDescriptionProps) {
   const [expandedDescription, setExpandedDescription] = useState(false);
 
@@ -30,7 +35,7 @@ export default function ModelDescription({
       <div className="flex flex-col gap-2 p-2">
         <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">{formatCarName(model.lnk)}</h1>
         <a 
-          href={`https://hotwheels.fandom.com/wiki/${model.lnk}`}
+          href={`${FANDOM_BASE_URL}${model.lnk}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
@@ -57,6 +62,8 @@ export default function ModelDescription({
         sortConfig={sortConfig}
         onSortChange={onSortChange}
         selectedYear={selectedYear}
+        onAddToCollection={onAddToCollection}
+        collection={collection}
       />
     </div>
   );

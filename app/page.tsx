@@ -1,25 +1,25 @@
 'use client';
 
 import { useState, useCallback, useMemo, useEffect } from 'react';
+import { signIn, useSession } from 'next-auth/react';
+import { t, setLanguage, Language } from './i18n';
+
 import TopPanel from './components/TopPanel';
 import WelcomeMessage from './components/WelcomeMessage';
 import ImageModal from './components/ImageModal';
-import { CarData, SortConfig } from './types';
-import { fetchCars, fetchCarByLnk, fetchVariantsByIds } from './services/carService';
-import { YEARS, MAIN_OBJECT_FIELDS, VARIANT_FIELDS } from './consts';
 import ModelsGrid from './components/ModelsGrid';
 import ModelDescription from './components/ModelDescription';
-import { getCollection } from './services/collectionService';
-import CollectionTable from './components/CollectionTable';
+import Spinner from './components/Spinner';
+import { fetchCars, fetchCarByLnk, fetchVariantsByIds } from './services/carService';
+import { YEARS, MAIN_OBJECT_FIELDS, VARIANT_FIELDS, LANGUAGES } from './consts';
+import { CarData, SortConfig } from './types';
 import { formatCarName } from './utils';
-import { useSession } from 'next-auth/react';
-import { signIn } from 'next-auth/react';
-import { t } from './i18n';
-import { removeFromCollection } from './services/collectionService';
+import { addToCollection, getCollection, removeFromCollection } from './services/collectionService';
+import Collection from './components/Collection';
 
 export default function Home() {
   const [cars, setCars] = useState<CarData[]>([]);
-  const [originalCollectionCars, setOriginalCollectionCars] = useState<CarData[]>([]);
+  const [filteredCollectionCars, setFilteredCollectionCars] = useState<CarData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -29,12 +29,44 @@ export default function Home() {
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
   const [selectedModel, setSelectedModel] = useState<CarData | null>(null);
   const [showCollection, setShowCollection] = useState(false);
-  const [languageKey, setLanguageKey] = useState(0);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const [currentLang, setCurrentLang] = useState<Language>('en');
+  const [collection, setCollection] = useState<string[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  const handleLanguageChange = () => {
-    setLanguageKey(prev => prev + 1);
-  };
+  useEffect(() => {
+    if (session?.user?.id) {
+      getCollection(session.user.id).then(setCollection);
+    } else {
+      setCollection([]);
+    }
+  }, [session?.user?.id]);
+
+
+  const availableYears = useMemo(() => {
+    if (selectedModel) {
+      // Get unique years from the selected model's variants using Set
+      const years = Array.from(new Set(
+        selectedModel.d
+          .map(item => item.y)
+          .filter((year: string) => year) 
+      )).sort();
+      return years;
+    }
+    // If no model is selected, return all years
+    return YEARS.map(year => year.value);
+  }, [selectedModel]);
+
+  
+  useEffect(() => {
+    const savedLang = localStorage.getItem('hwdb_language');
+    const allowedLangs = LANGUAGES.map(x => x.code);
+    if (savedLang && allowedLangs.includes(savedLang as Language)) {
+      setLanguage(savedLang as Language);
+      setCurrentLang(savedLang as Language);
+    }
+    setIsInitialized(true);
+  }, []);
 
   const handleSearch = useCallback(async (year?: string | React.MouseEvent) => {
     console.log('handleSearch', year);
@@ -44,16 +76,16 @@ export default function Home() {
     // Если мы в режиме коллекции, фильтруем на фронте
     if (showCollection) {
       // Фильтруем по году и поисковому запросу
-      let filteredCars = originalCollectionCars;
+      let filteredCars = cars;
       
       // Если нет ни года, ни поискового запроса - показываем все
       if (!searchYear && !searchQuery) {
-        setCars(originalCollectionCars);
+        console.log('filteredCars2', filteredCars);
+        setFilteredCollectionCars(filteredCars);
         return;
       }
       
       if (searchYear) {
-        console.log('1 searchYear', searchYear);
         filteredCars = filteredCars.map(car => ({
           ...car,
           d: car.d.filter(item => item.y === searchYear)
@@ -61,7 +93,6 @@ export default function Home() {
       }
       
       if (searchQuery && searchQuery.length > 0) {
-        console.log('2 searchQuery', searchQuery);
         const searchValue = searchQuery.toLowerCase();
         const searchWords = searchValue.split(/\s+/).filter(word => word.length > 0);
         filteredCars = filteredCars.map(car => {
@@ -94,9 +125,7 @@ export default function Home() {
           return { ...car, d: [] };
         }).filter(car => car.d.length > 0);
       }
-      
-      console.log('filteredCars2', filteredCars);
-      setCars(filteredCars);
+      setFilteredCollectionCars(filteredCars);
       return;
     }
     
@@ -143,7 +172,53 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }, [selectedField, searchQuery, selectedYear, showCollection, originalCollectionCars]);
+  }, [selectedField, searchQuery, selectedYear, showCollection, cars]);
+
+  // Обработчик навигации по истории
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      const state = event.state;
+      if (!state) return;
+
+      setSelectedYear(state.year || '');
+      setSearchQuery(state.searchQuery || '');
+      setSelectedField(state.selectedField || 'name');
+      setShowCollection(state.view === 'collection');
+
+      if (state.view === 'model' && state.model) {
+        fetchCarByLnk(state.model).then(setSelectedModel);
+      } else {
+        setSelectedModel(null);
+        if (state.view === 'grid' || state.view === 'collection') {
+          handleSearch(state.year);
+        }
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [handleSearch]);
+
+  // Инициализация начального состояния
+  useEffect(() => {
+    window.history.replaceState(
+      { 
+        view: 'welcome',
+        year: '',
+        searchQuery: '',
+        selectedField: 'name'
+      }, 
+      ''
+    );
+  }, []);
+
+  const handleLanguageChange = (lang: Language) => {
+    setLanguage(lang);
+    setCurrentLang(lang);
+    localStorage.setItem('hwdb_language', lang);
+  };
+
+
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -186,21 +261,6 @@ export default function Home() {
     }
   };
 
-  const handleBackClick = () => {
-    setSelectedModel(null);
-    handleSearch();
-    // Добавляем состояние в историю
-    window.history.pushState(
-      { 
-        view: 'grid',
-        year: selectedYear,
-        searchQuery,
-        selectedField
-      }, 
-      ''
-    );
-  };
-
   const handleCollectionClick = async () => {
     if (!session?.user?.id) {
       signIn('google');
@@ -214,12 +274,12 @@ export default function Home() {
       setSelectedModel(null);
 
       if (!showCollection) {
-        const collection = await getCollection(session.user.id);
+       
         let variants: CarData[] = [];
         if (collection.length > 0) {
           variants = await fetchVariantsByIds(collection);
         }
-        setOriginalCollectionCars(variants);
+        setFilteredCollectionCars(variants);
         setCars(variants);
         // Добавляем состояние в историю
         window.history.pushState(
@@ -232,8 +292,7 @@ export default function Home() {
           ''
         );
       } else {
-        setCars([]);
-        setOriginalCollectionCars([]);
+        setFilteredCollectionCars([]);
         // Добавляем состояние в историю
         window.history.pushState(
           { 
@@ -272,152 +331,102 @@ export default function Home() {
     );
   };
 
-  const availableYears = useMemo(() => {
-    if (selectedModel) {
-      // Get unique years from the selected model's variants using Set
-      const years = Array.from(new Set(
-        selectedModel.d
-          .map(item => item.y)
-          .filter((year: string) => year && year !== 'FTE') // Exclude empty years and FTE
-      )).sort();
-      return years;
-    }
-    // If no model is selected, return all years
-    return YEARS.map(year => year.value);
-  }, [selectedModel]);
+  
 
-  // Обработчик навигации по истории
-  useEffect(() => {
-    const handlePopState = (event: PopStateEvent) => {
-      const state = event.state;
-      if (!state) return;
-
-      setSelectedYear(state.year || '');
-      setSearchQuery(state.searchQuery || '');
-      setSelectedField(state.selectedField || 'name');
-      setShowCollection(state.view === 'collection');
-
-      if (state.view === 'model' && state.model) {
-        fetchCarByLnk(state.model).then(setSelectedModel);
-      } else {
-        setSelectedModel(null);
-        if (state.view === 'grid' || state.view === 'collection') {
-          handleSearch(state.year);
-        }
-      }
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [handleSearch]);
-
-  // Инициализация начального состояния
-  useEffect(() => {
-    window.history.replaceState(
-      { 
-        view: 'welcome',
-        year: '',
-        searchQuery: '',
-        selectedField: 'name'
-      }, 
-      ''
-    );
-  }, []);
-
-  // Удаление варианта из коллекции
-  const handleRemoveFromCollection = async (id: string) => {
+  const handleAddToCollection = useCallback(async (itemId: string) => {
     if (!session?.user?.id) return;
-    if (window.confirm('Delete this model from collection?')) {
-      try {
-        const updatedVariantsIds = await removeFromCollection(session.user.id, id);
-        const updatedVariants = await fetchVariantsByIds(updatedVariantsIds);
-        setOriginalCollectionCars(updatedVariants);
-        setCars(updatedVariants);
-      } catch (error) {
-        console.error('Error removing from collection:', error);
-      }
+      const isCollected = collection.includes(itemId);
+
+      if (isCollected) {
+        if (window.confirm('Delete this model from collection?')) {
+          try {
+            const updated = await removeFromCollection(session.user.id, itemId);
+            setCollection(updated);
+          } catch (error) {
+            console.error('Error updating collection:', error);
+          }
+        } 
+      } else {
+        try {
+          const updated = await addToCollection(session.user.id, itemId);
+          setCollection(updated);
+        } catch (error) {
+          console.error('Error updating collection:', error);
+        }
     }
-  };
+  }, [session?.user?.id, collection]);
 
   return (
     <div className="h-screen w-full flex flex-col bg-white dark:bg-gray-900">
-      <div className="h-[56px] sm:h-[80px]">
-        <TopPanel
-          selectedField={selectedField}
-          selectedYear={selectedYear}
-          searchQuery={searchQuery}
-          onFieldChange={setSelectedField}
-          onYearChange={handleYearChange}
-          onSearchChange={setSearchQuery}
-          onSearch={handleSearch}
-          onKeyPress={handleKeyPress}
-          onLogoClick={handleLogoClick}
-          onCollectionClick={handleCollectionClick}
-          availableYears={availableYears}
-          showCollection={showCollection}
-          onLanguageChange={handleLanguageChange}
-        />
-      </div>
-
-      <div className="flex-1 overflow-y-auto p-2 sm:p-4" key={languageKey}>
-        {error && (
-          <div className="p-4 mb-4 text-red-700 dark:text-red-400 rounded">
-            {error}
-          </div>
-        )}
-        
-        {loading ? (
-          <div className="flex-1 flex items-center justify-center text-lg text-gray-600 dark:text-gray-400 h-full">
-            {t('common.loading')}
-          </div>
-        ) : cars.length > 0 ? (
-          <div className="flex-1">
-            {selectedImage && (
-              <ImageModal
-                imageUrl={selectedImage}
-                onClose={() => setSelectedImage(null)}
-              />
-            )}
-            <button
-              onClick={handleBackClick}
-              className={`flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 cursor-pointer ${!selectedModel ? 'invisible' : ''}`}
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              {t('model.backToModels')}
-            </button>
+      {isInitialized && status !== 'loading' ? <>
+        <div className="h-[56px] sm:h-[80px]">
+          <TopPanel
+            selectedField={selectedField}
+            selectedYear={selectedYear}
+            searchQuery={searchQuery}
+            onFieldChange={setSelectedField}
+            onYearChange={handleYearChange}
+            onSearchChange={setSearchQuery}
+            onSearch={handleSearch}
+            onKeyPress={handleKeyPress}
+            onLogoClick={handleLogoClick}
+            onCollectionClick={handleCollectionClick}
+            availableYears={availableYears}
+            showCollection={showCollection}
+            onLanguageChange={handleLanguageChange}
+            currentLang={currentLang}
+          />
+        </div>
+        <div className="flex-1 overflow-y-auto p-2 sm:p-4">
+          {error && (
+            <div className="p-4 mb-4 text-red-700 dark:text-red-400 rounded">
+              {error}
+            </div>
+          )}
+          
+          {loading ? (
+              <Spinner />
+          ) : (
+            <div className="flex-1 h-full">
+              {selectedImage && (
+                <ImageModal
+                  imageUrl={selectedImage}
+                  onClose={() => setSelectedImage(null)}
+                />
+              )}
            
-            {showCollection ? (
-              <CollectionTable
-                cars={cars}
-                onImageClick={handleImageClick}
-                sortConfig={sortConfig}
-                onSortChange={setSortConfig}
-                onRemoveFromCollection={handleRemoveFromCollection}
-                selectedYear={selectedYear}
-              />
-            ) : (
-              <>{selectedModel ? (
-                <ModelDescription 
-                  model={selectedModel}
+              {showCollection ? (
+                <Collection
+                  cars={filteredCollectionCars}
                   onImageClick={handleImageClick}
                   sortConfig={sortConfig}
                   onSortChange={setSortConfig}
+                  onAddToCollection={handleAddToCollection}
                   selectedYear={selectedYear}
+                  collection={collection}
                 />
-              ) : (<ModelsGrid 
-                cars={cars}
-                onModelClick={handleModelClick}
-                selectedYear={selectedYear}
-              />)}
-              </>
-            )}
-          </div>
-        ) : (
-          <WelcomeMessage />
-        )}
-      </div>
+              ) : (
+                <>{selectedModel ? (
+                  <ModelDescription 
+                    model={selectedModel}
+                    onImageClick={handleImageClick}
+                    sortConfig={sortConfig}
+                    onSortChange={setSortConfig}
+                    selectedYear={selectedYear}
+                    onAddToCollection={handleAddToCollection}
+                    collection={collection} 
+                  />
+                ) : (cars.length > 0 ? <ModelsGrid 
+                  cars={cars}
+                  onModelClick={handleModelClick}
+                  selectedYear={selectedYear}
+                /> : <WelcomeMessage isLoggedIn={!!session?.user?.id} />)}
+                </>
+              )}
+            </div>
+          )}
+        </div>
+      </> : <Spinner />}
     </div>
   );
 }

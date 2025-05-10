@@ -4,10 +4,8 @@ import Image from 'next/image';
 import { SEARCH_FIELDS, YEARS, LANGUAGES } from '../consts';
 import SearchIcon from './icons/SearchIcon';
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { t, setLanguage, getLanguage } from '../i18n';
+import { t } from '../i18n';
 import { Language } from '../i18n';
-import { useEffect, useState } from 'react';
-
 
 
 interface TopPanelProps {
@@ -23,7 +21,8 @@ interface TopPanelProps {
   onCollectionClick: () => void;
   availableYears?: string[];
   showCollection: boolean;
-  onLanguageChange?: (lang: Language) => void;
+  onLanguageChange: (lang: Language) => void;
+  currentLang: Language;
 }
 
 export default function TopPanel({
@@ -39,33 +38,15 @@ export default function TopPanel({
   onCollectionClick,
   availableYears,
   showCollection,
-  onLanguageChange
+  onLanguageChange,
+  currentLang
 }: TopPanelProps) {
-  const { data: session, status } = useSession();
-  const [currentLang, setCurrentLang] = useState<Language>(getLanguage());
-  const [isInitialized, setIsInitialized] = useState(false);
+  const { data: session } = useSession();
 
-  useEffect(() => {
-    const savedLang = localStorage.getItem('hwdb_language');
-    if (savedLang && (savedLang === 'ru' || savedLang === 'en' || savedLang === 'de' || savedLang === 'es' || savedLang === 'fr' || savedLang === 'pt')) {
-      setLanguage(savedLang as Language);
-      setCurrentLang(savedLang as Language);
-    }
-    setIsInitialized(true);
-  }, []);
-
-  const handleLanguageChange = (lang: Language) => {
-    setLanguage(lang);
-    setCurrentLang(lang);
-    localStorage.setItem('hwdb_language', lang);
-    onLanguageChange?.(lang);
-  };
 
   const isYearAvailable = (year: string) => {
     return availableYears ? availableYears.includes(year) : true;
   }
-
-  const isLoading = !isInitialized || status === 'loading';
 
   return (
     <div className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-10 p-2 xs:p-3 sm:p-5">
@@ -85,11 +66,7 @@ export default function TopPanel({
           </div>
 
           <div className="flex items-center gap-2 sm:hidden">
-            {isLoading ? (
-              <div className="h-7 xs:h-8 sm:h-9 w-7 xs:w-8 sm:w-9 flex items-center justify-center">
-                <div className="w-4 h-4 border-2 border-gray-300 dark:border-gray-600 border-t-blue-500 rounded-full animate-spin"></div>
-              </div>
-            ) : (
+            {
               <>
                 {!session ? (
                   <button
@@ -116,7 +93,7 @@ export default function TopPanel({
                 )}
                 <select
                   value={currentLang}
-                  onChange={(e) => handleLanguageChange(e.target.value as Language)}
+                  onChange={(e) => onLanguageChange(e.target.value as Language)}
                   className="h-7 xs:h-8 sm:h-9 px-1 xs:px-2 sm:px-3 py-0 text-xs xs:text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer bg-white dark:bg-gray-700 dark:text-gray-200"
                 >
                   {LANGUAGES.map(({ code, label }) => (
@@ -126,7 +103,7 @@ export default function TopPanel({
                   ))}
                 </select>
               </>
-            )}
+            }
           </div>
         </div>
 
@@ -178,12 +155,6 @@ export default function TopPanel({
         </div>
 
         <div className="hidden sm:flex items-center gap-2 ml-auto">
-          {isLoading ? (
-            <div className="h-7 xs:h-8 sm:h-9 w-7 xs:w-8 sm:w-9 flex items-center justify-center">
-              <div className="w-4 h-4 border-2 border-gray-300 dark:border-gray-600 border-t-blue-500 rounded-full animate-spin"></div>
-            </div>
-          ) : (
-            <>
               {!session ? (
                 <button
                   onClick={() => signIn('google')}
@@ -209,7 +180,7 @@ export default function TopPanel({
               )}
               <select
                 value={currentLang}
-                onChange={(e) => handleLanguageChange(e.target.value as Language)}
+                onChange={(e) => onLanguageChange(e.target.value as Language)}
                 className="h-7 xs:h-8 sm:h-9 px-1 xs:px-2 sm:px-3 py-0 text-xs xs:text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer bg-white dark:bg-gray-700 dark:text-gray-200"
               >
                 {LANGUAGES.map(({ code, label }) => (
@@ -218,8 +189,7 @@ export default function TopPanel({
                   </option>
                 ))}
               </select>
-            </>
-          )}
+            
         </div>
       </div>
     </div>
