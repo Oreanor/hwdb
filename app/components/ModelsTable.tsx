@@ -29,8 +29,9 @@ interface TableRowProps {
 }
 
 const TableRow = memo(({ car, item, collapsedColumns, onImageClick, isCollected, onAddToCollection }: TableRowProps) => {
-  const imageUrl = useMemo(() => getImageUrl(item), [item]);
+  const [imageError, setImageError] = useState(false);
   const { data: session } = useSession();
+  const imageUrl = item.p === 't' ? getImageUrl(item) : undefined;
 
   return (
     <tr 
@@ -54,23 +55,24 @@ const TableRow = memo(({ car, item, collapsedColumns, onImageClick, isCollected,
         </td>
       )}
       <td className="p-2 whitespace-nowrap">
-        {imageUrl ? (
-            <div 
-              className="w-16 h-12 relative cursor-pointer"
-              onClick={() => onImageClick(imageUrl)}
-            >
-              <Image
-                src={imageUrl}
-                alt={`${formatCarName(car.lnk)}`}
-                fill
-                style={{ objectFit: 'cover' }}
-                sizes="64px"
-              />
-            </div>
+        <div 
+          className="w-16 h-16 relative cursor-pointer"
+          onClick={() => imageUrl && onImageClick(imageUrl)}
+        >
+          {imageUrl && !imageError ? (
+            <Image
+              src={imageUrl}
+              alt={`${formatCarName(car.lnk)}`}
+              fill
+              className="object-contain"
+              onError={() => setImageError(true)}
+            />
           ) : (
-            <div className="w-16 h-12 bg-gray-100 dark:bg-gray-700" />
+            <div className="w-full h-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
+              <span className="text-gray-400 dark:text-gray-500 text-xs">No image</span>
+            </div>
           )}
-       
+        </div>
       </td>
       {FIELD_ORDER.map(field => {
         const value = item[field.key] || '-';
@@ -168,6 +170,7 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
     cars.forEach(car => {
       car.d
         .filter(item => !selectedYear || item.y === selectedYear)
+        .filter(item => item.p === 't')
         .forEach(item => {
           const imageUrl = getImageUrl(item);
           if (imageUrl) {
@@ -188,29 +191,15 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
 
   const handlePrevImage = useCallback(() => {
     if (currentImageIndex > 0) {
-      // Ищем предыдущее изображение, пропуская записи без фото
-      let prevIndex = currentImageIndex - 1;
-      while (prevIndex >= 0 && !allImages[prevIndex]) {
-        prevIndex--;
-      }
-      if (prevIndex >= 0) {
-        setCurrentImageIndex(prevIndex);
-        setSelectedImage(allImages[prevIndex]);
-      }
+      setCurrentImageIndex(currentImageIndex - 1);
+      setSelectedImage(allImages[currentImageIndex - 1]);
     }
   }, [currentImageIndex, allImages]);
 
   const handleNextImage = useCallback(() => {
     if (currentImageIndex < allImages.length - 1) {
-      // Ищем следующее изображение, пропуская записи без фото
-      let nextIndex = currentImageIndex + 1;
-      while (nextIndex < allImages.length && !allImages[nextIndex]) {
-        nextIndex++;
-      }
-      if (nextIndex < allImages.length) {
-        setCurrentImageIndex(nextIndex);
-        setSelectedImage(allImages[nextIndex]);
-      }
+      setCurrentImageIndex(currentImageIndex + 1);
+      setSelectedImage(allImages[currentImageIndex + 1]);
     }
   }, [currentImageIndex, allImages]);
 

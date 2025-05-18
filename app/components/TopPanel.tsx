@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { SEARCH_FIELDS, YEARS, LANGUAGES } from '../consts';
 import SearchIcon from './icons/SearchIcon';
+import ClearIcon from './icons/ClearIcon';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { t } from '../i18n';
 import { Language } from '../i18n';
@@ -43,6 +44,9 @@ export default function TopPanel({
 }: TopPanelProps) {
   const { data: session } = useSession();
 
+  const handleClearSearch = () => {
+    onSearchChange('');
+  };
 
   const isYearAvailable = (year: string) => {
     return availableYears ? availableYears.includes(year) : true;
@@ -52,17 +56,19 @@ export default function TopPanel({
     <div className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-10 p-2 xs:p-3 sm:p-5">
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-6">
         <div className="flex items-center justify-between sm:justify-start">
-          <div className="flex items-center gap-1 xs:gap-2 sm:gap-3 cursor-pointer" onClick={onLogoClick}>
-            <div className="relative h-7 xs:h-8 sm:h-9 w-7 xs:w-8 sm:w-9">
+          <div className="flex items-center gap-1 cursor-pointer" onClick={onLogoClick}>
+            <div className="relative h-7 xs:h-8 sm:h-8 w-7 xs:w-8 sm:w-8">
               <Image
                 src="/logo.png"
                 alt="Logo"
                 fill
                 style={{ objectFit: 'contain' }}
-                sizes="36px"
+                sizes="32px"
               />
             </div>
-            <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold font-['Arial_Narrow',Arial,sans-serif] text-gray-400 dark:text-gray-500 hidden md:block">HWDB</h1>
+            <div className="relative hidden md:block">
+              <h1 className="text-xl md:text-3xl font-['Impact','Arial_Narrow',Arial,sans-serif] text-[#82807C] tracking-wider italic">HWDB</h1>
+            </div>
           </div>
 
           <div className="flex items-center gap-2 sm:hidden">
@@ -145,6 +151,14 @@ export default function TopPanel({
               onKeyDown={onKeyPress}
               className="h-7 xs:h-8 sm:h-9 px-1 xs:px-2 sm:px-3 py-0 text-xs xs:text-sm focus:outline-none rounded-l-md w-full bg-white dark:bg-gray-700 dark:text-gray-200"
             />
+            {searchQuery && (
+              <button
+                onClick={handleClearSearch}
+                className="h-7 xs:h-8 sm:h-9 px-1 xs:px-2 sm:px-3 py-0 text-xs xs:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 border-l border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center justify-center cursor-pointer"
+              >
+                <ClearIcon />
+              </button>
+            )}
             <button
               onClick={onSearch}
               className="h-7 xs:h-8 sm:h-9 px-1 xs:px-2 sm:px-3 py-0 text-xs xs:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 border-l border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center justify-center cursor-pointer"

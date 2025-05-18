@@ -442,7 +442,7 @@ export default function Home() {
                     onSortChange={setSortConfig}
                     selectedYear={selectedYear}
                     onAddToCollection={handleAddToCollection}
-                    collection={collection}
+                    collection={collection} 
                     backToSearch={handleBackToSearch}
                   />
                 ) : (cars.length > 0 ? <ModelsGrid 

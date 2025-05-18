@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { CarData } from '../types';
 import { getImageUrl, formatCarName } from '../utils';
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useState } from 'react';
 
 interface ModelCardProps {
   car: CarData;
@@ -10,10 +10,12 @@ interface ModelCardProps {
 }
 
 const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear }: ModelCardProps) {
+  const [imageError, setImageError] = useState(false);
+  
   const firstVariantWithImage = useMemo(
     () => selectedYear 
-      ? car.d.find(item => item.y === selectedYear && getImageUrl(item))
-      : car.d.find(item => getImageUrl(item)),
+      ? car.d.find(item => item.y === selectedYear && item.p === 't')
+      : car.d.find(item => item.p === 't'),
     [car.d, selectedYear]
   );
   const imageUrl = firstVariantWithImage ? getImageUrl(firstVariantWithImage) : undefined;
@@ -44,15 +46,19 @@ const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear }: M
       className="flex flex-col items-center p-2 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer"
       onClick={() => onModelClick(car)}
     >
-      <div className="relative w-full aspect-[4/3] mb-1">
-        {imageUrl && (
+      <div className="relative w-full h-48">
+        {imageUrl && !imageError ? (
           <Image
             src={imageUrl}
             alt={formattedName}
             fill
-            style={{ objectFit: 'contain' }}
-            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
+            className="object-contain"
+            onError={() => setImageError(true)}
           />
+        ) : (
+          <div className="w-full h-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
+            <span className="text-gray-400 dark:text-gray-500 text-sm">No image</span>
+          </div>
         )}
       </div>
       <p className="text-sm text-center font-bold text-gray-900 dark:text-gray-100 line-clamp-1">

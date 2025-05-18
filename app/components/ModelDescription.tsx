@@ -30,7 +30,7 @@ export default function ModelDescription({
 }: ModelDescriptionProps) {
   const [expandedDescription, setExpandedDescription] = useState(false);
 
-  const description = decodeHtmlEntities(model.dsc);  
+  const description = decodeHtmlEntities(model.dsc || '');  
 
   return (
     <div className="flex flex-col gap-4">

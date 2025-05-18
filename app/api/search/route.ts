@@ -51,14 +51,14 @@ export async function GET(request: Request) {
       filteredData = filteredData.map(car => {
         // Для поля lnk делаем точное сравнение
         if (field === 'link') {
-          return car.lnk === value ? { ...car, d: car.d.map(item => ({ y: item.y, p: item.p })) } : { ...car, d: [] };
+          return car.lnk === value ? { ...car, d: car.d.map(item => ({ y: item.y, p: item.p, id: item.id })) } : { ...car, d: [] };
         }
 
         // Для поля name ищем в lnk и форматированном lnk
         if (field === 'name') {
           const formattedName = formatCarName(car.lnk).toLowerCase();
           return searchWords.every(word => formattedName.includes(word))
-            ? { ...car, d: car.d.map(item => ({ y: item.y, p: item.p })) }
+            ? { ...car, d: car.d.map(item => ({ y: item.y, p: item.p, id: item.id })) }
             : { ...car, d: [] };
         }
 
@@ -67,7 +67,7 @@ export async function GET(request: Request) {
           // Если у модели есть хотя бы один вариант с указанным годом,
           // возвращаем модель с сокращенными вариантами
           return car.d.some(item => item.y === value) 
-            ? { ...car, d: car.d.map(item => ({ y: item.y, p: item.p })) } 
+            ? { ...car, d: car.d.map(item => ({ y: item.y, p: item.p, id: item.id })) } 
             : { ...car, d: [] };
         }
 
@@ -78,7 +78,7 @@ export async function GET(request: Request) {
           // Для остальных полей форматируем значение перед сравнением
           const fieldValue = (car[mainObjectField] as string)?.toLowerCase();
           if (fieldValue && searchWords.every(word => fieldValue.includes(word))) {
-            return { ...car, d: car.d.map(item => ({ y: item.y, p: item.p })) };
+            return { ...car, d: car.d.map(item => ({ y: item.y, p: item.p, id: item.id })) };
           }
           return { ...car, d: [] };
         }
@@ -100,7 +100,7 @@ export async function GET(request: Request) {
           return false;
         });
         
-        return hasMatchingVariant ? { ...car, d: car.d.map(item => ({ y: item.y, p: item.p })) } : { ...car, d: [] };
+        return hasMatchingVariant ? { ...car, d: car.d.map(item => ({ y: item.y, p: item.p, id: item.id })) } : { ...car, d: [] };
       }).filter(car => car.d.length > 0);
       
       console.log('Cars after search:', filteredData.length);

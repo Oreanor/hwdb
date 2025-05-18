@@ -29,7 +29,7 @@ export const addToCollection = async (userId: string, id: string): Promise<strin
 
   // Проверяем, есть ли уже запись для пользователя
   const { data: existing } = await supabase
-    .from('collections')
+      .from('collections')
     .select('user_id')
     .eq('user_id', userId);
 

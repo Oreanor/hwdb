@@ -1,5 +1,8 @@
 import Image from 'next/image';
 import { useEffect } from 'react';
+import CloseIcon from './icons/CloseIcon';
+import ArrowLeftIcon from './icons/ArrowLeftIcon';
+import ArrowRightIcon from './icons/ArrowRightIcon';
 
 interface ImageModalProps {
   imageUrl: string;
@@ -39,34 +42,40 @@ export default function ImageModal({
       onClick={onClose}
     >
       <div className="relative max-w-[90vw] max-h-[90vh]" onClick={e => e.stopPropagation()}>
-        <Image
-          src={imageUrl}
-          alt="Full size"
-          width={1200}
-          height={800}
-          style={{ objectFit: 'contain' }}
-          className="max-w-full max-h-[90vh]"
-        />
-        {hasPrev && onPrev && (
           <button
-            onClick={onPrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-white hover:text-gray-300 transition-colors cursor-pointer"
+            onClick={onClose}
+            className="fixed right-10 top-10 w-10 h-10 flex items-center justify-center text-white hover:text-gray-300 transition-colors cursor-pointer bg-black/30 backdrop-blur-sm rounded-full border border-white/20 shadow-lg"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={4} stroke="currentColor" className="w-12 h-12">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
+            <CloseIcon />
           </button>
-        )}
-        {hasNext && onNext && (
-          <button
-            onClick={onNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-white hover:text-gray-300 transition-colors cursor-pointer"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={4} stroke="currentColor" className="w-12 h-12">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-            </svg>
-          </button>
-        )}
+          <Image
+            src={imageUrl}
+            alt="Full size"
+            width={1200}
+            height={800}
+            style={{ objectFit: 'contain' }}
+            className="max-w-full max-h-[90vh]"
+          />
+        <button
+          onClick={hasPrev ? onPrev : undefined}
+          className={`fixed left-10 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center transition-colors cursor-pointer bg-black/30 backdrop-blur-sm rounded-full border border-white/20 shadow-lg ${
+            hasPrev 
+              ? 'text-white hover:text-gray-300 cursor-pointer' 
+              : 'text-white/30 cursor-default'
+          }`}
+        >
+          <ArrowLeftIcon />
+        </button>
+        <button
+          onClick={hasNext ? onNext : undefined}
+          className={`fixed right-10 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center transition-colors cursor-pointer bg-black/30 backdrop-blur-sm rounded-full border border-white/20 shadow-lg ${
+            hasNext 
+              ? 'text-white hover:text-gray-300 cursor-pointer' 
+              : 'text-white/30 cursor-default'
+          }`}
+        >
+          <ArrowRightIcon />
+        </button>
       </div>
     </div>
   );

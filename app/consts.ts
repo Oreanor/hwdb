@@ -2,7 +2,6 @@ import { CarData, CarDataItem } from "./types";
 import { Language } from "./i18n";
 
 export const FANDOM_BASE_URL = 'https://hotwheels.fandom.com/wiki/';
-export const FANDOM_IMAGE_BASE_URL = 'https://static.wikia.nocookie.net/hotwheels/images/';
 
 export const FIELD_ORDER = [
   { key: 'y', label: 'Year' },
