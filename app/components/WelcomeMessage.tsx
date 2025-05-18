@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { t } from '../i18n';
+import { FANDOM_BASE_URL } from '../consts';
 
 interface WelcomeMessageProps {
   isLoggedIn?: boolean;
@@ -24,6 +25,14 @@ export default function WelcomeMessage({ isLoggedIn }: WelcomeMessageProps) {
       {!isLoggedIn && <p className="text-sm max-w-[400px] text-center">
         {t('welcome.subtitle2')}
       </p>}
+      <a 
+        href={FANDOM_BASE_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-2 text-xs text-blue-600 dark:text-blue-400 hover:underline"
+      >
+        {t('common.viewOnFandom')}
+      </a>
     </div>
   );
 } 

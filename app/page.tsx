@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { t, setLanguage, Language } from './i18n';
+import { formatCarName, convertKeyboardLayout } from './utils';
 
 import TopPanel from './components/TopPanel';
 import WelcomeMessage from './components/WelcomeMessage';
@@ -13,7 +14,6 @@ import Spinner from './components/Spinner';
 import { fetchCars, fetchCarByLnk, fetchVariantsByIds } from './services/carService';
 import { YEARS, MAIN_OBJECT_FIELDS, VARIANT_FIELDS, LANGUAGES } from './consts';
 import { CarData, SortConfig } from './types';
-import { formatCarName } from './utils';
 import { addToCollection, getCollection, removeFromCollection } from './services/collectionService';
 import Collection from './components/Collection';
 
@@ -69,7 +69,6 @@ export default function Home() {
   }, []);
 
   const handleSearch = useCallback(async (year?: string | React.MouseEvent) => {
-    console.log('handleSearch', year);
     // Используем переданный год или текущий из состояния
     const searchYear = typeof year === 'string' ? year : selectedYear;
     
@@ -80,7 +79,6 @@ export default function Home() {
       
       // Если нет ни года, ни поискового запроса - показываем все
       if (!searchYear && !searchQuery) {
-        console.log('filteredCars2', filteredCars);
         setFilteredCollectionCars(filteredCars);
         return;
       }
@@ -138,7 +136,7 @@ export default function Home() {
         const data = await fetchCars('year', searchYear, '');
         setCars(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        setError(err instanceof Error ? err.message : t('search.errors.failedToLoad'));
         setCars([]);
       } finally {
         setLoading(false);
@@ -164,7 +162,12 @@ export default function Home() {
       setLoading(true);
       setError(null);
       setSelectedModel(null);
-      const data = await fetchCars(selectedField, searchQuery, searchYear);
+      // Конвертируем поисковый запрос, если он на кириллице
+      const convertedQuery = convertKeyboardLayout(searchQuery);
+      if (convertedQuery !== searchQuery) {
+        setSearchQuery(convertedQuery);
+      }
+      const data = await fetchCars(selectedField, convertedQuery, searchYear);
       setCars(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : t('search.errors.failedToLoad'));
@@ -222,6 +225,11 @@ export default function Home() {
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
+      // Конвертируем поисковый запрос, если он на кириллице
+      const convertedQuery = convertKeyboardLayout(searchQuery);
+      if (convertedQuery !== searchQuery) {
+        setSearchQuery(convertedQuery);
+      }
       handleSearch();
     }
   };
@@ -261,6 +269,20 @@ export default function Home() {
     }
   };
 
+  const handleBackToSearch = () => {
+    setSelectedModel(null);
+    // Добавляем состояние в историю
+    window.history.pushState(
+      { 
+        view: 'grid',
+        year: selectedYear,
+        searchQuery,
+        selectedField
+      }, 
+      ''
+    );
+  };
+
   const handleCollectionClick = async () => {
     if (!session?.user?.id) {
       signIn('google');
@@ -274,7 +296,6 @@ export default function Home() {
       setSelectedModel(null);
 
       if (!showCollection) {
-       
         let variants: CarData[] = [];
         if (collection.length > 0) {
           variants = await fetchVariantsByIds(collection);
@@ -308,8 +329,10 @@ export default function Home() {
       }
       setShowCollection(!showCollection);
     } catch (error) {
-      console.error('Error loading collection:', error);
       setError(error instanceof Error ? error.message : t('search.errors.failedToLoadCollection'));
+      setShowCollection(false);
+      setFilteredCollectionCars([]);
+      setCars([]);
     } finally {
       setLoading(false);
     }
@@ -337,31 +360,34 @@ export default function Home() {
 
   const handleAddToCollection = useCallback(async (itemId: string) => {
     if (!session?.user?.id) return;
-      const isCollected = collection.includes(itemId);
+    const isCollected = collection.includes(itemId);
 
-      if (isCollected) {
-        if (window.confirm('Delete this model from collection?')) {
-          try {
-            const updated = await removeFromCollection(session.user.id, itemId);
-            setCollection(updated);
-          } catch (error) {
-            console.error('Error updating collection:', error);
-          }
-        } 
-      } else {
+    if (isCollected) {
+      if (window.confirm(t('collection.confirmDelete'))) {
         try {
-          const updated = await addToCollection(session.user.id, itemId);
+          const updated = await removeFromCollection(session.user.id, itemId);
           setCollection(updated);
+          // Обновляем списки машин, удаляя модель из них
+          setCars(prev => prev.filter(car => !car.d.some(item => item.id === itemId)));
+          setFilteredCollectionCars(prev => prev.filter(car => !car.d.some(item => item.id === itemId)));
         } catch (error) {
-          console.error('Error updating collection:', error);
+          setError(error instanceof Error ? error.message : t('collection.errors.failedToRemove'));
         }
+      } 
+    } else {
+      try {
+        const updated = await addToCollection(session.user.id, itemId);
+        setCollection(updated);
+      } catch (error) {
+        setError(error instanceof Error ? error.message : t('collection.errors.failedToAdd'));
+      }
     }
   }, [session?.user?.id, collection]);
 
   return (
     <div className="h-screen w-full flex flex-col bg-white dark:bg-gray-900">
       {isInitialized && status !== 'loading' ? <>
-        <div className="h-[56px] sm:h-[80px]">
+        <div className="min-h-[82px]">
           <TopPanel
             selectedField={selectedField}
             selectedYear={selectedYear}
@@ -416,7 +442,8 @@ export default function Home() {
                     onSortChange={setSortConfig}
                     selectedYear={selectedYear}
                     onAddToCollection={handleAddToCollection}
-                    collection={collection} 
+                    collection={collection}
+                    backToSearch={handleBackToSearch}
                   />
                 ) : (cars.length > 0 ? <ModelsGrid 
                   cars={cars}

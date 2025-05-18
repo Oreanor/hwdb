@@ -15,6 +15,7 @@ interface ModelDescriptionProps {
   selectedYear?: string;
   onAddToCollection: (id: string) => void;
   collection: string[];
+  backToSearch?: () => void;
 }
 
 export default function ModelDescription({ 
@@ -24,7 +25,8 @@ export default function ModelDescription({
   onSortChange,
   selectedYear,
   onAddToCollection,
-  collection
+  collection,
+  backToSearch
 }: ModelDescriptionProps) {
   const [expandedDescription, setExpandedDescription] = useState(false);
 
@@ -32,6 +34,14 @@ export default function ModelDescription({
 
   return (
     <div className="flex flex-col gap-4">
+      {backToSearch && (
+        <button
+          onClick={backToSearch}
+          className="ml-2 underline hover:text-gray-600 dark:hover:text-gray-400 text-sm cursor-pointer"
+        >
+          ← {t('common.backToSearch')}
+        </button>
+      )}
       <div className="flex flex-col gap-2 p-2">
         <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">{formatCarName(model.lnk)}</h1>
         <a 

@@ -1,10 +1,11 @@
 import Image from 'next/image';
-import { useState, useMemo, memo } from 'react';
+import { useState, useMemo, memo, useCallback } from 'react';
 import { CarData, CarDataItem, SortConfig } from '../types';
 import { formatCarName, getImageUrl } from '../utils';
 import { FIELD_ORDER, COLLAPSED_COLUMNS_COOKIE } from '../consts';
 import PlusIcon from './icons/PlusIcon';
 import { useSession } from 'next-auth/react';
+import ImageModal from './ImageModal';
 
 
 interface ModelsTableProps {
@@ -144,8 +145,7 @@ const TableHeader = memo(({
 TableHeader.displayName = 'TableHeader';
 
 const ModelsTable: React.FC<ModelsTableProps> = ({ 
-  cars, 
-  onImageClick, 
+  cars,
   sortConfig,
   onSortChange,
   selectedYear,
@@ -159,7 +159,60 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
     return new Set(saved ? JSON.parse(saved) : []);
   });
 
-  
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(-1);
+
+  // Собираем все доступные изображения из таблицы
+  const allImages = useMemo(() => {
+    const images: string[] = [];
+    cars.forEach(car => {
+      car.d
+        .filter(item => !selectedYear || item.y === selectedYear)
+        .forEach(item => {
+          const imageUrl = getImageUrl(item);
+          if (imageUrl) {
+            images.push(imageUrl);
+          }
+        });
+    });
+    return images;
+  }, [cars, selectedYear]);
+
+  const handleImageClick = useCallback((imageUrl: string) => {
+    const index = allImages.indexOf(imageUrl);
+    if (index !== -1) {
+      setCurrentImageIndex(index);
+      setSelectedImage(imageUrl);
+    }
+  }, [allImages]);
+
+  const handlePrevImage = useCallback(() => {
+    if (currentImageIndex > 0) {
+      // Ищем предыдущее изображение, пропуская записи без фото
+      let prevIndex = currentImageIndex - 1;
+      while (prevIndex >= 0 && !allImages[prevIndex]) {
+        prevIndex--;
+      }
+      if (prevIndex >= 0) {
+        setCurrentImageIndex(prevIndex);
+        setSelectedImage(allImages[prevIndex]);
+      }
+    }
+  }, [currentImageIndex, allImages]);
+
+  const handleNextImage = useCallback(() => {
+    if (currentImageIndex < allImages.length - 1) {
+      // Ищем следующее изображение, пропуская записи без фото
+      let nextIndex = currentImageIndex + 1;
+      while (nextIndex < allImages.length && !allImages[nextIndex]) {
+        nextIndex++;
+      }
+      if (nextIndex < allImages.length) {
+        setCurrentImageIndex(nextIndex);
+        setSelectedImage(allImages[nextIndex]);
+      }
+    }
+  }, [currentImageIndex, allImages]);
 
   const handleSort = (field: string) => {
     if (collapsedColumns.has(field)) {
@@ -229,23 +282,25 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
 
   const visibleRows = useMemo(() => {
     return allRows
-      .map(({ car, item, index }) => (
-        <TableRow
-          key={`${car.lnk}-${index}`}
-          car={car}
-          item={item}
-          index={index}
-          collapsedColumns={collapsedColumns}
-          onImageClick={onImageClick}
-          isCollected={collection.some(c => c === item.id)}
-          onAddToCollection={() => onAddToCollection && item.id && onAddToCollection(item.id)}
-        />
-      ));
-  }, [allRows, collapsedColumns, onImageClick, collection, onAddToCollection]);
+      .map(({ car, item, index }) => {
+        return (
+          <TableRow
+            key={`${car.lnk}-${index}`}
+            car={car}
+            item={item}
+            index={index}
+            collapsedColumns={collapsedColumns}
+            onImageClick={handleImageClick}
+            isCollected={collection.some(c => c === item.id)}
+            onAddToCollection={() => onAddToCollection && item.id && onAddToCollection(item.id)}
+          />
+        );
+      });
+  }, [allRows, collapsedColumns, handleImageClick, collection, onAddToCollection]);
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 table-fixed">
+      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
         <thead className="bg-gray-50 dark:bg-gray-700">
           <tr>
             {session?.user && (
@@ -268,10 +323,20 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
             ))}
           </tr>
         </thead>
-        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-600">
+        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
           {visibleRows}
         </tbody>
       </table>
+      {selectedImage && allImages.length > 0 && (
+        <ImageModal
+          imageUrl={selectedImage}
+          onClose={() => setSelectedImage(null)}
+          onPrev={handlePrevImage}
+          onNext={handleNextImage}
+          hasPrev={currentImageIndex > 0}
+          hasNext={currentImageIndex < allImages.length - 1}
+        />
+      )}
     </div>
   );
 };

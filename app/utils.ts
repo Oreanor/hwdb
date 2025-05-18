@@ -40,3 +40,22 @@ export const decodeHtmlEntities = (text: string | undefined): string => {
       .replace(/&nbsp;/g, ' ')
       .replace(/&#160;/g, ' ');
 };
+
+// Конвертация раскладки клавиатуры
+const RUSSIAN_LAYOUT = 'йцукенгшщзхъфывапролджэячсмитьбюё';
+const ENGLISH_LAYOUT = 'qwertyuiop[]asdfghjkl;\'zxcvbnm,.`';
+
+export const convertKeyboardLayout = (text: string): string => {
+  const isRussian = /[а-яА-ЯёЁ]/.test(text);
+  const sourceLayout = isRussian ? RUSSIAN_LAYOUT : ENGLISH_LAYOUT;
+  const targetLayout = isRussian ? ENGLISH_LAYOUT : RUSSIAN_LAYOUT;
+  
+  return text.split('').map(char => {
+    const lowerChar = char.toLowerCase();
+    const index = sourceLayout.indexOf(lowerChar);
+    if (index === -1) return char;
+    
+    const converted = targetLayout[index];
+    return char === lowerChar ? converted : converted.toUpperCase();
+  }).join('');
+};
