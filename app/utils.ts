@@ -36,16 +36,11 @@ export const convertKeyboardLayout = (text: string) => {
     let result = '';
     for (let i = 0; i < text.length; i++) {
         const char = text[i];
-        const enIndex = en.indexOf(char);
-        if (enIndex !== -1) {
-            result += ru[enIndex];
+        const ruIndex = ru.indexOf(char);
+        if (ruIndex !== -1) {
+            result += en[ruIndex];
         } else {
-            const ruIndex = ru.indexOf(char);
-            if (ruIndex !== -1) {
-                result += en[ruIndex];
-            } else {
-                result += char;
-            }
+            result += char;
         }
     }
     return result;
