@@ -3,7 +3,8 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { t, setLanguage, Language } from './i18n';
-import { formatCarName, convertKeyboardLayout } from './utils';
+import { convertKeyboardLayout } from './utils';
+import { carMatchesQuery, tokenize } from './lib/carSearch';
 
 import TopPanel from './components/TopPanel';
 import WelcomeMessage from './components/WelcomeMessage';
@@ -12,7 +13,7 @@ import ModelsGrid from './components/ModelsGrid';
 import ModelDescription from './components/ModelDescription';
 import Spinner from './components/Spinner';
 import { fetchCars, fetchCarByLnk, fetchVariantsByIds } from './services/carService';
-import { YEARS, MAIN_OBJECT_FIELDS, VARIANT_FIELDS, LANGUAGES } from './consts';
+import { YEARS, LANGUAGES } from './consts';
 import { CarData, SortConfig } from './types';
 import { addToCollection, getCollection, removeFromCollection } from './services/collectionService';
 import Collection from './components/Collection';
@@ -90,42 +91,15 @@ export default function Home() {
       }
 
       if (searchQuery && searchQuery.length > 0) {
-        const searchValue = searchQuery.toLowerCase();
-        const searchWords = searchValue.split(/\s+/).filter(word => word.length > 0);
-        filteredCars = filteredCars.map(car => {
-          if (selectedField === 'name') {
-            const formattedName = formatCarName(car.lnk).toLowerCase();
-            return searchWords.every(word => formattedName.includes(word)) ? car : { ...car, d: [] };
-          }
-
-          // Other top-level car fields.
-          const mainObjectField = MAIN_OBJECT_FIELDS[selectedField];
-          if (mainObjectField) {
-            const fieldValue = (car[mainObjectField] as string)?.toLowerCase();
-            return fieldValue && searchWords.every(word => fieldValue.includes(word)) ? car : { ...car, d: [] };
-          }
-          
-          // Per-variant fields.
-          const variantField = VARIANT_FIELDS[selectedField];
-          if (variantField) {
-            const hasMatchingVariant = car.d.some(item => {
-              const fieldValue = item[variantField];
-              if (typeof fieldValue === 'string') {
-                const lowerFieldValue = fieldValue.toLowerCase();
-                return searchWords.every(word => lowerFieldValue.includes(word));
-              }
-              return false;
-            });
-            return hasMatchingVariant ? car : { ...car, d: [] };
-          }
-          
-          return { ...car, d: [] };
-        }).filter(car => car.d.length > 0);
+        const searchWords = tokenize(searchQuery);
+        filteredCars = filteredCars.filter(car =>
+          carMatchesQuery(car, selectedField, searchWords, searchQuery)
+        );
       }
       setFilteredCollectionCars(filteredCars);
       return;
     }
-    
+
     // A year is selected but no query: list every model released that year.
     if (searchYear && !searchQuery) {
       try {

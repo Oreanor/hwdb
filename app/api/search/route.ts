@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { CarData } from '../../types';
-import { MAIN_OBJECT_FIELDS, VARIANT_FIELDS } from '../../consts';
-import { formatCarName } from '../../utils';
 import { loadCarsData } from '../../lib/carsData';
+import { carMatchesQuery, tokenize } from '../../lib/carSearch';
 
 // Variants are returned trimmed to the fields the grid needs (year, image flag, id).
 const trimVariants = (car: CarData): CarData => ({
@@ -27,55 +26,10 @@ export async function GET(request: Request) {
     }
 
     if (field && value && value.trim() !== '') {
-      const searchValue = value.toLowerCase();
-      const searchWords = searchValue.split(/\s+/).filter(word => word.length > 0);
-
+      const words = tokenize(value);
       filteredData = filteredData
-        .map(car => {
-          // Exact match on the wiki link.
-          if (field === 'link') {
-            return car.lnk === value ? trimVariants(car) : { ...car, d: [] };
-          }
-
-          // Match against the human-readable model name derived from the link.
-          if (field === 'name') {
-            const formattedName = formatCarName(car.lnk).toLowerCase();
-            return searchWords.every(word => formattedName.includes(word))
-              ? trimVariants(car)
-              : { ...car, d: [] };
-          }
-
-          // Keep the car if any variant is from the requested year.
-          if (field === 'year') {
-            return car.d.some(item => item.y === value) ? trimVariants(car) : { ...car, d: [] };
-          }
-
-          // Top-level car fields (designer, description, ...).
-          const mainObjectField = MAIN_OBJECT_FIELDS[field];
-          if (mainObjectField) {
-            const fieldValue = (car[mainObjectField] as string)?.toLowerCase();
-            return fieldValue && searchWords.every(word => fieldValue.includes(word))
-              ? trimVariants(car)
-              : { ...car, d: [] };
-          }
-
-          // Per-variant fields (series, color, wheels, ...).
-          const variantField = VARIANT_FIELDS[field];
-          if (!variantField) {
-            console.warn('Unknown search field:', field);
-            return { ...car, d: [] };
-          }
-
-          const hasMatchingVariant = car.d.some(item => {
-            const fieldValue = item[variantField];
-            return (
-              typeof fieldValue === 'string' &&
-              searchWords.every(word => fieldValue.toLowerCase().includes(word))
-            );
-          });
-
-          return hasMatchingVariant ? trimVariants(car) : { ...car, d: [] };
-        })
+        .filter(car => carMatchesQuery(car, field, words, value))
+        .map(trimVariants)
         .filter(car => car.d.length > 0);
     } else {
       // No search term: return nothing (the year-only listing is handled above).

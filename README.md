@@ -24,13 +24,12 @@ Built with Next.js (App Router), React 19, TypeScript and Tailwind CSS.
 
 ## Tech stack
 
-| Concern        | Choice                                  |
-| -------------- | --------------------------------------- |
-| Framework      | Next.js 15 (App Router)                 |
-| UI             | React 19, Tailwind CSS 4                |
-| Auth           | NextAuth (Google provider, JWT session) |
-| Storage / DB   | Supabase (collections + image hosting)  |
-| Virtualization | react-window / react-virtualized-auto-sizer |
+| Concern      | Choice                                  |
+| ------------ | --------------------------------------- |
+| Framework    | Next.js 15 (App Router)                 |
+| UI           | React 19, Tailwind CSS 4                |
+| Auth         | NextAuth (Google provider, JWT session) |
+| Storage / DB | Supabase (collections + image hosting)  |
 
 ## Getting started
 
