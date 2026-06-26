@@ -1,13 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import { SEARCH_FIELDS, YEARS, LANGUAGES } from '../consts';
-import SearchIcon from './icons/SearchIcon';
-import ClearIcon from './icons/ClearIcon';
-import { useSession, signIn, signOut } from 'next-auth/react';
-import { t } from '../i18n';
-import { Language } from '../i18n';
-
+import { SEARCH_FIELDS, YEARS } from '../consts';
+import { t, Language } from '../i18n';
+import { Theme } from '../theme';
+import Select from './ui/Select';
+import SearchBox from './SearchBox';
+import UserControls from './UserControls';
 
 interface TopPanelProps {
   selectedField: string | undefined;
@@ -24,6 +23,10 @@ interface TopPanelProps {
   showCollection: boolean;
   onLanguageChange: (lang: Language) => void;
   currentLang: Language;
+  theme: Theme;
+  onThemeToggle: () => void;
+  suggestions?: string[];
+  onSuggestionSelect: (value: string) => void;
 }
 
 export default function TopPanel({
@@ -40,172 +43,84 @@ export default function TopPanel({
   availableYears,
   showCollection,
   onLanguageChange,
-  currentLang
+  currentLang,
+  theme,
+  onThemeToggle,
+  suggestions,
+  onSuggestionSelect,
 }: TopPanelProps) {
-  const { data: session } = useSession();
+  const isYearAvailable = (year: string) => (availableYears ? availableYears.includes(year) : true);
 
-  const handleClearSearch = () => {
-    onSearchChange('');
-  };
+  // One "search by" selector: "By year" (select-only) plus the typed fields.
+  const parameterOptions = [
+    { value: 'year', label: t('common.byYear') },
+    ...SEARCH_FIELDS.map((field) => ({ value: field.key, label: t(`search.fields.${field.key}`) })),
+  ];
 
-  const isYearAvailable = (year: string) => {
-    return availableYears ? availableYears.includes(year) : true;
-  }
+  // Newest year first.
+  const yearPickOptions = YEARS.filter((y) => y.value !== '' && isYearAvailable(y.value))
+    .map((y) => ({ value: y.value, label: y.label }))
+    .reverse();
+
+  const userControls = (
+    <UserControls
+      showCollection={showCollection}
+      onCollectionClick={onCollectionClick}
+      onLanguageChange={onLanguageChange}
+      currentLang={currentLang}
+      theme={theme}
+      onThemeToggle={onThemeToggle}
+    />
+  );
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-10 p-2 xs:p-3 sm:p-5">
+    <div className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-md z-40 p-2 xs:p-3 sm:p-5">
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-6">
         <div className="flex items-center justify-between sm:justify-start">
           <div className="flex items-center gap-1 cursor-pointer" onClick={onLogoClick}>
             <div className="relative h-7 xs:h-8 sm:h-8 w-7 xs:w-8 sm:w-8">
-              <Image
-                src="/logo.png"
-                alt="Logo"
-                fill
-                style={{ objectFit: 'contain' }}
-                sizes="32px"
-              />
+              <Image src="/logo.png" alt="Logo" fill className="object-contain" sizes="32px" />
             </div>
-            <div className="relative hidden md:block">
-              <h1 className="text-xl md:text-3xl font-['Impact','Arial_Narrow',Arial,sans-serif] text-[#82807C] tracking-wider italic">HWDB</h1>
+            <div className="relative block -ml-3">
+              <h1 className="text-xl md:text-3xl font-['Impact','Arial_Narrow',Arial,sans-serif] text-[#82807C] tracking-wider italic">
+                HWDB
+              </h1>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 sm:hidden">
-            {
-              <>
-                {!session ? (
-                  <button
-                    onClick={() => signIn('google')}
-                    className="flex items-center gap-2 px-2 xs:px-3 py-1.5 xs:py-2 rounded-lg text-xs xs:text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 transition-colors cursor-pointer"
-                  >
-                    {t('auth.login')}
-                  </button>
-                ) : (
-                  <>
-                    <button
-                      onClick={onCollectionClick}
-                      className={`flex items-center gap-2 px-2 xs:px-3 py-1.5 xs:py-2 rounded-lg text-xs xs:text-sm font-medium transition-colors cursor-pointer bg-blue-500 text-white`}
-                    >
-                      {!showCollection ? t('auth.myCollection') : t('common.allModels')}
-                    </button>
-                    <button
-                      onClick={() => signOut({ callbackUrl: window.location.href })}
-                      className="flex items-center gap-2 px-2 xs:px-3 py-1.5 xs:py-2 rounded-lg text-xs xs:text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors cursor-pointer"
-                    >
-                      {t('auth.logout')}
-                    </button>
-                  </>
-                )}
-                <select
-                  value={currentLang}
-                  onChange={(e) => onLanguageChange(e.target.value as Language)}
-                  className="h-7 xs:h-8 sm:h-9 px-1 xs:px-2 sm:px-3 py-0 text-xs xs:text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer bg-white dark:bg-gray-700 dark:text-gray-200"
-                >
-                  {LANGUAGES.map(({ code, label }) => (
-                    <option key={code} value={code}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              </>
-            }
-          </div>
+          <div className="flex items-center gap-2 sm:hidden">{userControls}</div>
         </div>
 
         <div className="flex flex-1 items-center gap-1 xs:gap-2 sm:gap-3 min-w-0">
-          <select
-            value={selectedYear}
-            onChange={(e) => onYearChange(e.target.value)}
-            className="h-7 xs:h-8 sm:h-9 px-0.5 xs:px-1 sm:px-3 py-0 text-xs xs:text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer bg-white dark:bg-gray-700 dark:text-gray-200 min-w-[60px] xs:min-w-[70px] sm:min-w-[80px]"
-          >
-            <option value="">{t('common.allYears')}</option>
-            {YEARS.map((year) => (
-              isYearAvailable(year.value) && year.value !== '' && (
-                <option 
-                  key={year.value} 
-                  value={year.value}
-                >
-                  {year.label}
-                </option>
-              )
-            ))}
-          </select>
-          <select
-            value={selectedField}
-            onChange={(e) => onFieldChange(e.target.value)}
-            className="h-7 xs:h-8 sm:h-9 px-0.5 xs:px-1 sm:px-3 py-0 text-xs xs:text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer bg-white dark:bg-gray-700 dark:text-gray-200 min-w-[60px] xs:min-w-[70px] sm:min-w-[80px]"
-          >
-            {SEARCH_FIELDS.map((field) => (
-              <option key={field.key} value={field.key}>
-                {t(`search.fields.${field.key}`)}
-              </option>
-            ))}
-          </select>
-          <div className="flex flex-1 items-center border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 min-w-[100px] xs:min-w-[120px] sm:min-w-[150px] max-w-[50%]">
-            <input
-              type="text"
-              placeholder={t('common.searchPlaceholder')}
-              value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
-              onKeyDown={onKeyPress}
-              className="h-7 xs:h-8 sm:h-9 px-1 xs:px-2 sm:px-3 py-0 text-xs xs:text-sm focus:outline-none rounded-l-md w-full bg-white dark:bg-gray-700 dark:text-gray-200"
+          <Select
+            value={selectedField ?? 'name'}
+            onValueChange={onFieldChange}
+            options={parameterOptions}
+            className="min-w-[64px] xs:min-w-[72px] sm:min-w-[84px]"
+          />
+          {selectedField === 'year' ? (
+            <Select
+              value={selectedYear}
+              onValueChange={onYearChange}
+              options={yearPickOptions}
+              placeholder={t('common.selectYear')}
+              ariaLabel={t('common.byYear')}
+              className="min-w-[100px] xs:min-w-[120px] sm:min-w-[140px]"
             />
-            {searchQuery && (
-              <button
-                onClick={handleClearSearch}
-                className="h-7 xs:h-8 sm:h-9 px-1 xs:px-2 sm:px-3 py-0 text-xs xs:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 border-l border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center justify-center cursor-pointer"
-              >
-                <ClearIcon />
-              </button>
-            )}
-            <button
-              onClick={onSearch}
-              className="h-7 xs:h-8 sm:h-9 px-1 xs:px-2 sm:px-3 py-0 text-xs xs:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 border-l border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center justify-center cursor-pointer"
-            >
-              <SearchIcon />
-            </button>
-          </div>
+          ) : (
+            <SearchBox
+              value={searchQuery}
+              onChange={onSearchChange}
+              onSearch={onSearch}
+              onKeyPress={onKeyPress}
+              suggestions={suggestions}
+              onSuggestionSelect={onSuggestionSelect}
+            />
+          )}
         </div>
 
-        <div className="hidden sm:flex items-center gap-2 ml-auto">
-              {!session ? (
-                <button
-                  onClick={() => signIn('google')}
-                  className="flex items-center gap-2 px-2 xs:px-3 py-1.5 xs:py-2 rounded-lg text-xs xs:text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 transition-colors cursor-pointer"
-                >
-                  {t('auth.login')}
-                </button>
-              ) : (
-                <>
-                  <button
-                    onClick={onCollectionClick}
-                    className={`flex items-center gap-2 px-2 xs:px-3 py-1.5 xs:py-2 rounded-lg text-xs xs:text-sm font-medium transition-colors cursor-pointer bg-blue-500 text-white`}
-                  >
-                    {!showCollection ? t('auth.myCollection') : t('common.allModels')}
-                  </button>
-                  <button
-                    onClick={() => signOut({ callbackUrl: window.location.href })}
-                    className="flex items-center gap-2 px-2 xs:px-3 py-1.5 xs:py-2 rounded-lg text-xs xs:text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors cursor-pointer"
-                  >
-                    {t('auth.logout')}
-                  </button>
-                </>
-              )}
-              <select
-                value={currentLang}
-                onChange={(e) => onLanguageChange(e.target.value as Language)}
-                className="h-7 xs:h-8 sm:h-9 px-1 xs:px-2 sm:px-3 py-0 text-xs xs:text-sm border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer bg-white dark:bg-gray-700 dark:text-gray-200"
-              >
-                {LANGUAGES.map(({ code, label }) => (
-                  <option key={code} value={code}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            
-        </div>
+        <div className="hidden sm:flex items-center gap-2 ml-auto">{userControls}</div>
       </div>
     </div>
   );
-} 
+}

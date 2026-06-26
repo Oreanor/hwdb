@@ -1,7 +1,7 @@
 const fs = require('fs');
 
-const inputPath = 'public/carsdata.json';
-const outputPath = 'public/carsdata2.json';
+const inputPath = 'data/carsdata.json';
+const outputPath = 'data/carsdata2.json';
 
 const data = JSON.parse(fs.readFileSync(inputPath, 'utf-8'));
 

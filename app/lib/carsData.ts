@@ -4,8 +4,10 @@ import { CarData } from '../types';
 
 let cache: CarData[] | null = null;
 
+export const CARS_DATA_PATH = path.join(process.cwd(), 'data', 'carsdata.json');
+
 /**
- * Loads and parses public/carsdata.json.
+ * Loads and parses data/carsdata.json.
  *
  * The dataset is static (regenerated on deploy), so it is parsed once and kept
  * in module-level memory. This avoids re-reading and re-parsing ~15 MB of JSON
@@ -13,9 +15,14 @@ let cache: CarData[] | null = null;
  */
 export async function loadCarsData(): Promise<CarData[]> {
   if (!cache) {
-    const filePath = path.join(process.cwd(), 'public', 'carsdata.json');
-    const file = await fs.readFile(filePath, 'utf-8');
+    const file = await fs.readFile(CARS_DATA_PATH, 'utf-8');
     cache = JSON.parse(file) as CarData[];
   }
   return cache;
+}
+
+// Drop the in-memory cache so the next load re-reads the file (used after the
+// local series-cleanup tool rewrites it).
+export function invalidateCarsData() {
+  cache = null;
 }

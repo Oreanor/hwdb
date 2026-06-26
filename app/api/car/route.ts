@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { loadCarsData } from '../../lib/carsData';
+import { loadCastingTags } from '../../lib/tagsData';
 
 export async function POST(request: Request) {
   try {
@@ -22,7 +23,14 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json(cars);
+    // Attach the casting's browse tags (make / region / model / themes).
+    const tagMap = await loadCastingTags();
+    const withTags = cars.map((car) => {
+      const tag = tagMap.get(car.lnk);
+      return tag ? { ...car, tags: { mk: tag.mk, rg: tag.rg, md: tag.md, th: tag.th, yr: tag.yr } } : car;
+    });
+
+    return NextResponse.json(withTags);
   } catch (error) {
     console.error('Error processing car request:', error);
     return NextResponse.json(

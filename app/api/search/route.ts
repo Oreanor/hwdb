@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
 import { CarData } from '../../types';
+import { VARIANT_FIELDS, isModelSearchField } from '../../consts';
 import { loadCarsData } from '../../lib/carsData';
-import { carMatchesQuery, tokenize } from '../../lib/carSearch';
+import { carMatchesQuery, includesAll, tokenize } from '../../lib/carSearch';
+import { loadCastingTags, castingMatchesTag } from '../../lib/tagsData';
+import { STATIC_CACHE_HEADERS } from '../../lib/http';
 
-// Variants are returned trimmed to the fields the grid needs (year, image flag, id).
+// Casting results only need year/image flag/id per variant (for the card preview).
 const trimVariants = (car: CarData): CarData => ({
   ...car,
   d: car.d.map(item => ({ y: item.y, p: item.p, id: item.id })),
@@ -25,18 +28,37 @@ export async function GET(request: Request) {
       filteredData = filteredData.filter(car => car.d.some(item => item.y === year));
     }
 
+    // Tag browse (home page): castings matching every token of the tag query.
+    if (field === 'tag' && value && value.trim() !== '') {
+      const tags = await loadCastingTags();
+      const result = filteredData.filter((car) => castingMatchesTag(tags.get(car.lnk), value)).map(trimVariants);
+      return NextResponse.json(result, { headers: STATIC_CACHE_HEADERS });
+    }
+
     if (field && value && value.trim() !== '') {
       const words = tokenize(value);
+      // Model-field searches (series, wheels) return a table of the matching
+      // variants, so keep the full variant fields and drop non-matching variants.
+      // Casting-field searches (name, designer, ...) return whole castings, trimmed.
+      const modelSearch = isModelSearchField(field);
+      const variantField = VARIANT_FIELDS[field];
       filteredData = filteredData
         .filter(car => carMatchesQuery(car, field, words, value))
-        .map(trimVariants)
+        .map(car => {
+          if (!modelSearch || !variantField) return trimVariants(car);
+          const d = car.d.filter(item => {
+            const v = item[variantField];
+            return typeof v === 'string' && includesAll(v, words);
+          });
+          return { ...car, d };
+        })
         .filter(car => car.d.length > 0);
     } else {
       // No search term: return nothing (the year-only listing is handled above).
       filteredData = [];
     }
 
-    return NextResponse.json(filteredData);
+    return NextResponse.json(filteredData, { headers: STATIC_CACHE_HEADERS });
   } catch (error) {
     console.error('Error processing search request:', error);
     return NextResponse.json(

@@ -11,7 +11,16 @@
       "allYears": "Все годы",
       "viewOnFandom": "Посмотреть на HW Fandom",
       "allModels": "Все модели",
-      "backToSearch": "Назад к результатам поиска"
+      "backToSearch": "Назад к результатам поиска",
+      "toggleTheme": "Сменить тему",
+      "language": "Язык",
+      "clear": "Очистить",
+      "settings": "Настройки",
+      "darkMode": "Тёмная тема",
+      "lightMode": "Светлая тема",
+      "byYear": "По году",
+      "selectYear": "Выберите год",
+      "noResults": "Ничего не найдено"
     },
     "auth": {
       "login": "Войти",
@@ -22,7 +31,9 @@
       "number": "Номер",
       "designer": "Дизайнер",
       "description": "Описание",
-      "backToModels": "Назад к моделям"
+      "backToModels": "Назад к моделям",
+      "years": "Годы",
+      "modelYear": "Год модели"
     },
     "search": {
       "fields": {
@@ -44,11 +55,53 @@
     "welcome": {
       "title": "Hot Wheels Database",
       "subtitle": "Эта база данных сделана на основе данных с Hot Wheels Fandom для более удобного просмотра и добавления в свою коллекцию.",
-      "subtitle2": "Вы можете просматривать данные без авторизации, но для того чтобы добавить модель в свою коллекцию, вам необходимо авторизоваться."
+      "subtitle2": "Вы можете просматривать данные без авторизации, но для того чтобы добавить модель в свою коллекцию, вам необходимо авторизоваться.",
+      "byStyle": "Стиль",
+      "byRegion": "Марка / регион",
+      "byEra": "Эпоха"
     },
     "collection": {
       "empty": "У вас пока нет моделей в коллекции",
-      "howToAdd": "Чтобы добавить модель, нажмите на плюс в таблице при просмотре модели"
+      "howToAdd": "Чтобы добавить модель, нажмите на плюс в таблице при просмотре модели",
+      "add": "Добавить в коллекцию",
+      "remove": "Убрать из коллекции",
+      "confirmDelete": "Убрать этот вариант из коллекции?",
+      "errors": {
+        "failedToRemove": "Не удалось убрать из коллекции",
+        "failedToAdd": "Не удалось добавить в коллекцию"
+      }
+    },
+    "view": {
+      "label": "Вид",
+      "table": "Таблица",
+      "gallery": "Галерея"
+    },
+    "filter": {
+      "all": "Все",
+      "mainline": "Мейнлайн",
+      "premium": "Премиум и спец",
+      "shown": "Показано"
+    },
+    "table": {
+      "add": "Добавить",
+      "image": "Фото",
+      "casting": "Кастинг",
+      "variants": "Варианты",
+      "noImage": "Нет фото",
+      "col": {
+        "y": "Год",
+        "N": "Номер",
+        "Sr": "Серия",
+        "c": "Цвет",
+        "Tm": "Тампо",
+        "Bs": "База",
+        "Wn": "Стекло",
+        "In": "Интерьер",
+        "Wh": "Колёса",
+        "Tn": "Toy #",
+        "Cn": "Страна",
+        "Nt": "Заметки"
+      }
     }
   },
   "en": {
@@ -63,7 +116,16 @@
       "allYears": "All Years",
       "viewOnFandom": "View on HW Fandom",
       "allModels": "All Models",
-      "backToSearch": "Back to search results"
+      "backToSearch": "Back to search results",
+      "toggleTheme": "Toggle theme",
+      "language": "Language",
+      "clear": "Clear",
+      "settings": "Settings",
+      "darkMode": "Dark mode",
+      "lightMode": "Light mode",
+      "byYear": "By year",
+      "selectYear": "Select year",
+      "noResults": "Nothing found"
     },
     "auth": {
       "login": "Login",
@@ -74,7 +136,9 @@
       "number": "Number",
       "designer": "Designer",
       "description": "Description",
-      "backToModels": "Back to models"
+      "backToModels": "Back to models",
+      "years": "Years",
+      "modelYear": "Model year"
     },
     "search": {
       "fields": {
@@ -96,11 +160,53 @@
     "welcome": {
       "title": "Hot Wheels Database",
       "subtitle": "This database is based on data from Hot Wheels Fandom for more convenient viewing and adding to your own collection.",
-      "subtitle2": "You can browse the data without logging in, but to add a model to your collection, you need to log in."
+      "subtitle2": "You can browse the data without logging in, but to add a model to your collection, you need to log in.",
+      "byStyle": "Style",
+      "byRegion": "Make / region",
+      "byEra": "Era"
     },
     "collection": {
       "empty": "You don't have any models in your collection yet",
-      "howToAdd": "To add a model, click the plus button in the table when viewing a model"
+      "howToAdd": "To add a model, click the plus button in the table when viewing a model",
+      "add": "Add to collection",
+      "remove": "Remove from collection",
+      "confirmDelete": "Remove this item from your collection?",
+      "errors": {
+        "failedToRemove": "Failed to remove from collection",
+        "failedToAdd": "Failed to add to collection"
+      }
+    },
+    "view": {
+      "label": "View",
+      "table": "Table",
+      "gallery": "Gallery"
+    },
+    "filter": {
+      "all": "All",
+      "mainline": "Mainline",
+      "premium": "Premium & special",
+      "shown": "Shown"
+    },
+    "table": {
+      "add": "Add",
+      "image": "Image",
+      "casting": "Casting",
+      "variants": "Variants",
+      "noImage": "No image",
+      "col": {
+        "y": "Year",
+        "N": "Number",
+        "Sr": "Series",
+        "c": "Color",
+        "Tm": "Tampo",
+        "Bs": "Base",
+        "Wn": "Window",
+        "In": "Interior",
+        "Wh": "Wheels",
+        "Tn": "Toy #",
+        "Cn": "Country",
+        "Nt": "Notes"
+      }
     }
   },
   "de": {
@@ -115,7 +221,16 @@
       "allYears": "Alle Jahre",
       "viewOnFandom": "Auf HW Fandom ansehen",
       "allModels": "Alle Modelle",
-      "backToSearch": "Zurück zu Suchergebnissen"
+      "backToSearch": "Zurück zu Suchergebnissen",
+      "toggleTheme": "Design wechseln",
+      "language": "Sprache",
+      "clear": "Löschen",
+      "settings": "Einstellungen",
+      "darkMode": "Dunkles Design",
+      "lightMode": "Helles Design",
+      "byYear": "Nach Jahr",
+      "selectYear": "Jahr wählen",
+      "noResults": "Nichts gefunden"
     },
     "auth": {
       "login": "Anmelden",
@@ -126,7 +241,9 @@
       "number": "Nummer",
       "designer": "Designer",
       "description": "Beschreibung",
-      "backToModels": "Zurück zu Modellen"
+      "backToModels": "Zurück zu Modellen",
+      "years": "Jahre",
+      "modelYear": "Modelljahr"
     },
     "search": {
       "fields": {
@@ -148,7 +265,53 @@
     "welcome": {
       "title": "Hot Wheels Database",
       "subtitle": "Diese Datenbank basiert auf Daten von Hot Wheels Fandom und dient der komfortableren Ansicht und dem Hinzufügen zu deiner eigenen Sammlung.",
-      "subtitle2": "Du kannst die Daten ohne Anmeldung durchsuchen, aber um ein Modell zu deiner Sammlung hinzuzufügen, musst du dich anmelden."
+      "subtitle2": "Du kannst die Daten ohne Anmeldung durchsuchen, aber um ein Modell zu deiner Sammlung hinzuzufügen, musst du dich anmelden.",
+      "byStyle": "Stil",
+      "byRegion": "Marke / Region",
+      "byEra": "Ära"
+    },
+    "view": {
+      "label": "Ansicht",
+      "table": "Tabelle",
+      "gallery": "Galerie"
+    },
+    "collection": {
+      "empty": "Du hast noch keine Modelle in deiner Sammlung",
+      "howToAdd": "Um ein Modell hinzuzufügen, klicke auf das Plus in der Tabelle in der Modellansicht",
+      "add": "Zur Sammlung hinzufügen",
+      "remove": "Aus Sammlung entfernen",
+      "confirmDelete": "Dieses Modell aus der Sammlung entfernen?",
+      "errors": {
+        "failedToRemove": "Entfernen aus der Sammlung fehlgeschlagen",
+        "failedToAdd": "Hinzufügen zur Sammlung fehlgeschlagen"
+      }
+    },
+    "filter": {
+      "all": "Alle",
+      "mainline": "Mainline",
+      "premium": "Premium & Spezial",
+      "shown": "Angezeigt"
+    },
+    "table": {
+      "add": "Hinzufügen",
+      "image": "Bild",
+      "casting": "Casting",
+      "variants": "Varianten",
+      "noImage": "Kein Bild",
+      "col": {
+        "y": "Jahr",
+        "N": "Nummer",
+        "Sr": "Serie",
+        "c": "Farbe",
+        "Tm": "Tampo",
+        "Bs": "Basis",
+        "Wn": "Fenster",
+        "In": "Innenraum",
+        "Wh": "Räder",
+        "Tn": "Toy #",
+        "Cn": "Land",
+        "Nt": "Notizen"
+      }
     }
   },
   "es": {
@@ -163,7 +326,16 @@
       "allYears": "Todos los años",
       "viewOnFandom": "Ver en HW Fandom",
       "allModels": "Todos los modelos",
-      "backToSearch": "Volver a resultados de búsqueda"
+      "backToSearch": "Volver a resultados de búsqueda",
+      "toggleTheme": "Cambiar tema",
+      "language": "Idioma",
+      "clear": "Borrar",
+      "settings": "Ajustes",
+      "darkMode": "Modo oscuro",
+      "lightMode": "Modo claro",
+      "byYear": "Por año",
+      "selectYear": "Elegir año",
+      "noResults": "No se encontró nada"
     },
     "auth": {
       "login": "Iniciar sesión",
@@ -174,7 +346,9 @@
       "number": "Número",
       "designer": "Diseñador",
       "description": "Descripción",
-      "backToModels": "Volver a modelos"
+      "backToModels": "Volver a modelos",
+      "years": "Años",
+      "modelYear": "Año del modelo"
     },
     "search": {
       "fields": {
@@ -196,7 +370,53 @@
     "welcome": {
       "title": "Hot Wheels Database",
       "subtitle": "Esta base de datos está hecha a partir de los datos de Hot Wheels Fandom para una visualización y adición más cómoda a tu propia colección.",
-      "subtitle2": "Puedes ver los datos sin iniciar sesión, pero para añadir un modelo a tu colección necesitas iniciar sesión."
+      "subtitle2": "Puedes ver los datos sin iniciar sesión, pero para añadir un modelo a tu colección necesitas iniciar sesión.",
+      "byStyle": "Estilo",
+      "byRegion": "Marca / región",
+      "byEra": "Época"
+    },
+    "view": {
+      "label": "Vista",
+      "table": "Tabla",
+      "gallery": "Galería"
+    },
+    "collection": {
+      "empty": "Aún no tienes modelos en tu colección",
+      "howToAdd": "Para añadir un modelo, pulsa el botón más en la tabla al ver un modelo",
+      "add": "Añadir a la colección",
+      "remove": "Quitar de la colección",
+      "confirmDelete": "¿Quitar este elemento de tu colección?",
+      "errors": {
+        "failedToRemove": "No se pudo quitar de la colección",
+        "failedToAdd": "No se pudo añadir a la colección"
+      }
+    },
+    "filter": {
+      "all": "Todos",
+      "mainline": "Mainline",
+      "premium": "Premium y especiales",
+      "shown": "Mostrado"
+    },
+    "table": {
+      "add": "Añadir",
+      "image": "Imagen",
+      "casting": "Casting",
+      "variants": "Variantes",
+      "noImage": "Sin imagen",
+      "col": {
+        "y": "Año",
+        "N": "Número",
+        "Sr": "Serie",
+        "c": "Color",
+        "Tm": "Tampo",
+        "Bs": "Base",
+        "Wn": "Ventana",
+        "In": "Interior",
+        "Wh": "Ruedas",
+        "Tn": "Toy #",
+        "Cn": "País",
+        "Nt": "Notas"
+      }
     }
   },
   "fr": {
@@ -211,7 +431,16 @@
       "allYears": "Toutes les années",
       "viewOnFandom": "Voir sur HW Fandom",
       "allModels": "Tous les modèles",
-      "backToSearch": "Retour aux résultats de recherche"
+      "backToSearch": "Retour aux résultats de recherche",
+      "toggleTheme": "Changer de thème",
+      "language": "Langue",
+      "clear": "Effacer",
+      "settings": "Paramètres",
+      "darkMode": "Mode sombre",
+      "lightMode": "Mode clair",
+      "byYear": "Par année",
+      "selectYear": "Choisir l’année",
+      "noResults": "Aucun résultat"
     },
     "auth": {
       "login": "Connexion",
@@ -222,7 +451,9 @@
       "number": "Numéro",
       "designer": "Designer",
       "description": "Description",
-      "backToModels": "Retour aux modèles"
+      "backToModels": "Retour aux modèles",
+      "years": "Années",
+      "modelYear": "Année modèle"
     },
     "search": {
       "fields": {
@@ -244,7 +475,53 @@
     "welcome": {
       "title": "Hot Wheels Database",
       "subtitle": "Cette base de données est basée sur les données de Hot Wheels Fandom pour une consultation et un ajout plus pratiques à votre propre collection.",
-      "subtitle2": "Vous pouvez parcourir les données sans vous connecter, mais pour ajouter un modèle à votre collection, vous devez vous connecter."
+      "subtitle2": "Vous pouvez parcourir les données sans vous connecter, mais pour ajouter un modèle à votre collection, vous devez vous connecter.",
+      "byStyle": "Style",
+      "byRegion": "Marque / région",
+      "byEra": "Époque"
+    },
+    "view": {
+      "label": "Vue",
+      "table": "Tableau",
+      "gallery": "Galerie"
+    },
+    "collection": {
+      "empty": "Vous n'avez pas encore de modèles dans votre collection",
+      "howToAdd": "Pour ajouter un modèle, cliquez sur le bouton plus dans le tableau en consultant un modèle",
+      "add": "Ajouter à la collection",
+      "remove": "Retirer de la collection",
+      "confirmDelete": "Retirer cet élément de votre collection ?",
+      "errors": {
+        "failedToRemove": "Échec de la suppression de la collection",
+        "failedToAdd": "Échec de l'ajout à la collection"
+      }
+    },
+    "filter": {
+      "all": "Tous",
+      "mainline": "Mainline",
+      "premium": "Premium & spéciales",
+      "shown": "Affiché"
+    },
+    "table": {
+      "add": "Ajouter",
+      "image": "Image",
+      "casting": "Casting",
+      "variants": "Variantes",
+      "noImage": "Pas d image",
+      "col": {
+        "y": "Année",
+        "N": "Numéro",
+        "Sr": "Série",
+        "c": "Couleur",
+        "Tm": "Tampo",
+        "Bs": "Base",
+        "Wn": "Vitre",
+        "In": "Intérieur",
+        "Wh": "Roues",
+        "Tn": "Toy #",
+        "Cn": "Pays",
+        "Nt": "Notes"
+      }
     }
   },
   "pt": {
@@ -259,7 +536,16 @@
       "allYears": "Todos os anos",
       "viewOnFandom": "Ver no HW Fandom",
       "allModels": "Todos os modelos",
-      "backToSearch": "Voltar aos resultados da pesquisa"
+      "backToSearch": "Voltar aos resultados da pesquisa",
+      "toggleTheme": "Alternar tema",
+      "language": "Idioma",
+      "clear": "Limpar",
+      "settings": "Configurações",
+      "darkMode": "Modo escuro",
+      "lightMode": "Modo claro",
+      "byYear": "Por ano",
+      "selectYear": "Escolher ano",
+      "noResults": "Nada encontrado"
     },
     "auth": {
       "login": "Entrar",
@@ -270,7 +556,9 @@
       "number": "Número",
       "designer": "Designer",
       "description": "Descrição",
-      "backToModels": "Voltar aos modelos"
+      "backToModels": "Voltar aos modelos",
+      "years": "Anos",
+      "modelYear": "Ano do modelo"
     },
     "search": {
       "fields": {
@@ -292,7 +580,53 @@
     "welcome": {
       "title": "Hot Wheels Database",
       "subtitle": "Esta base de dados é feita com base nos dados do Hot Wheels Fandom para uma visualização e adição mais conveniente à sua própria coleção.",
-      "subtitle2": "Você pode navegar pelos dados sem fazer login, mas para adicionar um modelo à sua coleção, é necessário fazer login."
+      "subtitle2": "Você pode navegar pelos dados sem fazer login, mas para adicionar um modelo à sua coleção, é necessário fazer login.",
+      "byStyle": "Estilo",
+      "byRegion": "Marca / região",
+      "byEra": "Época"
+    },
+    "view": {
+      "label": "Visualização",
+      "table": "Tabela",
+      "gallery": "Galeria"
+    },
+    "collection": {
+      "empty": "Você ainda não tem modelos na sua coleção",
+      "howToAdd": "Para adicionar um modelo, clique no botão de mais na tabela ao visualizar um modelo",
+      "add": "Adicionar à coleção",
+      "remove": "Remover da coleção",
+      "confirmDelete": "Remover este item da sua coleção?",
+      "errors": {
+        "failedToRemove": "Falha ao remover da coleção",
+        "failedToAdd": "Falha ao adicionar à coleção"
+      }
+    },
+    "filter": {
+      "all": "Todos",
+      "mainline": "Mainline",
+      "premium": "Premium e especiais",
+      "shown": "Exibido"
+    },
+    "table": {
+      "add": "Adicionar",
+      "image": "Imagem",
+      "casting": "Casting",
+      "variants": "Variantes",
+      "noImage": "Sem imagem",
+      "col": {
+        "y": "Ano",
+        "N": "Número",
+        "Sr": "Série",
+        "c": "Cor",
+        "Tm": "Tampo",
+        "Bs": "Base",
+        "Wn": "Janela",
+        "In": "Interior",
+        "Wh": "Rodas",
+        "Tn": "Toy #",
+        "Cn": "País",
+        "Nt": "Notas"
+      }
     }
   },
   "nl": {
@@ -307,7 +641,16 @@
       "allYears": "Alle jaren",
       "viewOnFandom": "Bekijk op HW Fandom",
       "allModels": "Alle modellen",
-      "backToSearch": "Terug naar zoekresultaten"
+      "backToSearch": "Terug naar zoekresultaten",
+      "toggleTheme": "Thema wisselen",
+      "language": "Taal",
+      "clear": "Wissen",
+      "settings": "Instellingen",
+      "darkMode": "Donker thema",
+      "lightMode": "Licht thema",
+      "byYear": "Op jaar",
+      "selectYear": "Kies jaar",
+      "noResults": "Niets gevonden"
     },
     "auth": {
       "login": "Inloggen",
@@ -318,7 +661,9 @@
       "number": "Nummer",
       "designer": "Ontwerper",
       "description": "Beschrijving",
-      "backToModels": "Terug naar modellen"
+      "backToModels": "Terug naar modellen",
+      "years": "Jaren",
+      "modelYear": "Modeljaar"
     },
     "search": {
       "fields": {
@@ -340,11 +685,53 @@
     "welcome": {
       "title": "Hot Wheels Database",
       "subtitle": "Deze database is gebaseerd op gegevens van Hot Wheels Fandom voor gemakkelijker bekijken en toevoegen aan je eigen collectie.",
-      "subtitle2": "Je kunt de gegevens bekijken zonder in te loggen, maar om een model aan je collectie toe te voegen, moet je inloggen."
+      "subtitle2": "Je kunt de gegevens bekijken zonder in te loggen, maar om een model aan je collectie toe te voegen, moet je inloggen.",
+      "byStyle": "Stijl",
+      "byRegion": "Merk / regio",
+      "byEra": "Tijdperk"
     },
     "collection": {
       "empty": "Je hebt nog geen modellen in je collectie",
-      "howToAdd": "Om een model toe te voegen, klik op de plus in de tabel bij het bekijken van een model"
+      "howToAdd": "Klik op de plusknop in de tabel bij een model om het toe te voegen",
+      "add": "Aan collectie toevoegen",
+      "remove": "Uit collectie verwijderen",
+      "confirmDelete": "Dit item uit je collectie verwijderen?",
+      "errors": {
+        "failedToRemove": "Verwijderen uit collectie mislukt",
+        "failedToAdd": "Toevoegen aan collectie mislukt"
+      }
+    },
+    "view": {
+      "label": "Weergave",
+      "table": "Tabel",
+      "gallery": "Galerij"
+    },
+    "filter": {
+      "all": "Alle",
+      "mainline": "Mainline",
+      "premium": "Premium & speciaal",
+      "shown": "Getoond"
+    },
+    "table": {
+      "add": "Toevoegen",
+      "image": "Afbeelding",
+      "casting": "Casting",
+      "variants": "Varianten",
+      "noImage": "Geen afbeelding",
+      "col": {
+        "y": "Jaar",
+        "N": "Nummer",
+        "Sr": "Serie",
+        "c": "Kleur",
+        "Tm": "Tampo",
+        "Bs": "Basis",
+        "Wn": "Raam",
+        "In": "Interieur",
+        "Wh": "Wielen",
+        "Tn": "Toy #",
+        "Cn": "Land",
+        "Nt": "Notities"
+      }
     }
   },
   "uk": {
@@ -359,7 +746,16 @@
       "allYears": "Всі роки",
       "viewOnFandom": "Переглянути на HW Fandom",
       "allModels": "Всі моделі",
-      "backToSearch": "Назад до результатів пошуку"
+      "backToSearch": "Назад до результатів пошуку",
+      "toggleTheme": "Змінити тему",
+      "language": "Мова",
+      "clear": "Очистити",
+      "settings": "Налаштування",
+      "darkMode": "Темна тема",
+      "lightMode": "Світла тема",
+      "byYear": "За роком",
+      "selectYear": "Оберіть рік",
+      "noResults": "Нічого не знайдено"
     },
     "auth": {
       "login": "Увійти",
@@ -370,7 +766,9 @@
       "number": "Номер",
       "designer": "Дизайнер",
       "description": "Опис",
-      "backToModels": "Назад до моделей"
+      "backToModels": "Назад до моделей",
+      "years": "Роки",
+      "modelYear": "Рік моделі"
     },
     "search": {
       "fields": {
@@ -392,11 +790,53 @@
     "welcome": {
       "title": "Hot Wheels Database",
       "subtitle": "Ця база даних створена на основі даних з Hot Wheels Fandom для зручнішого перегляду та додавання у власну колекцію.",
-      "subtitle2": "Ви можете переглядати дані без авторизації, але щоб додати модель у свою колекцію, потрібно авторизуватися."
+      "subtitle2": "Ви можете переглядати дані без авторизації, але щоб додати модель у свою колекцію, потрібно авторизуватися.",
+      "byStyle": "Стиль",
+      "byRegion": "Марка / регіон",
+      "byEra": "Епоха"
     },
     "collection": {
       "empty": "У вас поки немає моделей у колекції",
-      "howToAdd": "Щоб додати модель, натисніть на плюс у таблиці при перегляді моделі"
+      "howToAdd": "Щоб додати модель, натисніть плюс у таблиці під час перегляду моделі",
+      "add": "Додати до колекції",
+      "remove": "Прибрати з колекції",
+      "confirmDelete": "Прибрати цей варіант з колекції?",
+      "errors": {
+        "failedToRemove": "Не вдалося прибрати з колекції",
+        "failedToAdd": "Не вдалося додати до колекції"
+      }
+    },
+    "view": {
+      "label": "Вигляд",
+      "table": "Таблиця",
+      "gallery": "Галерея"
+    },
+    "filter": {
+      "all": "Усі",
+      "mainline": "Мейнлайн",
+      "premium": "Преміум і спец",
+      "shown": "Показано"
+    },
+    "table": {
+      "add": "Додати",
+      "image": "Фото",
+      "casting": "Кастинг",
+      "variants": "Варіанти",
+      "noImage": "Немає фото",
+      "col": {
+        "y": "Рік",
+        "N": "Номер",
+        "Sr": "Серія",
+        "c": "Колір",
+        "Tm": "Тампо",
+        "Bs": "База",
+        "Wn": "Скло",
+        "In": "Інтерʼєр",
+        "Wh": "Колеса",
+        "Tn": "Toy #",
+        "Cn": "Країна",
+        "Nt": "Нотатки"
+      }
     }
   }
-} 
+}

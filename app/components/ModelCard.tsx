@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import { CarData } from '../types';
-import { getImageUrl, formatCarName } from '../utils';
-import { memo, useMemo, useState } from 'react';
+import { getImageUrl, getPreviewUrl, formatCarName } from '../utils';
+import { memo, useMemo } from 'react';
+import Thumbnail from './Thumbnail';
 
 interface ModelCardProps {
   car: CarData;
@@ -10,8 +10,6 @@ interface ModelCardProps {
 }
 
 const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear }: ModelCardProps) {
-  const [imageError, setImageError] = useState(false);
-  
   const firstVariantWithImage = useMemo(
     () => selectedYear 
       ? car.d.find(item => item.y === selectedYear && item.p === 't')
@@ -19,6 +17,7 @@ const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear }: M
     [car.d, selectedYear]
   );
   const imageUrl = firstVariantWithImage ? getImageUrl(firstVariantWithImage) : undefined;
+  const previewUrl = firstVariantWithImage ? getPreviewUrl(firstVariantWithImage) : undefined;
   const formattedName = formatCarName(car.lnk);
 
   // Count variants, respecting the selected-year filter.
@@ -46,21 +45,7 @@ const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear }: M
       className="flex flex-col items-center p-2 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer"
       onClick={() => onModelClick(car)}
     >
-      <div className="relative w-full h-48">
-        {imageUrl && !imageError ? (
-          <Image
-            src={imageUrl}
-            alt={formattedName}
-            fill
-            className="object-contain"
-            onError={() => setImageError(true)}
-          />
-        ) : (
-          <div className="w-full h-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
-            <span className="text-gray-400 dark:text-gray-500 text-sm">No image</span>
-          </div>
-        )}
-      </div>
+      <Thumbnail url={previewUrl} fallbackUrl={imageUrl} alt={formattedName} className="w-full h-48" />
       <p className="text-sm text-center font-bold text-gray-900 dark:text-gray-100 line-clamp-1">
         {formattedName} <span className="text-gray-500 dark:text-gray-400 font-medium text-xs">({variantCount})</span>
       </p>

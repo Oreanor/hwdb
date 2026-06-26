@@ -10,8 +10,26 @@ export const getImageUrl = (item: CarDataItem): string | undefined => {
     return undefined;
 };
 
+// Small JPEG/WebP preview (~256px) for list/grid thumbnails; falls back to the
+// full image if a preview hasn't been generated/uploaded yet (see Thumbnail).
+export const getPreviewUrl = (item: CarDataItem): string | undefined => {
+    if (item.id) {
+        return supabase.storage
+            .from('images')
+            .getPublicUrl(`webp2/preview/${item.id}.webp`).data.publicUrl;
+    }
+    return undefined;
+};
+
 export const formatCarName = (name: string) => {
-    return decodeURIComponent(name.replace(/_/g, ' '));
+    const spaced = name.replace(/_/g, ' ');
+    // Some wiki slugs contain a bare '%' that isn't valid percent-encoding,
+    // which makes decodeURIComponent throw — fall back to the raw text.
+    try {
+        return decodeURIComponent(spaced);
+    } catch {
+        return spaced;
+    }
 };
 
 export const decodeHtmlEntities = (text: string) => {

@@ -1,90 +1,109 @@
-import Image from 'next/image';
-import { useState, useMemo, memo, useCallback } from 'react';
+import { useState, useMemo, memo } from 'react';
 import { CarData, CarDataItem, SortConfig } from '../types';
-import { formatCarName, getImageUrl } from '../utils';
+import { formatCarName, getImageUrl, getPreviewUrl } from '../utils';
 import { FIELD_ORDER, COLLAPSED_COLUMNS_COOKIE } from '../consts';
-import PlusIcon from './icons/PlusIcon';
+import { Plus, X } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import ImageModal from './ImageModal';
+import { t } from '../i18n';
+import { useImageCarousel } from '../hooks/useImageCarousel';
+import CarouselModal from './CarouselModal';
+import Thumbnail from './Thumbnail';
+import LinkButton from './LinkButton';
+import ClampCell from './ClampCell';
 
 
 interface ModelsTableProps {
   cars: CarData[];
-  onImageClick: (url: string) => void;
   sortConfig: SortConfig;
   onSortChange: (config: SortConfig | ((prev: SortConfig) => SortConfig)) => void;
   selectedYear?: string;
   onAddToCollection?: (id: string) => void;
   collection: string[];
+  onSeriesClick?: (series: string) => void;
+  onModelClick?: (car: CarData) => void;
+  onYearClick?: (year: string) => void;
+  showCastingName?: boolean;
 }
 
 interface TableRowProps {
   car: CarData;
   item: CarDataItem;
-  index: number;
   collapsedColumns: Set<string>;
   onImageClick: (url: string) => void;
   isCollected: boolean;
   onAddToCollection?: (id: string) => void;
+  onSeriesClick?: (series: string) => void;
+  onModelClick?: (car: CarData) => void;
+  onYearClick?: (year: string) => void;
+  showCastingName?: boolean;
 }
 
-const TableRow = memo(({ car, item, collapsedColumns, onImageClick, isCollected, onAddToCollection }: TableRowProps) => {
-  const [imageError, setImageError] = useState(false);
+const TableRow = memo(({ car, item, collapsedColumns, onImageClick, isCollected, onAddToCollection, onSeriesClick, onModelClick, onYearClick, showCastingName }: TableRowProps) => {
   const { data: session } = useSession();
   const imageUrl = item.p === 't' ? getImageUrl(item) : undefined;
+  const previewUrl = item.p === 't' ? getPreviewUrl(item) : undefined;
 
   return (
-    <tr 
-      key={`${item.id}`} 
-      className={`hover:bg-gray-50 dark:hover:bg-gray-700 ${
+    <tr
+      key={`${item.id}`}
+      // content-visibility skips layout/paint for off-screen rows (year views
+      // can reach ~1750 rows); contain-intrinsic-size reserves an estimated height.
+      className={`hover:bg-gray-50 dark:hover:bg-gray-700 [content-visibility:auto] [contain-intrinsic-size:auto_84px] ${
         isCollected ? 'bg-gray-100 dark:bg-gray-700' : ''
       }`}
     >
       {session?.user && (
         <td className="p-2 whitespace-nowrap">
-          <button 
+          <button
             className={`w-6 h-6 transition-colors cursor-pointer ${
-              isCollected 
-                ? 'text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300' 
+              isCollected
+                ? 'text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300'
                 : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'
             }`}
+            title={isCollected ? t('collection.remove') : t('collection.add')}
             onClick={() => onAddToCollection && item.id && onAddToCollection(item.id)}
           >
-            <PlusIcon />
+            {isCollected ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
           </button>
         </td>
       )}
       <td className="p-2 whitespace-nowrap">
-        <div 
-          className="w-16 h-16 relative cursor-pointer"
-          onClick={() => imageUrl && onImageClick(imageUrl)}
-        >
-          {imageUrl && !imageError ? (
-            <Image
-              src={imageUrl}
-              alt={`${formatCarName(car.lnk)}`}
-              fill
-              className="object-contain"
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <div className="w-full h-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
-              <span className="text-gray-400 dark:text-gray-500 text-xs">No image</span>
-            </div>
-          )}
-        </div>
+        <Thumbnail
+          url={previewUrl}
+          fallbackUrl={imageUrl}
+          alt={formatCarName(car.lnk)}
+          onClick={imageUrl ? () => onImageClick(imageUrl) : undefined}
+          className="w-16 h-16"
+        />
       </td>
+      {showCastingName && (
+        <td className="p-2 text-sm font-medium break-words min-w-[120px]">
+          {onModelClick ? (
+            <LinkButton onClick={() => onModelClick(car)}>{formatCarName(car.lnk)}</LinkButton>
+          ) : (
+            <span className="text-gray-900 dark:text-gray-200">{formatCarName(car.lnk)}</span>
+          )}
+        </td>
+      )}
       {FIELD_ORDER.map(field => {
         const value = item[field.key] || '-';
+        const clickableSeries = field.key === 'Sr' && onSeriesClick && item.Sr;
+        const clickableYear = field.key === 'y' && onYearClick && item.y;
         return (
-          <td 
-            key={field.key} 
+          <td
+            key={field.key}
             className={`p-2 text-sm text-gray-900 dark:text-gray-200 ${
               collapsedColumns.has(field.key) ? 'w-[40px] min-w-[40px] max-w-[40px] p-0 bg-gray-50 dark:bg-gray-700 overflow-hidden' : 'break-words'
             }`}
           >
             <div className={collapsedColumns.has(field.key) ? 'h-0 overflow-hidden' : ''}>
-              {value}
+              {clickableSeries ? (
+                <LinkButton onClick={() => onSeriesClick(item.Sr as string)}>{value}</LinkButton>
+              ) : clickableYear ? (
+                <LinkButton onClick={() => onYearClick(item.y)}>{value}</LinkButton>
+              ) : (
+                <ClampCell text={String(value)} />
+              )}
             </div>
           </td>
         );
@@ -95,15 +114,15 @@ const TableRow = memo(({ car, item, collapsedColumns, onImageClick, isCollected,
 
 TableRow.displayName = 'TableRow';
 
-const TableHeader = memo(({ 
-  field, 
-  sortConfig, 
-  onSort, 
-  collapsedColumns, 
-  onToggleCollapse 
-}: { 
-  field: (typeof FIELD_ORDER)[number]; 
-  sortConfig: SortConfig | null; 
+const TableHeader = memo(({
+  field,
+  sortConfig,
+  onSort,
+  collapsedColumns,
+  onToggleCollapse
+}: {
+  field: (typeof FIELD_ORDER)[number];
+  sortConfig: SortConfig | null;
   onSort: (field: string) => void;
   collapsedColumns: Set<string>;
   onToggleCollapse: (field: string) => void;
@@ -112,20 +131,20 @@ const TableHeader = memo(({
   const isCollapsed = collapsedColumns.has(field.key);
 
   return (
-    <th 
+    <th
       className={`p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap ${
         isCollapsed ? 'w-[30px] min-w-[30px] max-w-[30px] p-0 bg-gray-50 dark:bg-gray-700 overflow-hidden' : ''
       } border-r border-gray-200 dark:border-gray-600`}
     >
       <div className="flex items-center justify-between">
         {isCollapsed ? (
-          <span className="text-gray-600 dark:text-gray-400">{field.label[0]}</span>
+          <span className="text-gray-600 dark:text-gray-400">{t(`table.col.${field.key}`).charAt(0)}</span>
         ) : (
-          <span 
+          <span
             className="cursor-pointer hover:text-gray-600 dark:hover:text-gray-400"
             onClick={() => onSort(field.key)}
           >
-            {field.label}
+            {t(`table.col.${field.key}`)}
             {isSorted && (
               <span className="ml-1">
                 {sortConfig?.direction === 'asc' ? '↑' : '↓'}
@@ -146,13 +165,17 @@ const TableHeader = memo(({
 
 TableHeader.displayName = 'TableHeader';
 
-const ModelsTable: React.FC<ModelsTableProps> = ({ 
+const ModelsTable: React.FC<ModelsTableProps> = ({
   cars,
   sortConfig,
   onSortChange,
   selectedYear,
   onAddToCollection,
-  collection
+  collection,
+  onSeriesClick,
+  onModelClick,
+  onYearClick,
+  showCastingName
 }) => {
   const { data: session } = useSession();
   const [collapsedColumns, setCollapsedColumns] = useState<Set<string>>(() => {
@@ -161,47 +184,22 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
     return new Set(saved ? JSON.parse(saved) : []);
   });
 
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState<number>(-1);
-
-  // Collect every image shown in the table (for modal prev/next navigation).
-  const allImages = useMemo(() => {
-    const images: string[] = [];
+  // Every image shown in the table, in order, for the modal's prev/next carousel.
+  const photos = useMemo(() => {
+    const result: { url: string; year: string; series?: string; name: string }[] = [];
     cars.forEach(car => {
+      const name = formatCarName(car.lnk);
       car.d
         .filter(item => !selectedYear || item.y === selectedYear)
         .filter(item => item.p === 't')
         .forEach(item => {
-          const imageUrl = getImageUrl(item);
-          if (imageUrl) {
-            images.push(imageUrl);
-          }
+          const url = getImageUrl(item);
+          if (url) result.push({ url, year: item.y, series: item.Sr, name });
         });
     });
-    return images;
+    return result;
   }, [cars, selectedYear]);
-
-  const handleImageClick = useCallback((imageUrl: string) => {
-    const index = allImages.indexOf(imageUrl);
-    if (index !== -1) {
-      setCurrentImageIndex(index);
-      setSelectedImage(imageUrl);
-    }
-  }, [allImages]);
-
-  const handlePrevImage = useCallback(() => {
-    if (currentImageIndex > 0) {
-      setCurrentImageIndex(currentImageIndex - 1);
-      setSelectedImage(allImages[currentImageIndex - 1]);
-    }
-  }, [currentImageIndex, allImages]);
-
-  const handleNextImage = useCallback(() => {
-    if (currentImageIndex < allImages.length - 1) {
-      setCurrentImageIndex(currentImageIndex + 1);
-      setSelectedImage(allImages[currentImageIndex + 1]);
-    }
-  }, [currentImageIndex, allImages]);
+  const carousel = useImageCarousel(photos);
 
   const handleSort = (field: string) => {
     if (collapsedColumns.has(field)) {
@@ -236,7 +234,7 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
   };
 
   const allRows = useMemo(() => {
-    const rows = cars.flatMap(car => 
+    const rows = cars.flatMap(car =>
       car.d
         .filter(item => !selectedYear || item.y === selectedYear)
         .map((item, index) => ({
@@ -260,7 +258,7 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
         }
 
         if (aValue === bValue) return 0;
-        
+
         const comparison = aValue.localeCompare(bValue);
         return sortConfig.direction === 'asc' ? comparison : -comparison;
       });
@@ -269,24 +267,6 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
     return rows;
   }, [cars, sortConfig, selectedYear]);
 
-  const visibleRows = useMemo(() => {
-    return allRows
-      .map(({ car, item, index }) => {
-        return (
-          <TableRow
-            key={`${car.lnk}-${index}`}
-            car={car}
-            item={item}
-            index={index}
-            collapsedColumns={collapsedColumns}
-            onImageClick={handleImageClick}
-            isCollected={collection.some(c => c === item.id)}
-            onAddToCollection={() => onAddToCollection && item.id && onAddToCollection(item.id)}
-          />
-        );
-      });
-  }, [allRows, collapsedColumns, handleImageClick, collection, onAddToCollection]);
-
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -294,12 +274,17 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
           <tr>
             {session?.user && (
               <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap w-[40px] border-r border-gray-200 dark:border-gray-600">
-                Add
+                {t('table.add')}
               </th>
             )}
             <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap w-[100px] border-r border-gray-200 dark:border-gray-600">
-              Image
+              {t('table.image')}
             </th>
+            {showCastingName && (
+              <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap border-r border-gray-200 dark:border-gray-600">
+                {t('table.casting')}
+              </th>
+            )}
             {FIELD_ORDER.map(field => (
               <TableHeader
                 key={field.key}
@@ -313,21 +298,26 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
           </tr>
         </thead>
         <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-          {visibleRows}
+          {allRows.map(({ car, item, index }) => (
+            <TableRow
+              key={`${car.lnk}-${index}`}
+              car={car}
+              item={item}
+              collapsedColumns={collapsedColumns}
+              onImageClick={carousel.open}
+              isCollected={collection.some(c => c === item.id)}
+              onAddToCollection={() => onAddToCollection && item.id && onAddToCollection(item.id)}
+              onSeriesClick={onSeriesClick}
+              onModelClick={onModelClick}
+              onYearClick={onYearClick}
+              showCastingName={showCastingName}
+            />
+          ))}
         </tbody>
       </table>
-      {selectedImage && allImages.length > 0 && (
-        <ImageModal
-          imageUrl={selectedImage}
-          onClose={() => setSelectedImage(null)}
-          onPrev={handlePrevImage}
-          onNext={handleNextImage}
-          hasPrev={currentImageIndex > 0}
-          hasNext={currentImageIndex < allImages.length - 1}
-        />
-      )}
+      <CarouselModal carousel={carousel} />
     </div>
   );
 };
 
-export default memo(ModelsTable); 
+export default memo(ModelsTable);

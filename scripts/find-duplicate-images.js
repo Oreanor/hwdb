@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 // Read the carsdata.json file
-const carsData = JSON.parse(fs.readFileSync('public/carsdata.json', 'utf8'));
+const carsData = JSON.parse(fs.readFileSync('data/carsdata.json', 'utf8'));
 
 // Function to find models with duplicate images
 function findModelsWithDuplicateImages() {

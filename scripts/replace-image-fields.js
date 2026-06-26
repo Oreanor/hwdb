@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 // Read the carsdata.json file
-const carsData = JSON.parse(fs.readFileSync('public/carsdata.json', 'utf8'));
+const carsData = JSON.parse(fs.readFileSync('data/carsdata.json', 'utf8'));
 
 // Replace non-empty 'p' field values with 't'
 carsData.forEach(car => {
@@ -13,6 +13,6 @@ carsData.forEach(car => {
 });
 
 // Write the modified data back to the file
-fs.writeFileSync('public/carsdata.json', JSON.stringify(carsData, null, 2));
+fs.writeFileSync('data/carsdata.json', JSON.stringify(carsData, null, 2));
 
 console.log('Successfully replaced all non-empty image fields (p) with "t" in carsdata.json'); 

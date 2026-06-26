@@ -82,7 +82,8 @@ npm run lint    # run ESLint
 
 ## Data
 
-The car catalogue lives in `public/carsdata.json`. It is a static dataset loaded
+The car catalogue lives in `data/carsdata.json` (outside `public/`, so it is not
+served as a static asset — only the API routes read it server-side). It is loaded
 once into memory by the API routes (see `app/lib/carsData.ts`) and shaped as:
 
 ```ts
@@ -128,9 +129,10 @@ app/
   types.ts           # Shared types
   utils.ts           # Image URLs, name formatting, keyboard remapping
   page.tsx           # Main page (search/grid/model/collection state machine)
-public/
-  carsdata.json      # The catalogue
-scripts/             # One-off data maintenance scripts
+data/
+  carsdata.json      # The catalogue (server-only, not web-accessible)
+scripts/             # Data maintenance + wiki-sync scripts
+  output/            # Generated reports (git-ignored)
 ```
 
 ## Deployment

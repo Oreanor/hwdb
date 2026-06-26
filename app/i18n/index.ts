@@ -1,20 +1,20 @@
 import translations from './translations.json';
+import { LANGUAGE_STORAGE_KEY } from '../consts';
 
 export type Language = 'ru' | 'en' | 'de' | 'es' | 'fr' | 'pt' | 'nl' | 'uk';
 export type TranslationKey = string;
 
 export type TranslationValue = string | { [key: string]: TranslationValue };
 
-const LANGUAGE_KEY = 'hwdb_language';
-
-// Always defaults to 'ru' on the server so SSR output is deterministic;
-// the client switches to the saved language after hydration.
-let currentLanguage: Language = 'ru';
+// Default language. Must match the initial `currentLang` state in page.tsx so
+// the settings selection and the rendered text agree before a saved language is
+// read. The client switches to the saved language after hydration.
+let currentLanguage: Language = 'en';
 
 export const setLanguage = (lang: Language) => {
   currentLanguage = lang;
   if (typeof window !== 'undefined') {
-    localStorage.setItem(LANGUAGE_KEY, lang);
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
   }
 };
 
