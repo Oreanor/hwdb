@@ -1,10 +1,5 @@
-import { FANDOM_BASE_URL } from './consts';
 import { CarDataItem } from './types';
-import { supabase } from './services/supabase';
-
-export const getFandomUrl = (path: string) => {
-    return `${FANDOM_BASE_URL}${path}`;
-};
+import { supabase } from './lib/supabase';
 
 export const getImageUrl = (item: CarDataItem): string | undefined => {
     if (item.id) {

@@ -18,7 +18,7 @@ export const FIELD_ORDER = [
   { key: 'Nt', label: 'Notes' }
 ] as const;
 
-// Генерируем список годов от 1968 до текущего года
+// Build the list of years from 1968 to the current year.
 const currentYear = new Date().getFullYear();
 export const YEARS = Array.from(
   { length: currentYear - 1968 + 1 }, 
@@ -37,14 +37,14 @@ export const SEARCH_FIELDS = [
   { key: 'country', label: 'Country' }
 ] as const;
 
-// Маппинг полей поиска на реальные поля в объектах
+// Maps a search field to the matching top-level car property.
 export const MAIN_OBJECT_FIELDS: Record<string, keyof CarData> = {
   'name': 'lnk',
   'designer': 'ds',
   'description': 'dsc'
 };
 
-// Маппинг полей поиска на поля в вариантах
+// Maps a search field to the matching per-variant property.
 export const VARIANT_FIELDS: Record<string, keyof CarDataItem> = {
   'series': 'Sr',
   'color': 'c',
@@ -55,7 +55,6 @@ export const VARIANT_FIELDS: Record<string, keyof CarDataItem> = {
 };
 
 export const COLLAPSED_COLUMNS_COOKIE = 'hwdb_collapsed_columns';
-export const ITEMS_PER_PAGE = 1000;
 
 export const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'ru', label: 'РУ' },

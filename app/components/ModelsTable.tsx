@@ -164,7 +164,7 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(-1);
 
-  // Собираем все доступные изображения из таблицы
+  // Collect every image shown in the table (for modal prev/next navigation).
   const allImages = useMemo(() => {
     const images: string[] = [];
     cars.forEach(car => {
@@ -226,7 +226,7 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
       newCollapsed.delete(field);
     } else {
       newCollapsed.add(field);
-      // Если сворачиваем столбец, по которому идет сортировка - сбрасываем сортировку
+      // Collapsing the sorted column clears the sort.
       if (sortConfig?.field === field) {
         onSortChange(null);
       }

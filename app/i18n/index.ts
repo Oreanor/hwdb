@@ -7,7 +7,8 @@ export type TranslationValue = string | { [key: string]: TranslationValue };
 
 const LANGUAGE_KEY = 'hwdb_language';
 
-// Начальное значение всегда 'ru' для серверного рендеринга
+// Always defaults to 'ru' on the server so SSR output is deterministic;
+// the client switches to the saved language after hydration.
 let currentLanguage: Language = 'ru';
 
 export const setLanguage = (lang: Language) => {

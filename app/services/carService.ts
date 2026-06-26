@@ -37,7 +37,7 @@ export const fetchCarByLnk = async (lnk: string): Promise<CarData> => {
   return cars[0];
 };
 
-// Получить варианты по массиву id (hwid)
+// Fetch variants by their ids (used to render a user's collection).
 export const fetchVariantsByIds = async (ids: string[]): Promise<CarData[]> => {
   const response = await fetch('/api/variants', {
     method: 'POST',

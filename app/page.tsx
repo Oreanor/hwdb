@@ -69,27 +69,26 @@ export default function Home() {
   }, []);
 
   const handleSearch = useCallback(async (year?: string | React.MouseEvent) => {
-    // Используем переданный год или текущий из состояния
+    // Use the year passed in (e.g. from a click handler) or fall back to state.
     const searchYear = typeof year === 'string' ? year : selectedYear;
-    
-    // Если мы в режиме коллекции, фильтруем на фронте
+
+    // In collection mode everything is already loaded, so filter on the client.
     if (showCollection) {
-      // Фильтруем по году и поисковому запросу
       let filteredCars = cars;
-      
-      // Если нет ни года, ни поискового запроса - показываем все
+
+      // No year and no query: show the whole collection.
       if (!searchYear && !searchQuery) {
         setFilteredCollectionCars(filteredCars);
         return;
       }
-      
+
       if (searchYear) {
         filteredCars = filteredCars.map(car => ({
           ...car,
           d: car.d.filter(item => item.y === searchYear)
         })).filter(car => car.d.length > 0);
       }
-      
+
       if (searchQuery && searchQuery.length > 0) {
         const searchValue = searchQuery.toLowerCase();
         const searchWords = searchValue.split(/\s+/).filter(word => word.length > 0);
@@ -98,15 +97,15 @@ export default function Home() {
             const formattedName = formatCarName(car.lnk).toLowerCase();
             return searchWords.every(word => formattedName.includes(word)) ? car : { ...car, d: [] };
           }
-          
-          // Для остальных полей основного объекта
+
+          // Other top-level car fields.
           const mainObjectField = MAIN_OBJECT_FIELDS[selectedField];
           if (mainObjectField) {
             const fieldValue = (car[mainObjectField] as string)?.toLowerCase();
             return fieldValue && searchWords.every(word => fieldValue.includes(word)) ? car : { ...car, d: [] };
           }
           
-          // Для полей вариантов
+          // Per-variant fields.
           const variantField = VARIANT_FIELDS[selectedField];
           if (variantField) {
             const hasMatchingVariant = car.d.some(item => {
@@ -127,7 +126,7 @@ export default function Home() {
       return;
     }
     
-    // Если выбран конкретный год и нет поискового запроса - показываем все модели за этот год
+    // A year is selected but no query: list every model released that year.
     if (searchYear && !searchQuery) {
       try {
         setLoading(true);
@@ -144,14 +143,14 @@ export default function Home() {
       return;
     }
     
-    // Если год не выбран (все годы) и нет поискового запроса - показываем приветствие
+    // No year and no query: show the welcome screen.
     if (!searchYear && !searchQuery) {
       setError(null);
       setCars([]);
       return;
     }
-    
-    // Если год не выбран (все годы) и есть поисковый запрос - нужен минимум 3 символа
+
+    // Searching across all years requires at least 3 characters.
     if (!searchYear && searchQuery.length < 3) {
       setError(t('search.errors.minChars'));
       setCars([]);
@@ -162,7 +161,7 @@ export default function Home() {
       setLoading(true);
       setError(null);
       setSelectedModel(null);
-      // Конвертируем поисковый запрос, если он на кириллице
+      // Remap the query from a Cyrillic keyboard layout to Latin if needed.
       const convertedQuery = convertKeyboardLayout(searchQuery);
       if (convertedQuery !== searchQuery) {
         setSearchQuery(convertedQuery);
@@ -177,7 +176,7 @@ export default function Home() {
     }
   }, [selectedField, searchQuery, selectedYear, showCollection, cars]);
 
-  // Обработчик навигации по истории
+  // Restore app state when the user navigates Back/Forward.
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
       const state = event.state;
@@ -202,7 +201,7 @@ export default function Home() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [handleSearch]);
 
-  // Инициализация начального состояния
+  // Seed the initial history entry.
   useEffect(() => {
     window.history.replaceState(
       { 
@@ -225,7 +224,7 @@ export default function Home() {
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      // Конвертируем поисковый запрос, если он на кириллице
+      // Remap the query from a Cyrillic keyboard layout to Latin if needed.
       const convertedQuery = convertKeyboardLayout(searchQuery);
       if (convertedQuery !== searchQuery) {
         setSearchQuery(convertedQuery);
@@ -236,7 +235,7 @@ export default function Home() {
 
   const handleYearChange = (year: string) => {
     setSelectedYear(year);
-    // Если мы не в просмотре конкретной модели - делаем новый поиск
+    // Only trigger a new search when not viewing a specific model.
     if (!selectedModel) {
       handleSearch(year);
     } 
@@ -251,7 +250,7 @@ export default function Home() {
       setLoading(true);
       const fullCarData = await fetchCarByLnk(car.lnk);
       setSelectedModel(fullCarData);
-      // Добавляем состояние в историю
+      // Record this view in browser history so Back/Forward work.
       window.history.pushState(
         { 
           view: 'model',
@@ -271,14 +270,14 @@ export default function Home() {
 
   const handleBackToSearch = () => {
     setSelectedModel(null);
-    // Добавляем состояние в историю
+    // Record this view in browser history so Back/Forward work.
     window.history.pushState(
-      { 
+      {
         view: 'grid',
         year: selectedYear,
         searchQuery,
         selectedField
-      }, 
+      },
       ''
     );
   };
@@ -302,7 +301,7 @@ export default function Home() {
         }
         setFilteredCollectionCars(variants);
         setCars(variants);
-        // Добавляем состояние в историю
+        // Record this view in browser history so Back/Forward work.
         window.history.pushState(
           { 
             view: 'collection',
@@ -316,7 +315,7 @@ export default function Home() {
         setFilteredCollectionCars([]);
         setCars([]);
 
-        // Добавляем состояние в историю
+        // Record this view in browser history so Back/Forward work.
         window.history.pushState(
           { 
             view: 'grid',
@@ -344,9 +343,9 @@ export default function Home() {
     setSelectedModel(null);
     setShowCollection(false);
     setCars([]);
-    // Добавляем состояние в историю
+    // Record this view in browser history so Back/Forward work.
     window.history.pushState(
-      { 
+      {
         view: 'welcome',
         year: '',
         searchQuery: '',
@@ -367,7 +366,7 @@ export default function Home() {
         try {
           const updated = await removeFromCollection(session.user.id, itemId);
           setCollection(updated);
-          // Обновляем списки машин, удаляя модель из них
+          // Drop the removed variant from the currently displayed lists.
           setCars(prev => prev.filter(car => !car.d.some(item => item.id === itemId)));
           setFilteredCollectionCars(prev => prev.filter(car => !car.d.some(item => item.id === itemId)));
         } catch (error) {

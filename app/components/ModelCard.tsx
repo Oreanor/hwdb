@@ -21,7 +21,7 @@ const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear }: M
   const imageUrl = firstVariantWithImage ? getImageUrl(firstVariantWithImage) : undefined;
   const formattedName = formatCarName(car.lnk);
 
-  // Считаем количество вариантов с учетом выбранного года
+  // Count variants, respecting the selected-year filter.
   const variantCount = useMemo(
     () => selectedYear 
       ? car.d.filter(item => item.y === selectedYear).length 
@@ -29,7 +29,7 @@ const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear }: M
     [car.d, selectedYear]
   );
 
-  // Получаем первый и последний год
+  // First and last production years for the range label.
   const years = useMemo(
     () => car.d
       .map(item => item.y)
