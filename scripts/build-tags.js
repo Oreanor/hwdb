@@ -33,7 +33,7 @@ const MAKES = [
   { make: 'Buick', region: 'American', aliases: ['Buick'], infer: ['Grand National', 'Riviera'], models: ['Grand National', 'Riviera', 'Skylark', 'GSX', 'Regal'] },
   { make: 'Cadillac', region: 'American', aliases: ['Cadillac'], infer: ['Eldorado', 'Escalade'], models: ['Eldorado', 'Escalade', 'CTS', 'Coupe DeVille', 'DeVille', 'Seville'] },
   { make: 'Chrysler', region: 'American', aliases: ['Chrysler'], infer: ['300'], models: ['300', '300C', 'PT Cruiser'] },
-  { make: 'Mercury', region: 'American', aliases: ['Mercury'], infer: ['Cougar', 'Comet'], models: ['Cougar', 'Comet', 'Marauder', 'Cyclone'] },
+  { make: 'Mercury', region: 'American', aliases: ['Mercury', 'Merc'], infer: ['Cougar', 'Comet'], models: ['Cougar', 'Comet', 'Marauder', 'Cyclone', 'Monterey'] },
   { make: 'Oldsmobile', region: 'American', aliases: ['Oldsmobile', 'Olds'], infer: ['442', 'Cutlass'], models: ['442', 'Cutlass', 'Toronado'] },
   { make: 'Jeep', region: 'American', aliases: ['Jeep'], infer: ['Wrangler', 'Cherokee'], models: ['Wrangler', 'Cherokee', 'Gladiator', 'CJ-7', 'Grand Cherokee'] },
   { make: 'Shelby', region: 'American', aliases: ['Shelby'], infer: ['Cobra', 'GT350', 'GT500', 'Daytona Coupe'], models: ['Cobra', 'GT350', 'GT350R', 'GT500', 'Daytona Coupe', 'Series 1'] },
@@ -55,7 +55,7 @@ const MAKES = [
   { make: 'Ferrari', region: 'European', aliases: ['Ferrari'], infer: ['Testarossa', 'Enzo', 'LaFerrari', 'Dino', '458', '488', 'F40', 'F50'], models: ['Testarossa', 'Enzo', 'LaFerrari', 'Dino', '458', '488', 'F40', 'F50', '308', '512', '250', '599', '360', 'California', 'Daytona', '812', 'SF90'] },
   { make: 'Lamborghini', region: 'European', aliases: ['Lamborghini', 'Lambo'], infer: ['Countach', 'Diablo', 'Murcielago', 'Gallardo', 'Aventador', 'Huracan', 'Miura'], models: ['Countach', 'Diablo', 'Murcielago', 'Gallardo', 'Aventador', 'Huracan', 'Miura', 'Urus', 'Sesto Elemento', 'Reventon'] },
   { make: 'BMW', region: 'European', aliases: ['BMW'], infer: ['M3', 'M4', 'M1', 'M2', 'E30', 'E36', '2002', 'Z4', 'Z3'], models: ['M3', 'M4', 'M1', 'M2', 'E30', 'E36', '2002', 'Z4', 'Z3', '3.0 CSL', 'i8', 'X5', 'M5'] },
-  { make: 'Mercedes-Benz', region: 'European', aliases: ['Mercedes-Benz', 'Mercedes', 'Benz', 'Merc'], infer: ['AMG', 'Gullwing', 'SLS', 'SLR', 'C63'], models: ['AMG', 'Gullwing', 'SLS', 'SLR', 'C63', '300SL', 'G-Class', 'G-Wagen', 'CLK', 'Unimog'] },
+  { make: 'Mercedes-Benz', region: 'European', aliases: ['Mercedes-Benz', 'Mercedes', 'Benz'], infer: ['AMG', 'Gullwing', 'SLS', 'SLR', 'C63'], models: ['AMG', 'Gullwing', 'SLS', 'SLR', 'C63', '300SL', 'G-Class', 'G-Wagen', 'CLK', 'Unimog'] },
   { make: 'Audi', region: 'European', aliases: ['Audi'], infer: ['Quattro', 'R8', 'RS6', 'TT'], models: ['Quattro', 'R8', 'RS6', 'TT', 'A1', 'S1'] },
   { make: 'Volkswagen', region: 'European', aliases: ['Volkswagen', 'VW'], infer: ['Beetle', 'Golf', 'Bug', 'Karmann', 'Kombi', 'T1', 'T2'], models: ['Beetle', 'Golf', 'GTI', 'Bug', 'Karmann Ghia', 'Kombi', 'T1', 'T2', 'Bus', 'Baja Bug', 'Scirocco', 'Corrado'] },
   { make: 'Volvo', region: 'European', aliases: ['Volvo'], infer: ['240', '850', 'P1800'], models: ['240', '850', 'P1800', '242'] },
@@ -111,15 +111,19 @@ const name = (lnk) => { const s = lnk.replace(/_/g, ' '); try { return decodeURI
 // the description.
 function modelYear(n, dsc) {
   // Drop "(YYYY)" disambiguators — that's the casting's debut year, not the car's.
-  const nn = n.replace(/\([^)]*\)/g, ' ');
-  let m = nn.match(/\b(19[0-9]\d|20[0-2]\d)\b/);
+  const nn = n.replace(/\([^)]*\)/g, ' ').trim();
+  // A 4-digit year is the model year only as a prefix ("1932 Ford", "1936 Cord",
+  // "Custom 1957 ...") — a year mid-name or after a dash is usually a franchise
+  // reference ("Back to the Future - 1955"), not the car's year.
+  let m = nn.match(/^(?:custom\s+|classic\s+)?(19[0-9]\d|20[0-2]\d)\b/i);
   if (m) return Number(m[1]);
   m = nn.match(/'(\d{2})\b/);
   if (m) { const yy = Number(m[1]); return yy >= 30 ? 1900 + yy : 2000 + yy; }
-  const d = dsc || '';
-  m = d.slice(0, 140).match(/\b(19[0-9]\d|20[0-2]\d)\b/);
-  if (m) return Number(m[1]);
-  m = d.match(/\b(19[3-9]\d)\b/); // try harder: first vintage year in the text
+  // Only a year at the VERY START of the description ("The 1957 Chevrolet ...")
+  // is the model year. A year mid-sentence is almost always nameplate history —
+  // "produced since 1948", "the F-Series, introduced in 1948", "between 1975 and
+  // 1987" — which mislabels modern castings (Suburban, Ford F-250, Unimog).
+  m = (dsc || '').match(/^(?:The\s+)?(19[0-9]\d|20[0-2]\d)\b/);
   if (m) return Number(m[1]);
   return null;
 }
@@ -172,8 +176,8 @@ for (const c of db) {
   // Model year + decade era. Only trust it for a REAL car: the year is in the
   // name, or the casting has a make. Fantasy/original castings (no make, no year
   // in the name) are skipped — a stray year in their prose isn't a model year.
-  const nameClean = n.replace(/\([^)]*\)/g, ' ');
-  const nameHasYear = /\b(19[0-9]\d|20[0-2]\d)\b/.test(nameClean) || /'\d{2}\b/.test(nameClean);
+  const nameClean = n.replace(/\([^)]*\)/g, ' ').trim();
+  const nameHasYear = /^(?:custom\s+|classic\s+)?(19[0-9]\d|20[0-2]\d)\b/i.test(nameClean) || /'\d{2}\b/.test(nameClean);
   const my = modelYear(n, c.dsc);
   const yr = my && !t.themes.includes('Fantasy') && (nameHasYear || t.make) ? my : null;
   if (yr && yr >= 1930 && yr <= 1999) t.themes.push(`${Math.floor(yr / 10) * 10}s`);

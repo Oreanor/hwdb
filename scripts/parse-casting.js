@@ -99,23 +99,30 @@ function parseTable(block) {
   const rows = [];
   let cur = null;
   let mismatches = 0;
+  let inHeader = true; // header "!" cells appear before the first data row
 
   for (const line of lines) {
     const t = line.trim();
-    if (t.startsWith('!')) {
+    if (t.startsWith('!') && inHeader) {
       // header cells, may be "!a!!b" inline or one per line
       for (const h of t.replace(/^!/, '').split('!!')) {
         const after = h.includes('|') ? h.slice(h.lastIndexOf('|') + 1) : h;
         headers.push(after.replace(/'''/g, '').trim());
       }
     } else if (t === '|-' || t.startsWith('|-')) {
+      if (headers.length) inHeader = false; // headers done; data rows follow
       if (cur) rows.push(cur);
       cur = [];
-    } else if (cur && (t.startsWith('|') && !t.startsWith('|}'))) {
+    } else if (cur && t.startsWith('|') && !t.startsWith('|}')) {
       for (const part of t.split('||')) {
         const { value } = cellValue(part.startsWith('|') ? part : '|' + part);
         cur.push(value);
       }
+    } else if (cur && t.startsWith('!') && !inHeader) {
+      // A "!" line inside a data row is a mis-marked cell (e.g. a photo written
+      // with "!" instead of "|") — treat it as a cell, not a header.
+      const { value } = cellValue('|' + t.replace(/^!\s*/, ''));
+      cur.push(value);
     } else if (cur && cur.length > 0 && t && !t.startsWith('|') && !t.startsWith('!')) {
       // Continuation of a multi-line cell (e.g. Base "Black\n/\nPlastic").
       cur[cur.length - 1] += ' ' + t;
