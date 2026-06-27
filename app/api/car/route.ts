@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     const tagMap = await loadCastingTags();
     const withTags = cars.map((car) => {
       const tag = tagMap.get(car.lnk);
-      return tag ? { ...car, tags: { mk: tag.mk, rg: tag.rg, md: tag.md, th: tag.th, yr: tag.yr } } : car;
+      return tag ? { ...car, tags: { mk: tag.mk, rg: tag.rg, md: tag.md, th: tag.th, yr: tag.yr, ye: tag.ye } } : car;
     });
 
     return NextResponse.json(withTags);

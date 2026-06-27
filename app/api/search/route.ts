@@ -20,6 +20,12 @@ export async function GET(request: Request) {
     const year = searchParams.get('year');
 
     const carsData = await loadCarsData();
+    const tags = await loadCastingTags();
+    // Casting results carry make + model year so the grid can sort by them.
+    const asCasting = (car: CarData): CarData => {
+      const tag = tags.get(car.lnk);
+      return { ...trimVariants(car), tags: { mk: tag?.mk, yr: tag?.yr, ye: tag?.ye } };
+    };
 
     let filteredData = carsData;
 
@@ -30,8 +36,7 @@ export async function GET(request: Request) {
 
     // Tag browse (home page): castings matching every token of the tag query.
     if (field === 'tag' && value && value.trim() !== '') {
-      const tags = await loadCastingTags();
-      const result = filteredData.filter((car) => castingMatchesTag(tags.get(car.lnk), value)).map(trimVariants);
+      const result = filteredData.filter((car) => castingMatchesTag(tags.get(car.lnk), value)).map(asCasting);
       return NextResponse.json(result, { headers: STATIC_CACHE_HEADERS });
     }
 
@@ -45,7 +50,7 @@ export async function GET(request: Request) {
       filteredData = filteredData
         .filter(car => carMatchesQuery(car, field, words, value))
         .map(car => {
-          if (!modelSearch || !variantField) return trimVariants(car);
+          if (!modelSearch || !variantField) return asCasting(car);
           const d = car.d.filter(item => {
             const v = item[variantField];
             return typeof v === 'string' && includesAll(v, words);

@@ -96,6 +96,18 @@ const MAKES = [
 // HW original / fantasy castings (not based on a real production car).
 const FANTASY = ['Twin Mill', 'Bone Shaker', 'Deora', 'Rodger Dodger', 'Sharkruiser', "Splittin' Image", 'Silhouette', 'Beatnik Bandit', 'Hot Heap', 'Sweet 16', 'Torero', 'Python', 'Turbofire', 'Whip Creamer', 'Sand Crab', 'Boss Hoss', 'King Kuda', 'Ice T', 'TNT-Bird', 'Sugar Caddy', 'Mighty Maverick', 'Evil Weevil', 'Bye Focal', 'Buzz Off', 'Street Snorter', 'Jet Threat', 'Rigor Motor', 'Rocket Oil Special', 'Power Pistons', 'Zombot', 'Sling Shot', 'Phantastique', 'Twinduction', 'Rocket Box', 'Fright Bike', 'Mega Duty', 'Tantrum', 'Gazella', 'Fast Fish', 'Sky Knife', 'Hammered Coupe', 'Super Stinger', 'Baja Bone Shaker', 'Mad Propz', 'Skull Crusher', 'Loopster', 'Prototype H-24', 'Carbonator', 'RD-08', 'RD-03'];
 
+// Licensed entertainment vehicles whose names collide with real makes/models
+// ("Colonial Viper" != Dodge, "Millennium Falcon" != Ford). Matching one forces
+// Fantasy and blocks make inference.
+const FRANCHISE = [
+  'Battlestar Galactica', 'Colonial Viper', 'Cylon', 'Millennium Falcon', 'Star Wars', 'TIE Fighter',
+  'X-Wing', 'Darth', 'Stormtrooper', 'Boba Fett', 'R2-D2', 'BB-8', 'Death Star', 'Landspeeder',
+  'Batmobile', 'The Bat', 'Tumbler', 'Ecto-1', 'Ghostbusters', 'Mystery Machine', 'Scooby',
+  'K.I.T.T', 'KITT', 'Knight Rider', 'Mach 5', 'Speed Racer', 'Mario Kart', 'Bowser', 'Yoshi',
+  'Hello Kitty', 'Snoopy', 'Simpsons', 'SpongeBob', 'Star Trek', 'U.S.S. Enterprise', 'Jurassic',
+  'Flintstones', 'Homer', 'Mooncraft', 'Sub Terrordactyl',
+];
+
 // Themes layered on top of make/model (a casting can carry several).
 const SUPERCAR_MAKES = new Set(['Ferrari', 'Lamborghini', 'McLaren', 'Bugatti', 'Pagani', 'Koenigsegg', 'Maserati']);
 // Supercars from makes that aren't supercar-only (so Nissan GT-R, Honda NSX,
@@ -109,6 +121,11 @@ const name = (lnk) => { const s = lnk.replace(/_/g, ' '); try { return decodeURI
 // The real car's model year. Name is most reliable; then the first sentence of
 // the description; then, as a best effort, the first vintage year anywhere in
 // the description.
+// A 2-digit year -> full year. If "20yy" would be in the future it can't be a
+// model year, so it's "19yy" ('27 -> 1927, not 2027; '57 -> 1957; '24 -> 2024).
+const NOW_YEAR = new Date().getFullYear();
+const yy2year = (yy) => { const f = 2000 + yy; return f > NOW_YEAR ? 1900 + yy : f; };
+
 function modelYear(n, dsc) {
   // Drop "(YYYY)" disambiguators — that's the casting's debut year, not the car's.
   const nn = n.replace(/\([^)]*\)/g, ' ').trim();
@@ -118,33 +135,80 @@ function modelYear(n, dsc) {
   let m = nn.match(/^(?:custom\s+|classic\s+)?(19[0-9]\d|20[0-2]\d)\b/i);
   if (m) return Number(m[1]);
   m = nn.match(/'(\d{2})\b/);
-  if (m) { const yy = Number(m[1]); return yy >= 30 ? 1900 + yy : 2000 + yy; }
-  // Only a year at the VERY START of the description ("The 1957 Chevrolet ...")
-  // is the model year. A year mid-sentence is almost always nameplate history —
-  // "produced since 1948", "the F-Series, introduced in 1948", "between 1975 and
-  // 1987" — which mislabels modern castings (Suburban, Ford F-250, Unimog).
+  if (m) return yy2year(Number(m[1]));
+  // A year at the VERY START of the description ("The 1957 Chevrolet ...") is the
+  // model year. (A bare year mid-sentence is usually nameplate history —
+  // "produced since 1948" — which mislabels modern castings.)
   m = (dsc || '').match(/^(?:The\s+)?(19[0-9]\d|20[0-2]\d)\b/);
   if (m) return Number(m[1]);
+  // A year stated next to a GENERATION reference is the specific generation's
+  // year, not the nameplate's: "second generation, introduced in 1980",
+  // "third generation ... produced from 1982".
+  m = (dsc || '').match(
+    /(?:(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth)[- ]gen\w*|\bgeneration\b|\bmk\.?\s*[ivx\d]+\b)[^.]{0,55}?\b(19[0-9]\d|20[0-2]\d)\b/i
+  );
+  if (m) return Number(m[1]);
+  // An explicit "based off / represents / depicts a '68 Camaro" reference is the
+  // real car's year (vs the surrounding "1969 Hot Wheels line-up" casting year).
+  m = (dsc || '').match(
+    /\b(?:based o[nf]+|patterned after|modell?ed after|replica of|inspired by|represent\w*|depict\w*|portray\w*|recreat\w*|reproduc\w*|emulat\w*|resembl\w*)\b[^.]{0,40}?(?:'(\d{2})\b|\b(19[0-9]\d|20[0-2]\d))\b/i
+  );
+  if (m) return m[1] ? yy2year(Number(m[1])) : Number(m[2]);
+  // A CLOSED production span in the description ("manufactured ... from 1954 to
+  // 2000", "produced 1969-1974", "sold from 1964 to 1967") -> the start year.
+  // Anchored on a production verb and requires an END year, so open-ended
+  // nameplate history ("produced since 1948", "...to present") is ignored — that
+  // was the source of earlier false positives on modern castings.
+  m = (dsc || '').match(
+    /\b(?:produced|manufactured|built|made|sold|in production)\b[^.]{0,40}?\b(19[0-9]\d|20[0-2]\d)\s*(?:–|—|-|to|and|until|through)\s*(?:19[0-9]\d|20[0-2]\d)\b/i
+  );
+  if (m) return Number(m[1]);
   return null;
+}
+// A decade reference in the name -> the decade's start year ('50s/50s/1950s ->
+// 1950). Two-digit decades follow the same 30+ => 1900s rule as model years.
+function decadeInName(n) {
+  const m = n.match(/(?:^|[\s(])'?((?:19|20)?\d0)s\b/i);
+  if (!m) return null;
+  let v = Number(m[1]);
+  if (v < 100) v = v >= 30 ? 1900 + v : 2000 + v;
+  return v;
 }
 const esc = (w) => w.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 const has = (n, w) => new RegExp('\\b' + esc(w) + '\\b', 'i').test(n);
 
-function classify(n) {
+// A description that places the casting in fiction (a character/vehicle from a
+// movie/comic/game), so a name like "Valkyrie" or "Viper" isn't a real make.
+// NOT used to override an explicit make in the name — real cars get issued in
+// Marvel/DC branded series ('67 Ford Bronco, '34 Dodge Delivery), so this only
+// blocks weak (inferred) or no-make matches.
+const FRANCHISE_DESC = /\bMarvel\b|\bDC Comics\b|Cinematic Universe|\bas played by\b|\bvoiced by\b|from the .{0,25}(?:franchise|video game|cartoon|anime|comic)/i;
+
+function classify(n, dsc) {
   let make = null;
   let region = null;
   let model = null;
+
+  // 0) licensed franchise vehicle (by name) -> Fantasy, never a real make.
+  if (FRANCHISE.some((w) => has(n, w))) return { make: null, region: null, model: null, themes: ['Fantasy'] };
 
   // 1) explicit make alias.
   for (const m of MAKES) {
     if (m.aliases.some((a) => has(n, a))) { make = m.make; region = m.region; break; }
   }
   // 2) no make written -> infer from an iconic model.
+  let viaInfer = false;
   if (!make) {
     for (const m of MAKES) {
       const hit = m.infer.find((mod) => has(n, mod));
-      if (hit) { make = m.make; region = m.region; model = `${m.make} ${hit}`; break; }
+      if (hit) { make = m.make; region = m.region; model = `${m.make} ${hit}`; viaInfer = true; break; }
     }
+  }
+  // A fiction-flavoured description demotes a weak/absent make to Fantasy: a bare
+  // "Valkyrie" (inferred Aston Martin) described as a Marvel character is fantasy,
+  // but an explicitly-named "Aston Martin Valkyrie" stays a real car.
+  if ((!make || viaInfer) && FRANCHISE_DESC.test(dsc || '')) {
+    return { make: null, region: null, model: null, themes: ['Fantasy'] };
   }
   // 3) specific model within the known make (longest match wins).
   if (make && !model) {
@@ -164,6 +228,26 @@ function classify(n) {
 }
 
 const db = JSON.parse(fs.readFileSync(DB, 'utf8'));
+
+// Offline model-year estimates (lnk -> {year, method, firstCasting}). Optional.
+const proposals = new Map();
+{
+  const pf = path.join('scripts', 'output', 'model-year-proposals.json');
+  if (fs.existsSync(pf)) {
+    for (const p of JSON.parse(fs.readFileSync(pf, 'utf8'))) {
+      if (p.proposed) proposals.set(p.lnk, { year: p.proposed, method: p.method, firstCasting: p.firstCasting });
+    }
+  }
+}
+// Curated manual corrections (lnk -> year, or null to suppress). Highest priority.
+const overrides = new Map();
+{
+  const of = path.join('data', 'model-year-overrides.json');
+  if (fs.existsSync(of)) {
+    for (const [lnk, yr] of Object.entries(JSON.parse(fs.readFileSync(of, 'utf8')))) overrides.set(lnk, yr);
+  }
+}
+
 const out = [];
 const byMake = {};
 const byRegion = {};
@@ -172,16 +256,38 @@ const unmatched = [];
 
 for (const c of db) {
   const n = name(c.lnk);
-  const t = classify(n);
+  const t = classify(n, c.dsc);
   // Model year + decade era. Only trust it for a REAL car: the year is in the
   // name, or the casting has a make. Fantasy/original castings (no make, no year
   // in the name) are skipped — a stray year in their prose isn't a model year.
   const nameClean = n.replace(/\([^)]*\)/g, ' ').trim();
   const nameHasYear = /^(?:custom\s+|classic\s+)?(19[0-9]\d|20[0-2]\d)\b/i.test(nameClean) || /'\d{2}\b/.test(nameClean);
+  // A decade reference in the name ('50s, 70s, 1950s) is an ERA, not a precise
+  // model year. Tag the era, but never assign a fake year (and don't let the
+  // first-casting estimate invent one that contradicts it, e.g. "'50s ... 1997").
+  const nameDecade = decadeInName(nameClean);
   const my = modelYear(n, c.dsc);
-  const yr = my && !t.themes.includes('Fantasy') && (nameHasYear || t.make) ? my : null;
+  let yr = my && !t.themes.includes('Fantasy') && (nameHasYear || t.make) ? my : null;
+  // Fall back to an estimated year (Wikipedia production span / first-casting),
+  // proposed offline by scripts/propose-model-years.js. Marked ye:1 so the UI
+  // can render it as approximate (≈). Never overrides a parsed year, and never
+  // for decade-named castings (the era already says all we honestly know).
+  let est = 0;
+  if (!yr && !nameDecade && !t.themes.includes('Fantasy')) {
+    const p = proposals.get(c.lnk);
+    // Only Wikipedia production spans. "first casting - 1" is dropped: it blindly
+    // assumed casting year == car year, which is wrong for the many vintage cars
+    // re-issued in modern catalogs ('59 Cadillac debuted 2005, JZX100 in 2025).
+    if (p && p.method === 'wiki') { yr = p.year; est = 1; }
+  }
+  // Curated override wins over everything (a number = authoritative year shown as
+  // exact; null suppresses any year).
+  if (overrides.has(c.lnk)) { yr = overrides.get(c.lnk) || null; est = 0; }
   if (yr && yr >= 1930 && yr <= 1999) t.themes.push(`${Math.floor(yr / 10) * 10}s`);
-  out.push({ lnk: c.lnk, name: n, yr: yr || undefined, ...t });
+  if (nameDecade && nameDecade >= 1930 && nameDecade <= 1999 && !t.themes.includes(`${nameDecade}s`)) {
+    t.themes.push(`${nameDecade}s`);
+  }
+  out.push({ lnk: c.lnk, name: n, yr: yr || undefined, ye: est || undefined, ...t });
   if (t.make) { withMake++; byMake[t.make] = (byMake[t.make] || 0) + 1; if (t.region) byRegion[t.region] = (byRegion[t.region] || 0) + 1; }
   else unmatched.push(n);
 }
@@ -192,7 +298,7 @@ fs.writeFileSync(OUT, JSON.stringify(out, null, 2));
 // Lean runtime files (committed, bundled): per-casting tags + a browse index.
 const tagged = out
   .filter((o) => o.make || o.themes.length || o.yr)
-  .map((o) => ({ lnk: o.lnk, mk: o.make || undefined, rg: o.region || undefined, md: o.model || undefined, th: o.themes.length ? o.themes : undefined, yr: o.yr || undefined }));
+  .map((o) => ({ lnk: o.lnk, mk: o.make || undefined, rg: o.region || undefined, md: o.model || undefined, th: o.themes.length ? o.themes : undefined, yr: o.yr || undefined, ye: o.ye || undefined }));
 // Browse index: each category -> its makes with counts, so the home page can
 // show "category -> makes" and a make click filters within it. Decade eras
 // (e.g. "1950s") are kept in their own group, ordered chronologically.

@@ -56,8 +56,10 @@ function cleanCell(raw) {
   s = s.replace(/\[\[[^|\]]*\|([^\]]+)\]\]/g, '$1'); // [[target|label]] -> label
   s = s.replace(/\[\[([^\]]+)\]\]/g, '$1'); // [[target]] -> target
   s = s.replace(/'''/g, '').replace(/''/g, ''); // bold/italic
-  s = s.replace(/<br\s*\/?>/gi, ' / '); // line breaks within a cell
-  s = s.replace(/<[^>]+>/g, ''); // any other html tags
+  s = s.replace(/\{\{[^{}]*\}\}/g, ''); // {{Hover|...}} and other templates
+  s = s.replace(/<\s*\/?\s*br\b[^>]*>?/gi, ' / '); // <br>, <br/>, and malformed <br< / </br
+  s = s.replace(/<[^>]*>/g, ''); // any other html tags
+  s = s.replace(/[<>]/g, ' '); // stray angle brackets from malformed markup
   s = s
     .replace(/&ndash;/g, '–')
     .replace(/&amp;/g, '&')
@@ -85,53 +87,83 @@ function cellValue(line) {
 
 async function fetchWikitext(slug) {
   const url = `${API}?${new URLSearchParams({ action: 'parse', page: slug, prop: 'wikitext', format: 'json' })}`;
-  const res = await fetch(url, { headers: HEADERS });
-  if (!res.ok) throw new Error(`API ${res.status}`);
-  const data = await res.json();
-  if (data.error) throw new Error(data.error.info || 'parse error');
-  return data.parse.wikitext['*'];
+  // Retry on rate-limit / transient 5xx with exponential backoff.
+  for (let attempt = 0; ; attempt++) {
+    const res = await fetch(url, { headers: HEADERS });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.error) throw new Error(data.error.info || 'parse error');
+      return data.parse.wikitext['*'];
+    }
+    if ((res.status === 429 || res.status >= 500) && attempt < 5) {
+      await new Promise((r) => setTimeout(r, 1000 * 2 ** attempt));
+      continue;
+    }
+    throw new Error(`API ${res.status}`);
+  }
 }
 
 // Parse one wikitable block into { headers, rows: string[][], mismatches }.
 function parseTable(block) {
   const lines = block.split('\n');
   const headers = [];
-  const rows = [];
   let cur = null;
   let mismatches = 0;
   let inHeader = true; // header "!" cells appear before the first data row
 
+  const rawRows = []; // each cell kept as {value, rowspan, colspan}
   for (const line of lines) {
     const t = line.trim();
     if (t.startsWith('!') && inHeader) {
       // header cells, may be "!a!!b" inline or one per line
       for (const h of t.replace(/^!/, '').split('!!')) {
         const after = h.includes('|') ? h.slice(h.lastIndexOf('|') + 1) : h;
-        headers.push(after.replace(/'''/g, '').trim());
+        headers.push(
+          after.replace(/'''/g, '').replace(/<\s*\/?\s*br\b[^>]*>?/gi, ' ').replace(/<[^>]*>/g, '').replace(/[<>]/g, ' ').replace(/\s+/g, ' ').trim()
+        );
       }
     } else if (t === '|-' || t.startsWith('|-')) {
       if (headers.length) inHeader = false; // headers done; data rows follow
-      if (cur) rows.push(cur);
+      if (cur) rawRows.push(cur);
       cur = [];
     } else if (cur && t.startsWith('|') && !t.startsWith('|}')) {
-      for (const part of t.split('||')) {
-        const { value } = cellValue(part.startsWith('|') ? part : '|' + part);
-        cur.push(value);
-      }
+      for (const part of t.split('||')) cur.push(cellValue(part.startsWith('|') ? part : '|' + part));
     } else if (cur && t.startsWith('!') && !inHeader) {
       // A "!" line inside a data row is a mis-marked cell (e.g. a photo written
       // with "!" instead of "|") — treat it as a cell, not a header.
-      const { value } = cellValue('|' + t.replace(/^!\s*/, ''));
-      cur.push(value);
+      cur.push(cellValue('|' + t.replace(/^!\s*/, '')));
     } else if (cur && cur.length > 0 && t && !t.startsWith('|') && !t.startsWith('!')) {
       // Continuation of a multi-line cell (e.g. Base "Black\n/\nPlastic").
-      cur[cur.length - 1] += ' ' + t;
+      cur[cur.length - 1].value += ' ' + t;
     }
   }
-  if (cur && cur.length) rows.push(cur);
+  if (cur && cur.length) rawRows.push(cur);
 
-  const dataRows = rows.filter((r) => r.length > 0);
-  for (const r of dataRows) if (r.length !== headers.length) mismatches++;
+  // Expand rowspan (fill a spanned cell DOWN its column) and colspan (widen) into
+  // a fixed-width grid, so columns stay aligned when rows share a cell.
+  const ncol = headers.length || Math.max(0, ...rawRows.map((r) => r.length));
+  const carry = new Array(ncol).fill(null); // pending rowspans: {value, left}
+  const rows = [];
+  for (const raw of rawRows) {
+    if (!raw.length) continue;
+    const row = new Array(ncol).fill(undefined);
+    for (let c = 0; c < ncol; c++) {
+      if (carry[c] && carry[c].left > 0) { row[c] = carry[c].value; if (--carry[c].left <= 0) carry[c] = null; }
+    }
+    let col = 0;
+    for (const cell of raw) {
+      while (col < ncol && row[col] !== undefined) col++;
+      if (col >= ncol) { mismatches++; break; }
+      const span = Math.min(cell.colspan || 1, ncol - col);
+      for (let k = 0; k < span; k++) {
+        row[col] = cell.value;
+        if ((cell.rowspan || 1) > 1) carry[col] = { value: cell.value, left: cell.rowspan - 1 };
+        col++;
+      }
+    }
+    rows.push(row.map((v) => (v === undefined ? '' : v)));
+  }
+  const dataRows = rows.filter((r) => r.some((c) => c !== ''));
   return { headers, rows: dataRows, mismatches };
 }
 

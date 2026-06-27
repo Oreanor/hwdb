@@ -1,6 +1,7 @@
 import { CarData } from '../types';
 import { getImageUrl, getPreviewUrl, formatCarName } from '../utils';
 import { memo, useMemo } from 'react';
+import { t } from '../i18n';
 import Thumbnail from './Thumbnail';
 
 interface ModelCardProps {
@@ -50,7 +51,12 @@ const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear }: M
         {formattedName} <span className="text-gray-500 dark:text-gray-400 font-medium text-xs">({variantCount})</span>
       </p>
 
-      <p className="text-xs text-gray-500 dark:text-gray-400">{yearsDisplay}</p>
+      {car.tags?.yr && (
+        <p className="text-xs text-gray-600 dark:text-gray-300">
+          {t('model.modelYear')}: <span className="font-semibold">{car.tags.ye ? '≈' : ''}{car.tags.yr}</span>
+        </p>
+      )}
+      {yearsDisplay && <p className="text-xs text-gray-500 dark:text-gray-400">{yearsDisplay}</p>}
     </div>
   );
 });

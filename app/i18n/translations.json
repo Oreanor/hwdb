@@ -102,6 +102,9 @@
         "Cn": "Страна",
         "Nt": "Заметки"
       }
+    },
+    "sort": {
+      "make": "Марка"
     }
   },
   "en": {
@@ -207,6 +210,9 @@
         "Cn": "Country",
         "Nt": "Notes"
       }
+    },
+    "sort": {
+      "make": "Make"
     }
   },
   "de": {
@@ -312,6 +318,9 @@
         "Cn": "Land",
         "Nt": "Notizen"
       }
+    },
+    "sort": {
+      "make": "Marke"
     }
   },
   "es": {
@@ -417,6 +426,9 @@
         "Cn": "País",
         "Nt": "Notas"
       }
+    },
+    "sort": {
+      "make": "Marca"
     }
   },
   "fr": {
@@ -522,6 +534,9 @@
         "Cn": "Pays",
         "Nt": "Notes"
       }
+    },
+    "sort": {
+      "make": "Marque"
     }
   },
   "pt": {
@@ -627,6 +642,9 @@
         "Cn": "País",
         "Nt": "Notas"
       }
+    },
+    "sort": {
+      "make": "Marca"
     }
   },
   "nl": {
@@ -732,6 +750,9 @@
         "Cn": "Land",
         "Nt": "Notities"
       }
+    },
+    "sort": {
+      "make": "Merk"
     }
   },
   "uk": {
@@ -837,6 +858,9 @@
         "Cn": "Країна",
         "Nt": "Нотатки"
       }
+    },
+    "sort": {
+      "make": "Марка"
     }
   }
 }

@@ -62,8 +62,10 @@ async function main() {
   const localIds = new Set(fs.readdirSync(WEBP_DIR).filter((f) => f.endsWith('.webp')).map((f) => f.replace(/\.webp$/, '')));
 
   const db = JSON.parse(fs.readFileSync(DB, 'utf8'));
-  const targets = db.filter((c) => !(c.d ?? []).some((v) => v.p === 't' || localIds.has(v.id)));
-  console.log(`castings with no image: ${targets.length}`);
+  // Any casting that is missing an image for at least one variant (partial too,
+  // not only fully-imageless) — fetch per variant.
+  const targets = db.filter((c) => (c.d ?? []).some((v) => v.id && v.p !== 't' && !localIds.has(v.id)));
+  console.log(`castings missing some image: ${targets.length}`);
 
   // Phase 1 — parse pages, map File: -> variant id (by position).
   const jobs = [];

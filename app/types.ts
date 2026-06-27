@@ -24,6 +24,7 @@ export type CastingTags = {
   md?: string; // model ("Ford Mustang")
   th?: string[]; // themes (incl. decade eras like "1950s")
   yr?: number; // the real car's model year
+  ye?: number; // 1 = yr is an estimate, show as ≈
 };
 
 export type CarData = {

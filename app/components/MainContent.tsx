@@ -85,7 +85,7 @@ export default function MainContent(props: MainContentProps) {
                     ? tableView.title
                     : tableView.value
               }
-              onBack={tableView.kind === 'series' ? onCloseTable : undefined}
+              onBack={tableView.kind === 'series' ? onCloseTable : onBackHome}
             />
           ) : showCollection ? (
             <ResultsView

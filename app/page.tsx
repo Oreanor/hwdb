@@ -17,7 +17,10 @@ export default function Home() {
   return (
     <div className="h-screen w-full flex flex-col bg-white dark:bg-gray-900">
       {isInitialized ? (
-        <>
+        // Remount the whole tree on language change so memoized children
+        // (tables, grids, cards) re-render in the new language. `contents`
+        // keeps the flex layout intact.
+        <div key={currentLang} className="contents">
           <div className="min-h-[82px]">
             <TopPanel
               selectedField={nav.selectedField}
@@ -66,7 +69,7 @@ export default function Home() {
               isLoggedIn={nav.isLoggedIn}
             />
           </div>
-        </>
+        </div>
       ) : (
         <Spinner />
       )}

@@ -13,10 +13,12 @@ interface WelcomeMessageProps {
 const THEME_ORDER = ['Muscle', 'JDM', 'Supercar', 'Fantasy'];
 const REGION_ORDER = ['American', 'Japanese', 'European', 'Australian', 'Korean'];
 
+// The N most common makes of a category, then listed alphabetically.
 const topMakes = (bucket: TagBucket, n = 18) =>
   Object.entries(bucket.makes)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, n);
+    .slice(0, n)
+    .sort((a, b) => a[0].localeCompare(b[0]));
 
 export default function WelcomeMessage({ onTagClick }: WelcomeMessageProps) {
   const [index, setIndex] = useState<TagsIndex | null>(null);
@@ -76,9 +78,9 @@ export default function WelcomeMessage({ onTagClick }: WelcomeMessageProps) {
     <div className="w-full max-w-5xl mx-auto py-5 flex flex-col gap-7">
       {index && (
         <>
-          {section(t('welcome.byStyle'), THEME_ORDER, index.themes ?? {}, (c) => `th:${c}`, (c, mk) => `th:${c},mk:${mk}`)}
-          {section(t('welcome.byEra'), Object.keys(index.eras ?? {}).sort(), index.eras ?? {}, (c) => `th:${c}`, (c, mk) => `th:${c},mk:${mk}`)}
           {section(t('welcome.byRegion'), REGION_ORDER, index.regions ?? {}, (c) => `rg:${c}`, (_c, mk) => `mk:${mk}`)}
+          {section(t('welcome.byEra'), Object.keys(index.eras ?? {}).sort(), index.eras ?? {}, (c) => `th:${c}`, (c, mk) => `th:${c},mk:${mk}`)}
+          {section(t('welcome.byStyle'), THEME_ORDER, index.themes ?? {}, (c) => `th:${c}`, (c, mk) => `th:${c},mk:${mk}`)}
         </>
       )}
     </div>
