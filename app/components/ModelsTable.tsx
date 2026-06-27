@@ -23,6 +23,7 @@ interface ModelsTableProps {
   onModelClick?: (car: CarData) => void;
   onYearClick?: (year: string) => void;
   showCastingName?: boolean;
+  stickyTop?: number; // px offset so the header pins below the ResultsHeader bar
 }
 
 interface TableRowProps {
@@ -132,8 +133,8 @@ const TableHeader = memo(({
 
   return (
     <th
-      className={`p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap ${
-        isCollapsed ? 'w-[30px] min-w-[30px] max-w-[30px] p-0 bg-gray-50 dark:bg-gray-700 overflow-hidden' : ''
+      className={`p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 ${
+        isCollapsed ? 'w-[30px] min-w-[30px] max-w-[30px] p-0 overflow-hidden' : ''
       } border-r border-gray-200 dark:border-gray-600`}
     >
       <div className="flex items-center justify-between">
@@ -175,7 +176,8 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
   onSeriesClick,
   onModelClick,
   onYearClick,
-  showCastingName
+  showCastingName,
+  stickyTop = 0
 }) => {
   const { data: session } = useSession();
   const [collapsedColumns, setCollapsedColumns] = useState<Set<string>>(() => {
@@ -268,20 +270,23 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
   }, [cars, sortConfig, selectedYear]);
 
   return (
-    <div className="overflow-x-auto">
+    // No overflow wrapper here: a scroll container would re-anchor the sticky
+    // header to itself. The page's content area (flex-1) scrolls both axes, so
+    // the sticky thead pins just below the (also sticky) ResultsHeader bar.
+    <div>
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-        <thead className="bg-gray-50 dark:bg-gray-700">
+        <thead className="sticky z-20 bg-gray-50 dark:bg-gray-700" style={{ top: stickyTop }}>
           <tr>
             {session?.user && (
-              <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap w-[40px] border-r border-gray-200 dark:border-gray-600">
+              <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 w-[40px] border-r border-gray-200 dark:border-gray-600">
                 {t('table.add')}
               </th>
             )}
-            <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap w-[100px] border-r border-gray-200 dark:border-gray-600">
+            <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 w-[100px] border-r border-gray-200 dark:border-gray-600">
               {t('table.image')}
             </th>
             {showCastingName && (
-              <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap border-r border-gray-200 dark:border-gray-600">
+              <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 border-r border-gray-200 dark:border-gray-600">
                 {t('table.casting')}
               </th>
             )}

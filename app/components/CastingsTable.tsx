@@ -11,6 +11,7 @@ interface CastingsTableProps {
   cars: CarData[];
   onModelClick: (car: CarData) => void;
   selectedYear?: string;
+  stickyTop?: number; // px offset so the header pins below the ResultsHeader bar
 }
 
 type SortField = 'name' | 'designer' | 'years' | 'count';
@@ -44,7 +45,7 @@ const buildRow = (car: CarData, selectedYear?: string): Row => {
   };
 };
 
-const CastingsTable = memo(function CastingsTable({ cars, onModelClick, selectedYear }: CastingsTableProps) {
+const CastingsTable = memo(function CastingsTable({ cars, onModelClick, selectedYear, stickyTop = 0 }: CastingsTableProps) {
   const [sort, setSort] = useState<SortState>(null);
 
   const rows = useMemo(() => {
@@ -78,7 +79,7 @@ const CastingsTable = memo(function CastingsTable({ cars, onModelClick, selected
   const header = (field: SortField, label: string) => (
     <th
       onClick={() => toggleSort(field)}
-      className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap cursor-pointer hover:text-gray-600 dark:hover:text-gray-400 border-r border-gray-200 dark:border-gray-600"
+      className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 cursor-pointer hover:text-gray-600 dark:hover:text-gray-400 border-r border-gray-200 dark:border-gray-600"
     >
       {label}
       {sort?.field === field && <span className="ml-1">{sort.direction === 'asc' ? '↑' : '↓'}</span>}
@@ -86,11 +87,13 @@ const CastingsTable = memo(function CastingsTable({ cars, onModelClick, selected
   );
 
   return (
-    <div className="overflow-x-auto">
+    // No overflow wrapper: it would re-anchor the sticky header. The page content
+    // area (flex-1) scrolls, so the sticky thead pins to the viewport top.
+    <div>
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-        <thead className="bg-gray-50 dark:bg-gray-700">
+        <thead className="sticky z-20 bg-gray-50 dark:bg-gray-700" style={{ top: stickyTop }}>
           <tr>
-            <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap w-[100px] border-r border-gray-200 dark:border-gray-600">
+            <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 w-[100px] border-r border-gray-200 dark:border-gray-600">
               {t('table.image')}
             </th>
             {header('name', t('search.fields.name'))}

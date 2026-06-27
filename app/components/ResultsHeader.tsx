@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowLeft } from 'lucide-react';
+import { forwardRef } from 'react';
 import { t } from '../i18n';
 
 interface ResultsHeaderProps {
@@ -11,9 +12,13 @@ interface ResultsHeaderProps {
 }
 
 // Sticky bar shared by every results view: optional back button + title + controls.
-export default function ResultsHeader({ onBack, title, children }: ResultsHeaderProps) {
+// z-30 so a sticky table header (z-20) pinned just below it slides underneath.
+const ResultsHeader = forwardRef<HTMLDivElement, ResultsHeaderProps>(function ResultsHeader(
+  { onBack, title, children },
+  ref
+) {
   return (
-    <div className="sticky top-0 z-10 -mx-4 sm:-mx-10 px-4 sm:px-10 pt-2 sm:pt-4 pb-2 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex items-center gap-3">
+    <div ref={ref} className="sticky top-0 z-30 -mx-4 sm:-mx-10 px-4 sm:px-10 pt-2 sm:pt-4 pb-2 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex items-center gap-3">
       {onBack && (
         <button
           onClick={onBack}
@@ -29,4 +34,6 @@ export default function ResultsHeader({ onBack, title, children }: ResultsHeader
       {children}
     </div>
   );
-}
+});
+
+export default ResultsHeader;

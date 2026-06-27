@@ -7,6 +7,7 @@ import { VIEW_MODE_KEYS } from '../consts';
 import { formatCarName } from '../utils';
 import { useVariantFilter } from '../hooks/useVariantFilter';
 import { usePersistedView } from '../hooks/usePersistedView';
+import { useStickyOffset } from '../hooks/useStickyOffset';
 import ModelsTable from './ModelsTable';
 import VariantsGallery from './VariantsGallery';
 import CastingsTable from './CastingsTable';
@@ -54,6 +55,7 @@ export default function ResultsView({
   );
   const filterState = useVariantFilter(cars);
   const cardsForBody = mode === 'models' ? filterState.filteredCars : cars;
+  const { ref: headerRef, height: headerH } = useStickyOffset<HTMLDivElement>();
 
   // The gallery has no column headers, so castings get an explicit sort bar:
   // by make (groups by manufacturer) or by the car's model year.
@@ -89,7 +91,7 @@ export default function ResultsView({
 
   return (
     <div className="flex flex-col gap-4">
-      <ResultsHeader onBack={onBack} title={title ?? t('auth.myCollection')}>
+      <ResultsHeader ref={headerRef} onBack={onBack} title={title ?? t('auth.myCollection')}>
         {cars.length > 0 &&
           (mode === 'models' ? (
             <VariantFilterControls filterState={filterState} view={view} onToggleView={toggleView} />
@@ -145,12 +147,13 @@ export default function ResultsView({
             // year, series, search), so it shows the casting-name column. Only the
             // single-casting page (ModelDescription) omits it.
             showCastingName
+            stickyTop={headerH}
           />
         ) : (
           <VariantsGallery cars={cardsForBody} selectedYear={selectedYear} showName />
         )
       ) : view === 'table' ? (
-        <CastingsTable cars={cardsForBody} onModelClick={onModelClick!} selectedYear={selectedYear} />
+        <CastingsTable cars={cardsForBody} onModelClick={onModelClick!} selectedYear={selectedYear} stickyTop={headerH} />
       ) : (
         <ModelsGrid cars={galleryCastings} onModelClick={onModelClick!} selectedYear={selectedYear} />
       )}

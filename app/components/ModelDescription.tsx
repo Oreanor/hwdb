@@ -7,6 +7,7 @@ import { t } from '../i18n';
 import { FANDOM_BASE_URL, VIEW_MODE_KEYS } from '../consts';
 import { useVariantFilter } from '../hooks/useVariantFilter';
 import { usePersistedView } from '../hooks/usePersistedView';
+import { useStickyOffset } from '../hooks/useStickyOffset';
 import ModelsTable from './ModelsTable';
 import VariantsGallery from './VariantsGallery';
 import VariantFilterControls from './VariantFilterControls';
@@ -42,6 +43,7 @@ export default function ModelDescription({
 }: ModelDescriptionProps) {
   const [expandedDescription, setExpandedDescription] = useState(false);
   const { view, toggle: toggleView } = usePersistedView(VIEW_MODE_KEYS.castingPage, 'table');
+  const { ref: headerRef, height: headerH } = useStickyOffset<HTMLDivElement>();
 
   const description = decodeHtmlEntities(model.dsc || '');
   const cars = useMemo(() => [model], [model]);
@@ -57,7 +59,7 @@ export default function ModelDescription({
   return (
     <div className="flex flex-col gap-4">
       {/* Pinned controls: stay visible while the list scrolls. */}
-      <ResultsHeader onBack={backToSearch}>
+      <ResultsHeader ref={headerRef} onBack={backToSearch}>
         <VariantFilterControls filterState={filterState} view={view} onToggleView={toggleView} />
       </ResultsHeader>
 
@@ -135,6 +137,7 @@ export default function ModelDescription({
           collection={collection}
           onSeriesClick={onSeriesClick}
           onYearClick={onYearClick}
+          stickyTop={headerH}
         />
       ) : (
         <VariantsGallery cars={filteredCars} selectedYear={selectedYear} />

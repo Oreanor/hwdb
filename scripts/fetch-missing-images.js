@@ -67,26 +67,47 @@ async function main() {
   const targets = db.filter((c) => (c.d ?? []).some((v) => v.id && v.p !== 't' && !localIds.has(v.id)));
   console.log(`castings missing some image: ${targets.length}`);
 
-  // Phase 1 — parse pages, map File: -> variant id (by position).
+  // Phase 1 — parse pages, map File: -> variant id by SIGNATURE (year + color),
+  // not by row position. This is rowspan-proof: the parser fills a spanned photo
+  // cell down every row of its group, so each variant sharing it gets the file;
+  // it also survives count mismatches and reordered (recovered) variants.
+  const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+  const isPlaceholder = (f) => /image[\s_]*not[\s_]*available|no[\s_]*image|placeholder/i.test(f);
+  const push = (map, key, val) => { const a = map.get(key) ?? map.set(key, []).get(key); a.push(val); };
+
   const jobs = [];
-  let parsed = 0, mismatch = 0, pageFail = 0, noImg = 0;
+  let parsed = 0, pageFail = 0, noImg = 0;
   for (const c of targets) {
     if (parsed >= limit) break;
     parsed++;
     let r;
     try { r = parseCasting(await fetchWikitext(c.lnk)); } catch { pageFail++; await sleep(SLEEP_MS); continue; }
-    const vars = c.d ?? [];
-    if (r.variants.length !== vars.length) { mismatch++; await sleep(SLEEP_MS); continue; }
+    // Pool the parsed images by signature and (fallback) by year.
+    const bySig = new Map(), byYear = new Map();
+    for (const v of r.variants) {
+      if (!v._img || isPlaceholder(v._img)) continue;
+      push(bySig, (v.y || '') + '|' + norm(v.c), v._img);
+      push(byYear, v.y || '', v._img);
+    }
     let added = 0;
-    for (let i = 0; i < vars.length; i++) {
-      if (r.variants[i]._img && vars[i].id && !localIds.has(vars[i].id)) { jobs.push({ id: vars[i].id, file: r.variants[i]._img }); added++; }
+    for (const dv of c.d ?? []) {
+      if (!dv.id || dv.p === 't' || localIds.has(dv.id)) continue;
+      const sig = (dv.y || '') + '|' + norm(dv.c);
+      let file = (bySig.get(sig) || []).shift();
+      if (file) {
+        const yp = byYear.get(dv.y || ''); // keep year pool consistent
+        if (yp) { const i = yp.indexOf(file); if (i >= 0) yp.splice(i, 1); }
+      } else {
+        file = (byYear.get(dv.y || '') || []).shift(); // fallback: same year, any leftover photo
+      }
+      if (file) { jobs.push({ id: dv.id, file }); added++; }
     }
     if (!added) noImg++;
-    if (parsed % 25 === 0) process.stdout.write(`\r  parsed ${parsed}/${Math.min(limit, targets.length)} | jobs ${jobs.length} | mismatch ${mismatch} | pageFail ${pageFail}   `);
+    if (parsed % 25 === 0) process.stdout.write(`\r  parsed ${parsed}/${Math.min(limit, targets.length)} | jobs ${jobs.length} | pageFail ${pageFail}   `);
     await sleep(SLEEP_MS);
   }
   process.stdout.write('\n');
-  console.log(`image jobs: ${jobs.length} | mismatch ${mismatch} | pageFail ${pageFail} | parsed-no-img ${noImg}`);
+  console.log(`image jobs: ${jobs.length} | pageFail ${pageFail} | parsed-no-img ${noImg}`);
 
   // Phase 2 — resolve + download + encode webp + preview.
   const urlMap = await resolveUrls([...new Set(jobs.map((j) => j.file))]);
