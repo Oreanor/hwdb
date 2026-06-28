@@ -19,7 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { fetchWikitext, parseCasting } = require('./parse-casting');
+const { fetchWikitext, parseCasting } = require('../lib/parse-casting');
 
 const DB = path.join('data', 'carsdata.json');
 const PRE_MERGE = path.join('scripts', 'output', 'carsdata.pre-merge.json');

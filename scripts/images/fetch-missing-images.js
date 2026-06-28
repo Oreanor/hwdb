@@ -18,11 +18,11 @@
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
-const { fetchWikitext, parseCasting } = require('./parse-casting');
+const { fetchWikitext, parseCasting } = require('../lib/parse-casting');
 
 const API = 'https://hotwheels.fandom.com/api.php';
 const HEADERS = { 'User-Agent': 'HWDB-collection-sync/1.0 (personal research; oreanor@gmail.com)' };
-const SLEEP_MS = 300;
+const SLEEP_MS = 700;
 const MAX = 800;
 const QUALITY = 80;
 const THUMB = 256;
@@ -82,24 +82,18 @@ async function main() {
     parsed++;
     let r;
     try { r = parseCasting(await fetchWikitext(c.lnk)); } catch { pageFail++; await sleep(SLEEP_MS); continue; }
-    // Pool the parsed images by signature and (fallback) by year.
-    const bySig = new Map(), byYear = new Map();
+    // Pool the parsed images strictly by signature (year + color). No year-only
+    // fallback: assigning a same-year photo of a DIFFERENT colour to a variant
+    // whose real photo is just a placeholder mislabels it — better left blank.
+    const bySig = new Map();
     for (const v of r.variants) {
       if (!v._img || isPlaceholder(v._img)) continue;
       push(bySig, (v.y || '') + '|' + norm(v.c), v._img);
-      push(byYear, v.y || '', v._img);
     }
     let added = 0;
     for (const dv of c.d ?? []) {
       if (!dv.id || dv.p === 't' || localIds.has(dv.id)) continue;
-      const sig = (dv.y || '') + '|' + norm(dv.c);
-      let file = (bySig.get(sig) || []).shift();
-      if (file) {
-        const yp = byYear.get(dv.y || ''); // keep year pool consistent
-        if (yp) { const i = yp.indexOf(file); if (i >= 0) yp.splice(i, 1); }
-      } else {
-        file = (byYear.get(dv.y || '') || []).shift(); // fallback: same year, any leftover photo
-      }
+      const file = (bySig.get((dv.y || '') + '|' + norm(dv.c)) || []).shift();
       if (file) { jobs.push({ id: dv.id, file }); added++; }
     }
     if (!added) noImg++;
@@ -128,7 +122,7 @@ async function main() {
       done++;
     } catch { skip++; }
     if ((done + skip + small) % 25 === 0) process.stdout.write(`\r  downloaded ${done} | small ${small} | skip ${skip} / ${jobs.length}   `);
-    await sleep(150);
+    await sleep(300);
   }
   process.stdout.write('\n');
   console.log(`[+] done. downloaded ${done} (webp + preview), placeholder ${small}, skipped ${skip}`);

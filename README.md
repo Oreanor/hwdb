@@ -108,13 +108,23 @@ Variant images are read from the Supabase Storage `images` bucket at
 
 ### Maintenance scripts
 
-One-off data utilities live in `scripts/` and are run with `node` from the
-project root (e.g. `node scripts/find-duplicate-images.js`):
+Data + wiki-sync utilities live under `scripts/`, grouped by purpose, and are run
+with `node` from the project root (e.g. `node scripts/images/audit-images.js`):
 
-- `find-duplicate-images.js` — report models with duplicate variant images.
-- `remove-image-fields.js` — strip the `p` field from every variant.
-- `replace-image-fields.js` — normalize non-empty `p` values to `'t'`.
-- `add-variant-ids.js` — assign sequential zero-padded ids to variants.
+- `lib/parse-casting.js` — shared wiki-page → variant-schema parser (imported by
+  the others; also runnable directly for a single slug).
+- `tags/` — browse tags & model years: `build-tags.js` (make/region/theme/era +
+  year, writes `data/casting-tags.json` & `data/tags-index.json`),
+  `build-mainline-flags.js`, `propose-model-years.js`, `propose-model-years-v2.js`
+  (Wikipedia + generation lookup), `check-casting-years.js`.
+- `sync/` — catalogue sync: `find-missing-castings.js`, `build-new-castings.js`,
+  `audit-recent-years.js`, `merge-into-db.js`, `reparse-new-fields.js`.
+- `images/` — `fetch-missing-images.js`, `make-thumbs.js`, `audit-images.js`,
+  `set-image-flags.js`, `find-duplicate-images.js`.
+- `data/` — `dedup-malformed-lnk.js`, `crystallize-series.js`, `fix-descriptions.js`.
+
+Committed inputs they read: `data/model-year-overrides.json` (authoritative
+manual years) and `data/model-year-estimates.json` (approximate `≈` years).
 
 ## Project structure
 
@@ -130,9 +140,13 @@ app/
   utils.ts           # Image URLs, name formatting, keyboard remapping
   page.tsx           # Main page (search/grid/model/collection state machine)
 data/
-  carsdata.json      # The catalogue (server-only, not web-accessible)
-scripts/             # Data maintenance + wiki-sync scripts
-  output/            # Generated reports (git-ignored)
+  carsdata.json              # The catalogue (server-only, not web-accessible)
+  casting-tags.json          # Per-casting browse tags (make/region/theme/era/year)
+  tags-index.json            # Tag browser index (categories → makes)
+  model-year-overrides.json  # Authoritative manual model years
+  model-year-estimates.json  # Approximate (≈) model years
+scripts/             # Data maintenance + wiki-sync scripts (lib/tags/sync/images/data)
+  output/            # Generated reports / snapshots (git-ignored)
 ```
 
 ## Deployment

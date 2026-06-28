@@ -14,7 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { fetchWikitext, parseCasting } = require('./parse-casting');
+const { fetchWikitext, parseCasting } = require('../lib/parse-casting');
 
 const SLEEP_MS = 350;
 const inDir = path.join('scripts', 'output');

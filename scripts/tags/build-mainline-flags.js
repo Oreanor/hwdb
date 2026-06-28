@@ -23,7 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { fetchWikitext } = require('./parse-casting');
+const { fetchWikitext } = require('../lib/parse-casting');
 
 const DB = path.join('data', 'carsdata.json');
 const BACKUP = path.join('scripts', 'output', 'carsdata.pre-mainline.json');

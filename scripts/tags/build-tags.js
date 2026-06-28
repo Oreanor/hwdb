@@ -163,6 +163,16 @@ function modelYear(n, dsc) {
     /\b(?:produced|manufactured|built|made|sold|in production)\b[^.]{0,40}?\b(19[0-9]\d|20[0-2]\d)\s*(?:–|—|-|to|and|until|through)\s*(?:19[0-9]\d|20[0-2]\d)\b/i
   );
   if (m) return Number(m[1]);
+  // Real-car year tied to a maker verb. Hot Wheels casting clauses ("...in the
+  // 1969 Hot Wheels line-up") are stripped first so their RELEASE year isn't read
+  // as the car's: "Mercedes-Benz introduced the 280 SL in 1968" -> 1968.
+  const carDsc = (dsc || '').replace(/[^.]*\b(?:hot\s*wheels|line[\s-]?up|mattel|casting|series|treasure hunt|first edition|mainline)\b[^.]*\.?/gi, ' ');
+  m = carDsc.match(
+    /\b(?:introduced|unveiled|debuted|launched|presented|revealed|premiered|developed|built|produced|manufactured|designed|created)\b[^.]{0,35}?\b(?:in|at|for|during)\b[^.]{0,18}?(19[0-9]\d|20[0-2]\d)\b/i
+  );
+  if (m) return Number(m[1]);
+  m = carDsc.match(/\bfor the\s+(19[0-9]\d|20[0-2]\d)\s+(?:can-am|season|model year|formula|grand prix|le\s*mans|championship)/i);
+  if (m) return Number(m[1]);
   return null;
 }
 // A decade reference in the name -> the decade's start year ('50s/50s/1950s ->
@@ -229,14 +239,14 @@ function classify(n, dsc) {
 
 const db = JSON.parse(fs.readFileSync(DB, 'utf8'));
 
-// Offline model-year estimates (lnk -> {year, method, firstCasting}). Optional.
-const proposals = new Map();
+// Approximate model years (lnk -> year), curated from Wikipedia production spans
+// and generation lookups (scripts/propose-model-years*.js). Committed so a clean
+// rebuild is reproducible. Applied only as a gap-filler, marked ye:1 (shown ≈).
+const estimates = new Map();
 {
-  const pf = path.join('scripts', 'output', 'model-year-proposals.json');
-  if (fs.existsSync(pf)) {
-    for (const p of JSON.parse(fs.readFileSync(pf, 'utf8'))) {
-      if (p.proposed) proposals.set(p.lnk, { year: p.proposed, method: p.method, firstCasting: p.firstCasting });
-    }
+  const ef = path.join('data', 'model-year-estimates.json');
+  if (fs.existsSync(ef)) {
+    for (const [lnk, y] of Object.entries(JSON.parse(fs.readFileSync(ef, 'utf8')))) estimates.set(lnk, y);
   }
 }
 // Curated manual corrections (lnk -> year, or null to suppress). Highest priority.
@@ -268,23 +278,21 @@ for (const c of db) {
   const nameDecade = decadeInName(nameClean);
   const my = modelYear(n, c.dsc);
   let yr = my && !t.themes.includes('Fantasy') && (nameHasYear || t.make) ? my : null;
-  // Fall back to an estimated year (Wikipedia production span / first-casting),
-  // proposed offline by scripts/propose-model-years.js. Marked ye:1 so the UI
-  // can render it as approximate (≈). Never overrides a parsed year, and never
-  // for decade-named castings (the era already says all we honestly know).
+  // Fall back to an approximate year (Wikipedia span / generation lookup). Marked
+  // ye:1 so the UI renders it as ≈. Never overrides a parsed year, and never for
+  // decade-named or Fantasy castings.
   let est = 0;
   if (!yr && !nameDecade && !t.themes.includes('Fantasy')) {
-    const p = proposals.get(c.lnk);
-    // Only Wikipedia production spans. "first casting - 1" is dropped: it blindly
-    // assumed casting year == car year, which is wrong for the many vintage cars
-    // re-issued in modern catalogs ('59 Cadillac debuted 2005, JZX100 in 2025).
-    if (p && p.method === 'wiki') { yr = p.year; est = 1; }
+    const ey = estimates.get(c.lnk);
+    if (ey) { yr = ey; est = 1; }
   }
   // Curated override wins over everything (a number = authoritative year shown as
   // exact; null suppresses any year).
   if (overrides.has(c.lnk)) { yr = overrides.get(c.lnk) || null; est = 0; }
   if (yr && yr >= 1930 && yr <= 1999) t.themes.push(`${Math.floor(yr / 10) * 10}s`);
-  if (nameDecade && nameDecade >= 1930 && nameDecade <= 1999 && !t.themes.includes(`${nameDecade}s`)) {
+  // A decade in the name tags the era too — but NOT for Fantasy castings
+  // ("1940s Batmobile" is a fantasy car, not a real 1940s model).
+  if (nameDecade && nameDecade >= 1930 && nameDecade <= 1999 && !t.themes.includes('Fantasy') && !t.themes.includes(`${nameDecade}s`)) {
     t.themes.push(`${nameDecade}s`);
   }
   out.push({ lnk: c.lnk, name: n, yr: yr || undefined, ye: est || undefined, ...t });

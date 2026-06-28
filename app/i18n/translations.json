@@ -80,7 +80,8 @@
       "all": "Все",
       "mainline": "Мейнлайн",
       "premium": "Премиум и спец",
-      "shown": "Показано"
+      "shown": "Показано",
+      "allScales": "Все масштабы"
     },
     "table": {
       "add": "Добавить",
@@ -188,7 +189,8 @@
       "all": "All",
       "mainline": "Mainline",
       "premium": "Premium & special",
-      "shown": "Shown"
+      "shown": "Shown",
+      "allScales": "All scales"
     },
     "table": {
       "add": "Add",
@@ -296,7 +298,8 @@
       "all": "Alle",
       "mainline": "Mainline",
       "premium": "Premium & Spezial",
-      "shown": "Angezeigt"
+      "shown": "Angezeigt",
+      "allScales": "Alle Maßstäbe"
     },
     "table": {
       "add": "Hinzufügen",
@@ -404,7 +407,8 @@
       "all": "Todos",
       "mainline": "Mainline",
       "premium": "Premium y especiales",
-      "shown": "Mostrado"
+      "shown": "Mostrado",
+      "allScales": "Todas las escalas"
     },
     "table": {
       "add": "Añadir",
@@ -512,7 +516,8 @@
       "all": "Tous",
       "mainline": "Mainline",
       "premium": "Premium & spéciales",
-      "shown": "Affiché"
+      "shown": "Affiché",
+      "allScales": "Toutes les échelles"
     },
     "table": {
       "add": "Ajouter",
@@ -620,7 +625,8 @@
       "all": "Todos",
       "mainline": "Mainline",
       "premium": "Premium e especiais",
-      "shown": "Exibido"
+      "shown": "Exibido",
+      "allScales": "Todas as escalas"
     },
     "table": {
       "add": "Adicionar",
@@ -728,7 +734,8 @@
       "all": "Alle",
       "mainline": "Mainline",
       "premium": "Premium & speciaal",
-      "shown": "Getoond"
+      "shown": "Getoond",
+      "allScales": "Alle schalen"
     },
     "table": {
       "add": "Toevoegen",
@@ -836,7 +843,8 @@
       "all": "Усі",
       "mainline": "Мейнлайн",
       "premium": "Преміум і спец",
-      "shown": "Показано"
+      "shown": "Показано",
+      "allScales": "Усі масштаби"
     },
     "table": {
       "add": "Додати",

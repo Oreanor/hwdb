@@ -16,10 +16,10 @@
 
 const fs = require('fs');
 const path = require('path');
-const { fetchWikitext, parseCasting } = require('./parse-casting');
+const { fetchWikitext, parseCasting } = require('../lib/parse-casting');
 
 const YEARS = new Set(['2025', '2026']);
-const SLEEP_MS = 400;
+const SLEEP_MS = 700;
 const DB = path.join('data', 'carsdata.json');
 const outPath = path.join('scripts', 'output', 'existing_year_additions.json');
 const progressPath = path.join('scripts', 'output', 'audit_recent_progress.json');
@@ -33,7 +33,7 @@ async function main() {
   const records = fs.existsSync(outPath) ? JSON.parse(fs.readFileSync(outPath, 'utf8')) : [];
   const prog = fs.existsSync(progressPath) ? JSON.parse(fs.readFileSync(progressPath, 'utf8')) : { processed: [], failed: [] };
   const seen = new Set(prog.processed);
-  const failed = prog.failed;
+  const failed = []; // fresh each run; resume retries anything not in `seen`
   const report = [];
 
   const save = () => {

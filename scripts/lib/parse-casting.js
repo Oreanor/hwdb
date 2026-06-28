@@ -86,6 +86,9 @@ function cellValue(line) {
 }
 
 async function fetchWikitext(slug) {
+  // Some stored lnks are double-encoded ("%2764_Riviera", "Chevy_Monza_2%2B2");
+  // decode once so the API resolves the real page title.
+  if (/%[0-9A-Fa-f]{2}/.test(slug)) { try { slug = decodeURIComponent(slug); } catch { /* keep as-is */ } }
   const url = `${API}?${new URLSearchParams({ action: 'parse', page: slug, prop: 'wikitext', format: 'json' })}`;
   // Retry on rate-limit / transient 5xx with exponential backoff.
   for (let attempt = 0; ; attempt++) {
