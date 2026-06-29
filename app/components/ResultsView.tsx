@@ -14,6 +14,7 @@ import ModelsTable from './ModelsTable';
 import VariantsGallery from './VariantsGallery';
 import CastingsTable from './CastingsTable';
 import ModelsGrid from './ModelsGrid';
+import CastingsYearMatrix from './CastingsYearMatrix';
 import ViewToggle from './ViewToggle';
 import VariantFilterControls from './VariantFilterControls';
 import ResultsHeader from './ResultsHeader';
@@ -51,10 +52,12 @@ export default function ResultsView({
   onSeriesClick,
   onYearClick,
 }: ResultsViewProps) {
-  // Castings have a sparse little table, so they default to the gallery.
-  const { view, toggle: toggleView } = usePersistedView(
+  // Castings have a sparse little table, so they default to the gallery, and
+  // add a "stats" (year matrix) view; variants views are table/gallery only.
+  const { view, toggle: toggleView, next: viewNext } = usePersistedView(
     mode === 'castings' ? VIEW_MODE_KEYS.castings : VIEW_MODE_KEYS.models,
-    mode === 'castings' ? 'gallery' : 'table'
+    mode === 'castings' ? 'gallery' : 'table',
+    mode === 'castings' ? ['table', 'gallery', 'stats'] : ['table', 'gallery']
   );
   const filterState = useVariantFilter(cars);
 
@@ -125,7 +128,7 @@ export default function ResultsView({
       <ResultsHeader ref={headerRef} onBack={onBack} title={title ?? t('auth.myCollection')}>
         {cars.length > 0 &&
           (mode === 'models' ? (
-            <VariantFilterControls filterState={filterState} view={view} onToggleView={toggleView} />
+            <VariantFilterControls filterState={filterState} viewNext={viewNext} onToggleView={toggleView} />
           ) : (
             <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
               <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
@@ -141,7 +144,7 @@ export default function ResultsView({
                 ]}
                 ariaLabel={t('filter.allScales')}
               />
-              {view === 'gallery' && (
+              {(view === 'gallery' || view === 'stats') && (
                 <div className="flex items-center gap-1">
                   {(singleMake
                     ? ([['model', t('model.modelYear')]] as const)
@@ -162,7 +165,7 @@ export default function ResultsView({
                   ))}
                 </div>
               )}
-              <ViewToggle view={view} onToggle={toggleView} />
+              <ViewToggle next={viewNext} onToggle={toggleView} />
             </div>
           ))}
       </ResultsHeader>
@@ -195,6 +198,8 @@ export default function ResultsView({
         )
       ) : view === 'table' ? (
         <CastingsTable cars={cardsForBody} onModelClick={onModelClick!} selectedYear={selectedYear} stickyTop={headerH} />
+      ) : view === 'stats' ? (
+        <CastingsYearMatrix cars={galleryCastings} onModelClick={onModelClick!} stickyTop={headerH} />
       ) : (
         <ModelsGrid cars={galleryCastings} onModelClick={onModelClick!} selectedYear={selectedYear} />
       )}

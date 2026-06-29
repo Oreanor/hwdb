@@ -74,7 +74,8 @@
     "view": {
       "label": "Вид",
       "table": "Таблица",
-      "gallery": "Галерея"
+      "gallery": "Галерея",
+      "stats": "Годы"
     },
     "filter": {
       "all": "Все",
@@ -184,7 +185,8 @@
     "view": {
       "label": "View",
       "table": "Table",
-      "gallery": "Gallery"
+      "gallery": "Gallery",
+      "stats": "Years"
     },
     "filter": {
       "all": "All",
@@ -283,7 +285,8 @@
     "view": {
       "label": "Ansicht",
       "table": "Tabelle",
-      "gallery": "Galerie"
+      "gallery": "Galerie",
+      "stats": "Jahre"
     },
     "collection": {
       "empty": "Du hast noch keine Modelle in deiner Sammlung",
@@ -393,7 +396,8 @@
     "view": {
       "label": "Vista",
       "table": "Tabla",
-      "gallery": "Galería"
+      "gallery": "Galería",
+      "stats": "Años"
     },
     "collection": {
       "empty": "Aún no tienes modelos en tu colección",
@@ -503,7 +507,8 @@
     "view": {
       "label": "Vue",
       "table": "Tableau",
-      "gallery": "Galerie"
+      "gallery": "Galerie",
+      "stats": "Années"
     },
     "collection": {
       "empty": "Vous n'avez pas encore de modèles dans votre collection",
@@ -613,7 +618,8 @@
     "view": {
       "label": "Visualização",
       "table": "Tabela",
-      "gallery": "Galeria"
+      "gallery": "Galeria",
+      "stats": "Anos"
     },
     "collection": {
       "empty": "Você ainda não tem modelos na sua coleção",
@@ -734,7 +740,8 @@
     "view": {
       "label": "Weergave",
       "table": "Tabel",
-      "gallery": "Galerij"
+      "gallery": "Galerij",
+      "stats": "Jaren"
     },
     "filter": {
       "all": "Alle",
@@ -844,7 +851,8 @@
     "view": {
       "label": "Вигляд",
       "table": "Таблиця",
-      "gallery": "Галерея"
+      "gallery": "Галерея",
+      "stats": "Роки"
     },
     "filter": {
       "all": "Усі",

@@ -3,18 +3,19 @@
 import { t } from '../i18n';
 import { SeriesFilter, ScaleFilter } from '../lib/seriesCategory';
 import { VariantFilterState } from '../hooks/useVariantFilter';
+import { ViewMode } from '../hooks/usePersistedView';
 import Select from './ui/Select';
 import ViewToggle from './ViewToggle';
 
 interface VariantFilterControlsProps {
   filterState: VariantFilterState;
-  view: 'table' | 'gallery';
+  viewNext: ViewMode;
   onToggleView: () => void;
 }
 
 // "Shown: N" + All/Mainline/Premium selector + table/gallery toggle.
 // Shared by every variants view so the controls stay identical everywhere.
-export default function VariantFilterControls({ filterState, view, onToggleView }: VariantFilterControlsProps) {
+export default function VariantFilterControls({ filterState, viewNext, onToggleView }: VariantFilterControlsProps) {
   const { filter, setFilter, scale, setScale, counts, scaleCounts, shownCount } = filterState;
 
   return (
@@ -42,7 +43,7 @@ export default function VariantFilterControls({ filterState, view, onToggleView 
         ]}
         ariaLabel={t('filter.all')}
       />
-      <ViewToggle view={view} onToggle={onToggleView} />
+      <ViewToggle next={viewNext} onToggle={onToggleView} />
     </div>
   );
 }

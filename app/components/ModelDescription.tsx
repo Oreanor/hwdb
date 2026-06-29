@@ -42,7 +42,7 @@ export default function ModelDescription({
   onTagClick,
 }: ModelDescriptionProps) {
   const [expandedDescription, setExpandedDescription] = useState(false);
-  const { view, toggle: toggleView } = usePersistedView(VIEW_MODE_KEYS.castingPage, 'table');
+  const { view, toggle: toggleView, next: viewNext } = usePersistedView(VIEW_MODE_KEYS.castingPage, 'table');
   const { ref: headerRef, height: headerH } = useStickyOffset<HTMLDivElement>();
 
   const description = decodeHtmlEntities(model.dsc || '');
@@ -60,7 +60,7 @@ export default function ModelDescription({
     <div className="flex flex-col gap-4">
       {/* Pinned controls: stay visible while the list scrolls. */}
       <ResultsHeader ref={headerRef} onBack={backToSearch}>
-        <VariantFilterControls filterState={filterState} view={view} onToggleView={toggleView} />
+        <VariantFilterControls filterState={filterState} viewNext={viewNext} onToggleView={toggleView} />
       </ResultsHeader>
 
       <div className="flex flex-col gap-2 p-2">

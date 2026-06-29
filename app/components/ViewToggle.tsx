@@ -1,22 +1,26 @@
 'use client';
 
-import { Table, LayoutGrid } from 'lucide-react';
+import { Table, LayoutGrid, CalendarRange } from 'lucide-react';
 import { t } from '../i18n';
+import { ViewMode } from '../hooks/usePersistedView';
 
-type ViewMode = 'table' | 'gallery';
+const ICONS: Record<ViewMode, typeof Table> = {
+  table: Table,
+  gallery: LayoutGrid,
+  stats: CalendarRange,
+};
 
 export default function ViewToggle({
-  view,
+  next,
   onToggle,
   className = '',
 }: {
-  view: ViewMode;
+  // The view you'll switch TO (shown on the button).
+  next: ViewMode;
   onToggle: () => void;
   className?: string;
 }) {
-  // Show the view you'll switch TO.
-  const next: ViewMode = view === 'table' ? 'gallery' : 'table';
-  const Icon = next === 'gallery' ? LayoutGrid : Table;
+  const Icon = ICONS[next];
 
   return (
     <button
