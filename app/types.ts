@@ -33,6 +33,7 @@ export type CarData = {
   num?: string;
   dsc?: string;
   d: CarDataItem[];
+  brand?: 'hw' | 'mb' | 'mj'; // source brand (Hot Wheels / Matchbox / Majorette); absent = hw
   tags?: CastingTags; // browse tags, attached by /api/car
   s164?: boolean; // casting has >=1 standard 1:64 variant (set on casting search results)
   sOth?: boolean; // casting has >=1 non-1:64 (other-scale) variant

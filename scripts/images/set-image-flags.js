@@ -6,7 +6,7 @@
  * local image catalog (images/webp2). Run this AFTER uploading the webp files
  * to Supabase `webp2/`, so the app only flags variants whose image is live.
  *
- * Writes data/carsdata.json in place (backup to scripts/output/).
+ * Writes data/hw.json in place (backup to scripts/output/).
  *
  * Usage: node scripts/set-image-flags.js [webpDir]
  */
@@ -14,7 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB = path.join('data', 'carsdata.json');
+const DB = path.join('data', 'hw.json');
 const WEBP = process.argv[2] || path.join('images', 'webp2');
 const BACKUP = path.join('scripts', 'output', 'carsdata.pre-imageflags.json');
 

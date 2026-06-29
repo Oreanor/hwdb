@@ -3,7 +3,7 @@ import { CarData } from '../../types';
 import { VARIANT_FIELDS, isModelSearchField } from '../../consts';
 import { loadCarsData } from '../../lib/carsData';
 import { carMatchesQuery, includesAll, tokenize } from '../../lib/carSearch';
-import { loadCastingTags, castingMatchesTag } from '../../lib/tagsData';
+import { castingMatchesTag } from '../../lib/tagsData';
 import { isStandardScale } from '../../lib/seriesCategory';
 import { STATIC_CACHE_HEADERS } from '../../lib/http';
 
@@ -21,17 +21,16 @@ export async function GET(request: Request) {
     const year = searchParams.get('year');
 
     const carsData = await loadCarsData();
-    const tags = await loadCastingTags();
-    // Casting results carry make + model year so the grid can sort by them.
+    // Casting results carry make + model year (from the embedded tags) so the
+    // grid can sort by them.
     const asCasting = (car: CarData): CarData => {
-      const tag = tags.get(car.lnk);
       // Scale (from `Sr`) is dropped by trimVariants, so flag here whether the
       // casting has any standard 1:64 variant — drives the grid's scale filter.
       return {
         ...trimVariants(car),
         s164: car.d.some(isStandardScale),
         sOth: car.d.some((v) => !isStandardScale(v)),
-        tags: { mk: tag?.mk, yr: tag?.yr, ye: tag?.ye },
+        tags: { mk: car.tags?.mk, yr: car.tags?.yr, ye: car.tags?.ye },
       };
     };
 
@@ -44,7 +43,7 @@ export async function GET(request: Request) {
 
     // Tag browse (home page): castings matching every token of the tag query.
     if (field === 'tag' && value && value.trim() !== '') {
-      const result = filteredData.filter((car) => castingMatchesTag(tags.get(car.lnk), value)).map(asCasting);
+      const result = filteredData.filter((car) => castingMatchesTag(car.tags, value)).map(asCasting);
       return NextResponse.json(result, { headers: STATIC_CACHE_HEADERS });
     }
 

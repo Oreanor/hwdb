@@ -5,7 +5,7 @@ import { CarData } from '../../types';
 import { invalidateCarsData, CARS_DATA_PATH } from '../../lib/carsData';
 
 /**
- * Applies a series cleanup to data/carsdata.json:
+ * Applies a series cleanup to data/hw.json:
  *   - `remove`: series names to clear from every variant (Sr deleted)
  *   - `rename`: { oldName: newName } to canonicalize fuzzy duplicates
  *

@@ -2,7 +2,7 @@
 /*
  * merge-into-db.js
  * ----------------
- * Merges the parsed wiki data into data/carsdata.json:
+ * Merges the parsed wiki data into data/hw.json:
  *   - new_castings_data.json       -> appended as new car records
  *   - existing_year_additions.json -> appended to the matching existing record
  *
@@ -16,7 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB = path.join('data', 'carsdata.json');
+const DB = path.join('data', 'hw.json');
 const NEW = path.join('scripts', 'output', 'new_castings_data.json');
 const ADDS = path.join('scripts', 'output', 'existing_year_additions.json');
 const SNAPSHOT = path.join('scripts', 'output', 'carsdata.pre-merge.json');

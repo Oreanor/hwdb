@@ -7,7 +7,7 @@
  * the Photo column (File:) to our variant ids by position, download + encode
  * webp (<=800px) into images/webp2 and a 256px preview into images/webp2/preview.
  *
- * Does NOT touch data/carsdata.json. After uploading the new files to Supabase,
+ * Does NOT touch data/hw.json. After uploading the new files to Supabase,
  * run set-image-flags.js to flip `p:'t'`.
  *
  * Resumable: variants whose webp already exists are skipped.
@@ -28,7 +28,7 @@ const QUALITY = 80;
 const THUMB = 256;
 const MIN_DIMENSION = 250;
 
-const DB = path.join('data', 'carsdata.json');
+const DB = path.join('data', 'hw.json');
 const WEBP_DIR = path.join('images', 'webp2');
 const PREV_DIR = path.join('images', 'webp2', 'preview');
 const ORIG_DIR = path.join('scripts', 'output', 'images', 'originals');

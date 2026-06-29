@@ -2,6 +2,7 @@
 export type ViewState = {
   view?: string;
   model?: string;
+  brand?: string; // disambiguates a casting when the same lnk exists in >1 brand
   series?: string;
   searchQuery?: string;
   selectedField?: string;
@@ -15,6 +16,8 @@ export function buildViewUrl(state: ViewState | null): string {
   switch (state?.view) {
     case 'model':
       if (state.model) p.set('model', state.model);
+      // Omit for Hot Wheels (the default), like `field` omits 'name'.
+      if (state.brand && state.brand !== 'hw') p.set('brand', state.brand);
       break;
     case 'series':
       if (state.series) p.set('series', state.series);

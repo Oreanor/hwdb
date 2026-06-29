@@ -4,7 +4,8 @@ import { useMemo, useState } from 'react';
 import { CarData, SortConfig } from '../types';
 import { formatCarName, decodeHtmlEntities } from '../utils';
 import { t } from '../i18n';
-import { FANDOM_BASE_URL, VIEW_MODE_KEYS } from '../consts';
+import { VIEW_MODE_KEYS } from '../consts';
+import { brandWiki } from '../lib/brands';
 import { useVariantFilter } from '../hooks/useVariantFilter';
 import { usePersistedView } from '../hooks/usePersistedView';
 import { useStickyOffset } from '../hooks/useStickyOffset';
@@ -118,7 +119,7 @@ export default function ModelDescription({
           </div>
         )}
         <a
-          href={`${FANDOM_BASE_URL}${model.lnk}`}
+          href={`${brandWiki(model.brand)}${model.lnk}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs text-blue-600 dark:text-blue-400 hover:underline"

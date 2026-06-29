@@ -107,7 +107,7 @@ function loadExisting(dbPath) {
 }
 
 async function main() {
-  const dbPath = process.argv[2] || path.join('data', 'carsdata.json');
+  const dbPath = process.argv[2] || path.join('data', 'hw.json');
 
   console.log(`[*] reading our DB: ${dbPath}`);
   const existing = loadExisting(dbPath);

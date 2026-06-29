@@ -14,13 +14,13 @@
  * The malformed copy's variants that the canonical already has are true image
  * duplicates -> their ids are written out for deletion on Supabase.
  *
- * Writes data/carsdata.json and scripts/output/supabase-delete-ids.json.
+ * Writes data/hw.json and scripts/output/supabase-delete-ids.json.
  * Does NOT touch Supabase or local image files.
  */
 const fs = require('fs');
 const path = require('path');
 
-const DB = path.join('data', 'carsdata.json');
+const DB = path.join('data', 'hw.json');
 const OUT = path.join('scripts', 'output', 'supabase-delete-ids.json');
 
 const db = JSON.parse(fs.readFileSync(DB, 'utf8'));

@@ -5,7 +5,7 @@
  * Re-fetches castings whose stored description was cut at the old 800-char limit
  * (ends with "…") and replaces it with the full first paragraph from the wiki.
  *
- * Writes data/carsdata.json in place (backup to scripts/output/).
+ * Writes data/hw.json in place (backup to scripts/output/).
  *
  * Usage: node scripts/fix-descriptions.js
  */
@@ -14,7 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchWikitext, parseCasting } = require('../lib/parse-casting');
 
-const DB = path.join('data', 'carsdata.json');
+const DB = path.join('data', 'hw.json');
 const BACKUP = path.join('scripts', 'output', 'carsdata.pre-descfix.json');
 const SLEEP_MS = 300;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

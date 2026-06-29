@@ -271,7 +271,7 @@ export function useAppNavigation() {
 
     if (model) {
       setLoading(true);
-      fetchCarByLnk(model).then((c) => c && setSelectedModel(c)).finally(() => setLoading(false));
+      fetchCarByLnk(model, params.get('brand') || undefined).then((c) => c && setSelectedModel(c)).finally(() => setLoading(false));
     } else if (series) {
       setLoading(true);
       fetchSeriesCars(series).then((d) => setTableView({ kind: 'series', value: series, cars: d })).finally(() => setLoading(false));
@@ -346,11 +346,11 @@ export function useAppNavigation() {
   const handleModelClick = useCallback(async (car: CarData) => {
     try {
       setLoading(true);
-      const fullCarData = await fetchCarByLnk(car.lnk);
+      const fullCarData = await fetchCarByLnk(car.lnk, car.brand);
       setTableView(null);
       setSelectedModel(fullCarData);
       const { selectedYear, searchQuery, selectedField } = navStateRef.current;
-      pushUrl({ view: 'model', model: car.lnk, year: selectedYear, searchQuery, selectedField });
+      pushUrl({ view: 'model', model: car.lnk, brand: car.brand, year: selectedYear, searchQuery, selectedField });
     } catch (err) {
       setError(err instanceof Error ? err.message : t('search.errors.failedToLoad'));
     } finally {

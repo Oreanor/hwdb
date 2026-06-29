@@ -16,7 +16,7 @@
  *      collection number still lines up).
  *
  * Year lists are cached to scripts/output/year-lists.json (pass --refresh to
- * re-fetch). Writes data/carsdata.json in place (backup to scripts/output/).
+ * re-fetch). Writes data/hw.json in place (backup to scripts/output/).
  *
  * Usage: node scripts/build-mainline-flags.js [--refresh]
  */
@@ -25,7 +25,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchWikitext } = require('../lib/parse-casting');
 
-const DB = path.join('data', 'carsdata.json');
+const DB = path.join('data', 'hw.json');
 const BACKUP = path.join('scripts', 'output', 'carsdata.pre-mainline.json');
 const CACHE = path.join('scripts', 'output', 'year-lists.json');
 const FIRST_YEAR = 1968;

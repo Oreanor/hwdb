@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
 import { loadCarsData } from '../../lib/carsData';
-import { loadCastingTags } from '../../lib/tagsData';
 
 export async function POST(request: Request) {
   try {
-    const { links } = await request.json();
+    const { links, brand } = await request.json();
 
     if (!Array.isArray(links) || links.length === 0) {
       return NextResponse.json(
@@ -14,7 +13,10 @@ export async function POST(request: Request) {
     }
 
     const carsData = await loadCarsData();
-    const cars = carsData.filter(car => links.includes(car.lnk));
+    // A lnk can repeat across brands; when a brand is given, match it too.
+    const cars = carsData.filter(
+      (car) => links.includes(car.lnk) && (!brand || (car.brand ?? 'hw') === brand)
+    );
 
     if (cars.length === 0) {
       return NextResponse.json(
@@ -23,14 +25,9 @@ export async function POST(request: Request) {
       );
     }
 
-    // Attach the casting's browse tags (make / region / model / themes).
-    const tagMap = await loadCastingTags();
-    const withTags = cars.map((car) => {
-      const tag = tagMap.get(car.lnk);
-      return tag ? { ...car, tags: { mk: tag.mk, rg: tag.rg, md: tag.md, th: tag.th, yr: tag.yr, ye: tag.ye } } : car;
-    });
-
-    return NextResponse.json(withTags);
+    // Browse tags (make / region / model / themes / model year) are embedded on
+    // each casting record, so the cars are returned as-is.
+    return NextResponse.json(cars);
   } catch (error) {
     console.error('Error processing car request:', error);
     return NextResponse.json(

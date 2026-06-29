@@ -18,8 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB = path.join('data', 'carsdata.json');
-const TAGS = path.join('data', 'casting-tags.json');
+const DB = path.join('data', 'hw.json'); // browse tags are embedded on castings
 const OUT = path.join('scripts', 'output', 'model-year-proposals.json');
 const PROG = path.join('scripts', 'output', 'model-year-progress.json');
 const H = { 'User-Agent': 'HWDB-research/1.0 (personal research; oreanor@gmail.com)' };
@@ -55,7 +54,7 @@ async function main() {
   const limit = process.argv[2] ? Number(process.argv[2]) : Infinity;
   const db = JSON.parse(fs.readFileSync(DB, 'utf8'));
   const byLnk = new Map(db.map((c) => [c.lnk, c]));
-  const tags = JSON.parse(fs.readFileSync(TAGS, 'utf8'));
+  const tags = db.filter((c) => c.tags).map((c) => ({ lnk: c.lnk, ...c.tags }));
   const targets = tags.filter((t) => t.mk && !t.yr);
 
   const out = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : [];

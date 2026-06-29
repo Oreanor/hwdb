@@ -20,7 +20,7 @@ const { fetchWikitext, parseCasting } = require('../lib/parse-casting');
 
 const YEARS = new Set(['2025', '2026']);
 const SLEEP_MS = 700;
-const DB = path.join('data', 'carsdata.json');
+const DB = path.join('data', 'hw.json');
 const outPath = path.join('scripts', 'output', 'existing_year_additions.json');
 const progressPath = path.join('scripts', 'output', 'audit_recent_progress.json');
 const reportPath = path.join('scripts', 'output', 'recent_years_report.json');

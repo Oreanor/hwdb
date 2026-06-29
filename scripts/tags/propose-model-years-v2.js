@@ -17,8 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB = path.join('data', 'carsdata.json');
-const TAGS = path.join('data', 'casting-tags.json');
+const DB = path.join('data', 'hw.json'); // browse tags are embedded on castings
 const OUT = path.join('scripts', 'output', 'model-year-proposals-v2.json');
 const PROG = path.join('scripts', 'output', 'model-year-v2-progress.json');
 const H = { 'User-Agent': 'HWDB-research/1.0 (personal research; oreanor@gmail.com)' };
@@ -77,7 +76,7 @@ async function main() {
   const limit = process.argv[2] ? Number(process.argv[2]) : Infinity;
   const db = JSON.parse(fs.readFileSync(DB, 'utf8'));
   const dsc = new Map(db.map((c) => [c.lnk, c.dsc || '']));
-  const tags = JSON.parse(fs.readFileSync(TAGS, 'utf8'));
+  const tags = db.filter((c) => c.tags).map((c) => ({ lnk: c.lnk, ...c.tags }));
   // ALL make+model castings (not just year-less ones): we also want to VERIFY the
   // years already assigned, so the output can be diffed against the current year.
   const targets = tags.filter((t) => t.mk && t.md && !(t.th || []).includes('Fantasy'));

@@ -26,23 +26,23 @@ export const fetchCars = async (field?: string, value?: string, year?: string): 
   return response.json();
 };
 
-export const fetchCarsByLinks = async (links: string[]): Promise<CarData[]> => {
+export const fetchCarsByLinks = async (links: string[], brand?: string): Promise<CarData[]> => {
   const response = await fetch('/api/car', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ links }),
+    body: JSON.stringify({ links, brand }),
   });
-  
+
   if (!response.ok) {
     throw new Error('Failed to fetch car data');
   }
   return response.json();
 };
 
-export const fetchCarByLnk = async (lnk: string): Promise<CarData> => {
-  const cars = await fetchCarsByLinks([lnk]);
+export const fetchCarByLnk = async (lnk: string, brand?: string): Promise<CarData> => {
+  const cars = await fetchCarsByLinks([lnk], brand);
   return cars[0];
 };
 

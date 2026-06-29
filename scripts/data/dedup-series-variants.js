@@ -22,7 +22,7 @@
  *      captured in our spec fields (different shade, etc.) — NOT duplicates.
  *   5. Groups whose members carry DIFFERENT _img are also left intact.
  *
- * Writes data/carsdata.json in place (backup to scripts/output/).
+ * Writes data/hw.json in place (backup to scripts/output/).
  *
  * Usage:
  *   node scripts/data/dedup-series-variants.js            # dry run (no write)
@@ -32,7 +32,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB = path.join('data', 'carsdata.json');
+const DB = path.join('data', 'hw.json');
 const BACKUP = path.join('scripts', 'output', 'carsdata.pre-dedup-variants.json');
 const APPLY = process.argv.includes('--apply');
 

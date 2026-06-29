@@ -8,9 +8,10 @@ interface ModelCardProps {
   car: CarData;
   onModelClick: (car: CarData) => void;
   selectedYear?: string;
+  showBrand?: boolean;
 }
 
-const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear }: ModelCardProps) {
+const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear, showBrand }: ModelCardProps) {
   const firstVariantWithImage = useMemo(
     () => selectedYear 
       ? car.d.find(item => item.y === selectedYear && item.p === 't')
@@ -42,10 +43,15 @@ const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear }: M
   const yearsDisplay = firstYear === lastYear ? firstYear : `${firstYear}–${lastYear}`;
 
   return (
-    <div 
-      className="flex flex-col items-center p-2 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer"
+    <div
+      className="relative flex flex-col items-center p-2 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer"
       onClick={() => onModelClick(car)}
     >
+      {showBrand && car.brand && (
+        <span className="absolute top-1 left-1 z-10 rounded bg-gray-900/70 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-white">
+          {car.brand}
+        </span>
+      )}
       <Thumbnail url={previewUrl} fallbackUrl={imageUrl} alt={formattedName} className="w-full h-48" />
       <p className="text-sm text-center font-bold text-gray-900 dark:text-gray-100 line-clamp-1">
         {formattedName} <span className="text-gray-500 dark:text-gray-400 font-medium text-xs">({variantCount})</span>

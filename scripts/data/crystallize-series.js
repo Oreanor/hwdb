@@ -7,7 +7,7 @@
  * edge punctuation. Does NOT touch years, scale, or merge sub-series — those
  * are left for manual cleanup in the /series tool.
  *
- * Writes data/carsdata.json in place (backup to scripts/output/).
+ * Writes data/hw.json in place (backup to scripts/output/).
  *
  * Usage: node scripts/crystallize-series.js
  */
@@ -15,7 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB = path.join('data', 'carsdata.json');
+const DB = path.join('data', 'hw.json');
 const BACKUP = path.join('scripts', 'output', 'carsdata.pre-crystallize.json');
 
 function safeCrystallize(s) {

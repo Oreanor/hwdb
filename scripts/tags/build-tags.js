@@ -18,7 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB = path.join('data', 'carsdata.json');
+const DB = path.join('data', 'hw.json');
 const OUT = path.join('scripts', 'output', 'casting-tags.json');
 
 // make -> region + aliases (names as written) + models. `infer` models imply the
@@ -239,24 +239,10 @@ function classify(n, dsc) {
 
 const db = JSON.parse(fs.readFileSync(DB, 'utf8'));
 
-// Approximate model years (lnk -> year), curated from Wikipedia production spans
-// and generation lookups (scripts/propose-model-years*.js). Committed so a clean
-// rebuild is reproducible. Applied only as a gap-filler, marked ye:1 (shown ≈).
-const estimates = new Map();
-{
-  const ef = path.join('data', 'model-year-estimates.json');
-  if (fs.existsSync(ef)) {
-    for (const [lnk, y] of Object.entries(JSON.parse(fs.readFileSync(ef, 'utf8')))) estimates.set(lnk, y);
-  }
-}
-// Curated manual corrections (lnk -> year, or null to suppress). Highest priority.
-const overrides = new Map();
-{
-  const of = path.join('data', 'model-year-overrides.json');
-  if (fs.existsSync(of)) {
-    for (const [lnk, yr] of Object.entries(JSON.parse(fs.readFileSync(of, 'utf8')))) overrides.set(lnk, yr);
-  }
-}
+// Curated model years live on the casting record itself (hw.json): `yr` with
+// `ye:1` is an approximate gap-filler (Wikipedia spans / generation lookups, via
+// scripts/propose-model-years*.js, shown as ≈); `yr` without `ye` is an exact
+// manual override that wins over a year parsed from the name.
 
 const out = [];
 const byMake = {};
@@ -283,12 +269,10 @@ for (const c of db) {
   // decade-named or Fantasy castings.
   let est = 0;
   if (!yr && !nameDecade && !t.themes.includes('Fantasy')) {
-    const ey = estimates.get(c.lnk);
-    if (ey) { yr = ey; est = 1; }
+    if (c.ye === 1 && c.yr) { yr = c.yr; est = 1; } // approximate gap-filler (ye:1)
   }
-  // Curated override wins over everything (a number = authoritative year shown as
-  // exact; null suppresses any year).
-  if (overrides.has(c.lnk)) { yr = overrides.get(c.lnk) || null; est = 0; }
+  // Exact manual override (casting `yr` without `ye`) wins over everything.
+  if (c.yr && c.ye !== 1) { yr = c.yr; est = 0; }
   if (yr && yr >= 1930 && yr <= 1999) t.themes.push(`${Math.floor(yr / 10) * 10}s`);
   // A decade in the name tags the era too — but NOT for Fantasy castings
   // ("1940s Batmobile" is a fantasy car, not a real 1940s model).
@@ -323,7 +307,18 @@ for (const o of out) {
   if (o.region) add(regions, o.region, o.make);
   for (const th of o.themes) add(isEra(th) ? eras : themes, th, o.make);
 }
-fs.writeFileSync(path.join('data', 'casting-tags.json'), JSON.stringify(tagged));
+// Embed each casting's browse tags on its record in hw.json — no separate file.
+const tagByLnk = new Map(tagged.map((tg) => [tg.lnk, tg]));
+for (const c of db) {
+  const tg = tagByLnk.get(c.lnk);
+  if (tg) {
+    const { lnk, ...rest } = tg; // eslint-disable-line no-unused-vars
+    c.tags = rest;
+  } else if (c.tags) {
+    delete c.tags;
+  }
+}
+fs.writeFileSync(DB, JSON.stringify(db, null, 2));
 fs.writeFileSync(path.join('data', 'tags-index.json'), JSON.stringify({ regions, themes, eras }, null, 2));
 
 console.log(`castings: ${db.length}`);

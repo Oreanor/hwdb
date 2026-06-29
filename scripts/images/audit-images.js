@@ -14,7 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB = path.join('data', 'carsdata.json');
+const DB = path.join('data', 'hw.json');
 const WEBP = path.join('images', 'webp2');
 const OUT = path.join('scripts', 'output', 'missing-images-report.json');
 

@@ -21,7 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchWikitext, parseCasting } = require('../lib/parse-casting');
 
-const DB = path.join('data', 'carsdata.json');
+const DB = path.join('data', 'hw.json');
 const PRE_MERGE = path.join('scripts', 'output', 'carsdata.pre-merge.json');
 const BACKUP = path.join('scripts', 'output', 'carsdata.pre-reparsenew.json');
 const MISMATCH = path.join('scripts', 'output', 'reparse_new_mismatch.json');

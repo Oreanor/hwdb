@@ -1,8 +1,10 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { CarData, SortConfig } from '../types';
 import { ScaleFilter } from '../lib/seriesCategory';
+import { BRANDS, Brand } from '../lib/brands';
+import Select from './ui/Select';
 import { t } from '../i18n';
 import { VIEW_MODE_KEYS, FILTER_STORAGE_KEYS } from '../consts';
 import { formatCarName } from '../utils';
@@ -80,7 +82,19 @@ export default function ResultsView({
     return cars.filter((c) => c.s164 !== false);
   }, [cars, castScale, mode]);
 
-  const cardsForBody = mode === 'models' ? filterState.filteredCars : castingsByScale;
+  // Brand filter — only relevant when casting results span more than one brand.
+  const [brandFilter, setBrandFilter] = useState<'all' | Brand>('all');
+  const brandsPresent = useMemo(
+    () => (mode === 'castings' ? BRANDS.filter((b) => cars.some((c) => c.brand === b.key)) : []),
+    [cars, mode]
+  );
+  const multiBrand = brandsPresent.length > 1;
+  const castingsByBrand = useMemo(() => {
+    if (!multiBrand || brandFilter === 'all') return castingsByScale;
+    return castingsByScale.filter((c) => (c.brand ?? 'hw') === brandFilter);
+  }, [castingsByScale, brandFilter, multiBrand]);
+
+  const cardsForBody = mode === 'models' ? filterState.filteredCars : castingsByBrand;
   const { ref: headerRef, height: headerH } = useStickyOffset<HTMLDivElement>();
 
   // The gallery has no column headers, so castings get an explicit sort bar:
@@ -138,6 +152,20 @@ export default function ResultsView({
               setView={setView}
               viewModes={viewModes}
             >
+              {multiBrand && (
+                <Select
+                  value={brandFilter}
+                  onValueChange={(v) => setBrandFilter(v as 'all' | Brand)}
+                  options={[
+                    { value: 'all', label: `${t('filter.allBrands')} (${castingsByScale.length})` },
+                    ...brandsPresent.map((b) => ({
+                      value: b.key,
+                      label: `${b.name} (${castingsByScale.filter((c) => (c.brand ?? 'hw') === b.key).length})`,
+                    })),
+                  ]}
+                  ariaLabel={t('filter.allBrands')}
+                />
+              )}
               {(view === 'gallery' || view === 'stats') && (
                 <div className="flex items-center gap-1">
                   {(singleMake
@@ -194,7 +222,7 @@ export default function ResultsView({
       ) : view === 'stats' ? (
         <CastingsYearMatrix cars={galleryCastings} onModelClick={onModelClick!} stickyTop={headerH} />
       ) : (
-        <ModelsGrid cars={galleryCastings} onModelClick={onModelClick!} selectedYear={selectedYear} />
+        <ModelsGrid cars={galleryCastings} onModelClick={onModelClick!} selectedYear={selectedYear} showBrand={multiBrand} />
       )}
     </div>
   );

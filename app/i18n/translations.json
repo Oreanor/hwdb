@@ -87,7 +87,8 @@
       "premium": "Премиум и спец",
       "shown": "Показано",
       "allScales": "Все масштабы",
-      "otherScales": "Другие масштабы"
+      "otherScales": "Другие масштабы",
+      "allBrands": "Все бренды"
     },
     "table": {
       "add": "Добавить",
@@ -202,7 +203,8 @@
       "premium": "Premium & special",
       "shown": "Shown",
       "allScales": "All scales",
-      "otherScales": "Other scales"
+      "otherScales": "Other scales",
+      "allBrands": "All brands"
     },
     "table": {
       "add": "Add",
@@ -317,7 +319,8 @@
       "premium": "Premium & Spezial",
       "shown": "Angezeigt",
       "allScales": "Alle Maßstäbe",
-      "otherScales": "Andere Maßstäbe"
+      "otherScales": "Andere Maßstäbe",
+      "allBrands": "Alle Marken"
     },
     "table": {
       "add": "Hinzufügen",
@@ -432,7 +435,8 @@
       "premium": "Premium y especiales",
       "shown": "Mostrado",
       "allScales": "Todas las escalas",
-      "otherScales": "Otras escalas"
+      "otherScales": "Otras escalas",
+      "allBrands": "Todas las marcas"
     },
     "table": {
       "add": "Añadir",
@@ -547,7 +551,8 @@
       "premium": "Premium & spéciales",
       "shown": "Affiché",
       "allScales": "Toutes les échelles",
-      "otherScales": "Autres échelles"
+      "otherScales": "Autres échelles",
+      "allBrands": "Toutes les marques"
     },
     "table": {
       "add": "Ajouter",
@@ -662,7 +667,8 @@
       "premium": "Premium e especiais",
       "shown": "Exibido",
       "allScales": "Todas as escalas",
-      "otherScales": "Outras escalas"
+      "otherScales": "Outras escalas",
+      "allBrands": "Todas as marcas"
     },
     "table": {
       "add": "Adicionar",
@@ -777,7 +783,8 @@
       "premium": "Premium & speciaal",
       "shown": "Getoond",
       "allScales": "Alle schalen",
-      "otherScales": "Andere schalen"
+      "otherScales": "Andere schalen",
+      "allBrands": "Alle merken"
     },
     "table": {
       "add": "Toevoegen",
@@ -892,7 +899,8 @@
       "premium": "Преміум і спец",
       "shown": "Показано",
       "allScales": "Усі масштаби",
-      "otherScales": "Інші масштаби"
+      "otherScales": "Інші масштаби",
+      "allBrands": "Усі бренди"
     },
     "table": {
       "add": "Додати",

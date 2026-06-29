@@ -111,7 +111,7 @@ async function fetchWikiYears(lnks) {
 }
 
 async function main() {
-  const dbPath = process.argv[2] || path.join('data', 'carsdata.json');
+  const dbPath = process.argv[2] || path.join('data', 'hw.json');
   const db = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
 
   // Our year-set per casting.

@@ -15,7 +15,8 @@
  * Returns records shaped like our CarDataItem (no id / no image flag yet).
  */
 
-const API = 'https://hotwheels.fandom.com/api.php';
+const { getBrand } = require('./brands');
+const HW = getBrand('hw'); // default brand keeps every existing caller unchanged
 const HEADERS = { 'User-Agent': 'HWDB-collection-sync/1.0 (personal research; oreanor@gmail.com)' };
 
 // Wiki header keyword -> our key. Order matters: the specific "X Color" columns
@@ -85,11 +86,11 @@ function cellValue(line) {
   return { value: s, rowspan: rowspan ? Number(rowspan[1]) : 1, colspan: colspan ? Number(colspan[1]) : 1 };
 }
 
-async function fetchWikitext(slug) {
+async function fetchWikitext(slug, brand = HW) {
   // Some stored lnks are double-encoded ("%2764_Riviera", "Chevy_Monza_2%2B2");
   // decode once so the API resolves the real page title.
   if (/%[0-9A-Fa-f]{2}/.test(slug)) { try { slug = decodeURIComponent(slug); } catch { /* keep as-is */ } }
-  const url = `${API}?${new URLSearchParams({ action: 'parse', page: slug, prop: 'wikitext', format: 'json' })}`;
+  const url = `${brand.api}?${new URLSearchParams({ action: 'parse', page: slug, prop: 'wikitext', format: 'json' })}`;
   // Retry on rate-limit / transient 5xx with exponential backoff.
   for (let attempt = 0; ; attempt++) {
     const res = await fetch(url, { headers: HEADERS });
@@ -216,7 +217,7 @@ function splitParams(s) {
   return out;
 }
 
-function parseCasting(wikitext) {
+function parseCasting(wikitext, brand = HW) {
   // top-level info from the {{casting|...}} infobox
   const info = {};
   const m = /\{\{casting\s*\|([\s\S]*?)\}\}/i.exec(wikitext);
@@ -231,7 +232,12 @@ function parseCasting(wikitext) {
   let totalMismatch = 0;
   let hadRowspan = /rowspan/i.test(wikitext);
 
-  const tableRe = /\{\|[^\n]*wikitable[\s\S]*?\n\|\}/g;
+  // HW/Matchbox version tables are class="wikitable"; Majorette's aren't, so for
+  // those brands match any "{| ... |}" table and rely on the Year-column guard
+  // below to keep only the versions table(s).
+  const tableRe = brand.tableRequiresWikitableClass
+    ? /\{\|[^\n]*wikitable[\s\S]*?\n\|\}/g
+    : /\{\|[\s\S]*?\n\|\}/g;
   let tm;
   while ((tm = tableRe.exec(wikitext)) !== null) {
     const { headers, rows, mismatches } = parseTable(tm[0]);
@@ -246,8 +252,11 @@ function parseCasting(wikitext) {
       }
       return k;
     });
-    // only treat as a versions table if it has a Year column
+    // Only treat as a versions table if it has a Year column. For brands matched
+    // by the loose (no-class) regex, also require a Color column — that rejects
+    // wheel/rim reference tables that happen to carry a year-like column.
     if (!keys.includes('y')) continue;
+    if (!brand.tableRequiresWikitableClass && !keys.includes('c')) continue;
     totalMismatch += mismatches;
 
     for (const row of rows) {
