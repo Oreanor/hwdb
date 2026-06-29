@@ -34,7 +34,7 @@ export default function ResultsControls({
 }: ResultsControlsProps) {
   return (
     <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
-      <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
+      <span className="mr-2.5 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
         {t('filter.shown')}: {shownCount}
       </span>
       <Select
