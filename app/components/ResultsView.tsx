@@ -53,7 +53,7 @@ export default function ResultsView({
 }: ResultsViewProps) {
   // Castings have a sparse little table, so they default to the gallery, and
   // add a "stats" (year matrix) view; variants views are table/gallery only.
-  const { view, toggle: toggleView, next: viewNext } = usePersistedView(
+  const { view, setView, modes: viewModes } = usePersistedView(
     mode === 'castings' ? VIEW_MODE_KEYS.castings : VIEW_MODE_KEYS.models,
     mode === 'castings' ? 'gallery' : 'table',
     mode === 'castings' ? ['table', 'gallery', 'stats'] : ['table', 'gallery']
@@ -127,15 +127,16 @@ export default function ResultsView({
       <ResultsHeader ref={headerRef} onBack={onBack} title={title ?? t('auth.myCollection')}>
         {cars.length > 0 &&
           (mode === 'models' ? (
-            <VariantFilterControls filterState={filterState} viewNext={viewNext} onToggleView={toggleView} />
+            <VariantFilterControls filterState={filterState} view={view} setView={setView} viewModes={viewModes} />
           ) : (
             <ResultsControls
               shownCount={cardsForBody.length}
               scale={castScale}
               onScaleChange={setCastScale}
               scaleCounts={castScaleCounts}
-              viewNext={viewNext}
-              onToggleView={toggleView}
+              view={view}
+              setView={setView}
+              viewModes={viewModes}
             >
               {(view === 'gallery' || view === 'stats') && (
                 <div className="flex items-center gap-1">
@@ -146,7 +147,7 @@ export default function ResultsView({
                     <button
                       key={key}
                       onClick={() => setSort(key)}
-                      className={`px-2 py-1 text-xs rounded-md border cursor-pointer transition-colors ${
+                      className={`h-7 xs:h-8 sm:h-9 px-3 inline-flex items-center text-xs xs:text-sm rounded-md border cursor-pointer transition-colors ${
                         activeKey === key
                           ? 'bg-blue-600 text-white border-blue-600'
                           : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'

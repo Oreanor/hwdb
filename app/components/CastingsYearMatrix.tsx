@@ -38,10 +38,6 @@ interface Props {
   stickyTop?: number;
 }
 
-// Header pins below the filter bar (top: stickyTop) using the page scroll — no
-// own scroll box, so the page has a single scrollbar. `top` is set inline.
-const HEAD = 'sticky bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700';
-
 const Row = memo(function Row({
   car,
   onModelClick,
@@ -136,29 +132,25 @@ export default function CastingsYearMatrix({ cars, onModelClick, stickyTop = 0 }
   const [hover, setHover] = useState<HoverState | null>(null);
 
   return (
-    <div onMouseLeave={() => setHover(null)}>
-      <table className="table-fixed border-collapse text-xs" style={{ width: NAME_COL_W + YEAR_LIST.length * YEAR_COL_W }}>
+    <div className="-mt-4" onMouseLeave={() => setHover(null)}>
+      <table className="table-fixed border-separate border-spacing-0 text-xs" style={{ width: NAME_COL_W + YEAR_LIST.length * YEAR_COL_W }}>
         <colgroup>
           <col style={{ width: NAME_COL_W }} />
           {YEAR_LIST.map((y) => (
             <col key={y} style={{ width: YEAR_COL_W }} />
           ))}
         </colgroup>
-        <thead>
+        <thead className="sticky z-20" style={{ top: stickyTop }}>
           <tr>
-            <th
-              className={`${HEAD} left-0 z-30 px-2 py-1 text-left font-medium text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-700`}
-              style={{ top: stickyTop }}
-            >
+            <th className="sticky left-0 z-30 bg-white dark:bg-gray-900 px-2 py-1 text-left font-medium text-gray-500 dark:text-gray-400 border-b border-r border-gray-200 dark:border-gray-700">
               {t('table.casting')}
             </th>
             {YEAR_LIST.map((y) => (
               <th
                 key={y}
-                className={`${HEAD} z-20 overflow-hidden px-0 align-bottom text-[10px] font-normal text-gray-500 dark:text-gray-400`}
-                style={{ top: stickyTop }}
+                className="bg-white dark:bg-gray-900 overflow-hidden px-0 pt-1 pb-2 align-top text-[10px] font-normal text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700"
               >
-                <span className="mx-auto block [writing-mode:vertical-rl] rotate-180 py-2 leading-none">{y}</span>
+                <span className="mx-auto block [writing-mode:vertical-rl] rotate-180 leading-none">{y}</span>
               </th>
             ))}
           </tr>

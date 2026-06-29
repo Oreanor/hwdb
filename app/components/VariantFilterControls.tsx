@@ -9,13 +9,14 @@ import ResultsControls from './ResultsControls';
 
 interface VariantFilterControlsProps {
   filterState: VariantFilterState;
-  viewNext: ViewMode;
-  onToggleView: () => void;
+  view: ViewMode;
+  setView: (mode: ViewMode) => void;
+  viewModes: ViewMode[];
 }
 
 // Variants view filter bar: shared chrome (shown / scale / view) + the
 // All/Mainline/Premium selector. Used by every variants view so they match.
-export default function VariantFilterControls({ filterState, viewNext, onToggleView }: VariantFilterControlsProps) {
+export default function VariantFilterControls({ filterState, view, setView, viewModes }: VariantFilterControlsProps) {
   const { filter, setFilter, scale, setScale, counts, scaleCounts, shownCount } = filterState;
 
   return (
@@ -24,8 +25,9 @@ export default function VariantFilterControls({ filterState, viewNext, onToggleV
       scale={scale}
       onScaleChange={setScale}
       scaleCounts={scaleCounts}
-      viewNext={viewNext}
-      onToggleView={onToggleView}
+      view={view}
+      setView={setView}
+      viewModes={viewModes}
     >
       <Select
         value={filter}

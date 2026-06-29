@@ -5,29 +5,31 @@ import { t } from '../i18n';
 import { ScaleFilter } from '../lib/seriesCategory';
 import { ViewMode } from '../hooks/usePersistedView';
 import Select from './ui/Select';
-import ViewToggle from './ViewToggle';
+import ViewSelect from './ViewSelect';
 
 interface ResultsControlsProps {
   shownCount: number;
   scale: ScaleFilter;
   onScaleChange: (scale: ScaleFilter) => void;
   scaleCounts: { only164: number; other: number; all: number };
-  viewNext: ViewMode;
-  onToggleView: () => void;
+  view: ViewMode;
+  setView: (mode: ViewMode) => void;
+  viewModes: ViewMode[];
   // View-specific middle controls: the series (mainline/premium) filter for the
   // variants view, the make/model-year sort for the castings grid.
   children?: ReactNode;
 }
 
 // Shared chrome for both results filter bars so they stay identical: "Shown: N"
-// + scale filter + the view-specific controls + the view toggle.
+// + scale filter + the view-specific controls + the view picker.
 export default function ResultsControls({
   shownCount,
   scale,
   onScaleChange,
   scaleCounts,
-  viewNext,
-  onToggleView,
+  view,
+  setView,
+  viewModes,
   children,
 }: ResultsControlsProps) {
   return (
@@ -46,7 +48,7 @@ export default function ResultsControls({
         ariaLabel={t('filter.allScales')}
       />
       {children}
-      <ViewToggle next={viewNext} onToggle={onToggleView} />
+      <ViewSelect view={view} setView={setView} modes={viewModes} />
     </div>
   );
 }
