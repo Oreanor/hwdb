@@ -1,11 +1,13 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { CarData, SortConfig } from '../types';
+import { ScaleFilter } from '../lib/seriesCategory';
 import { t } from '../i18n';
-import { VIEW_MODE_KEYS } from '../consts';
+import { VIEW_MODE_KEYS, FILTER_STORAGE_KEYS } from '../consts';
 import { formatCarName } from '../utils';
-import { useVariantFilter } from '../hooks/useVariantFilter';
+import { useVariantFilter, isScaleFilter } from '../hooks/useVariantFilter';
+import { usePersistedState } from '../hooks/usePersistedState';
 import { usePersistedView } from '../hooks/usePersistedView';
 import { useStickyOffset } from '../hooks/useStickyOffset';
 import ModelsTable from './ModelsTable';
@@ -15,6 +17,7 @@ import ModelsGrid from './ModelsGrid';
 import ViewToggle from './ViewToggle';
 import VariantFilterControls from './VariantFilterControls';
 import ResultsHeader from './ResultsHeader';
+import Select from './ui/Select';
 
 interface ResultsViewProps {
   // 'models'  -> table of variants  <-> gallery of variants (with All/Main/Prem filter)
@@ -54,13 +57,41 @@ export default function ResultsView({
     mode === 'castings' ? 'gallery' : 'table'
   );
   const filterState = useVariantFilter(cars);
-  const cardsForBody = mode === 'models' ? filterState.filteredCars : cars;
+
+  // Casting grid scale filter (1:64-only / all scales). Castings carry an `s164`
+  // flag from the search API (per-variant Sr is trimmed out of casting results).
+  // Defaults to 1:64-only, matching the variants view. Unknown flag -> shown.
+  const [castScale, setCastScale] = usePersistedState<ScaleFilter>(FILTER_STORAGE_KEYS.scale, 'only164', isScaleFilter);
+  const castScaleCounts = useMemo(() => {
+    if (mode !== 'castings') return { all: 0, only164: 0, other: 0 };
+    let only164 = 0;
+    let other = 0;
+    for (const c of cars) {
+      if (c.s164 !== false) only164++;
+      if (c.sOth) other++;
+    }
+    return { all: cars.length, only164, other };
+  }, [cars, mode]);
+  const castingsByScale = useMemo(() => {
+    if (mode !== 'castings' || castScale === 'all') return cars;
+    if (castScale === 'other') return cars.filter((c) => c.sOth);
+    return cars.filter((c) => c.s164 !== false);
+  }, [cars, castScale, mode]);
+
+  const cardsForBody = mode === 'models' ? filterState.filteredCars : castingsByScale;
   const { ref: headerRef, height: headerH } = useStickyOffset<HTMLDivElement>();
 
   // The gallery has no column headers, so castings get an explicit sort bar:
   // by make (groups by manufacturer) or by the car's model year.
   type CastSortKey = 'make' | 'model';
-  const [castSort, setCastSort] = useState<{ key: CastSortKey; dir: 'asc' | 'desc' }>({ key: 'make', dir: 'asc' });
+  type CastSortStr = 'make:asc' | 'make:desc' | 'model:asc' | 'model:desc';
+  const isCastSort = (v: string): v is CastSortStr =>
+    v === 'make:asc' || v === 'make:desc' || v === 'model:asc' || v === 'model:desc';
+  const [castSortStr, setCastSortStr] = usePersistedState<CastSortStr>(FILTER_STORAGE_KEYS.castingSort, 'make:asc', isCastSort);
+  const castSort = useMemo(() => {
+    const [key, dir] = castSortStr.split(':') as [CastSortKey, 'asc' | 'desc'];
+    return { key, dir };
+  }, [castSortStr]);
   // When every result shares one make (browsing a make), sorting by make is
   // meaningless — drop that button and sort by model year instead.
   const singleMake =
@@ -84,7 +115,7 @@ export default function ResultsView({
     });
   }, [cardsForBody, castSort, activeKey, mode]);
   const setSort = (key: CastSortKey) =>
-    setCastSort((p) => (p.key === key ? { key, dir: p.dir === 'asc' ? 'desc' : 'asc' } : { key, dir: 'asc' }));
+    setCastSortStr(castSort.key === key ? `${key}:${castSort.dir === 'asc' ? 'desc' : 'asc'}` : `${key}:asc`);
 
   // The plain collection (no title) keeps its richer "how to add" hint.
   const isCollection = mode === 'models' && !title && !onBack;
@@ -98,8 +129,18 @@ export default function ResultsView({
           ) : (
             <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
               <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                {t('filter.shown')}: {cars.length}
+                {t('filter.shown')}: {cardsForBody.length}
               </span>
+              <Select
+                value={castScale}
+                onValueChange={(v) => setCastScale(v as ScaleFilter)}
+                options={[
+                  { value: 'only164', label: `1:64 (${castScaleCounts.only164})` },
+                  { value: 'other', label: `${t('filter.otherScales')} (${castScaleCounts.other})` },
+                  { value: 'all', label: `${t('filter.allScales')} (${castScaleCounts.all})` },
+                ]}
+                ariaLabel={t('filter.allScales')}
+              />
               {view === 'gallery' && (
                 <div className="flex items-center gap-1">
                   {(singleMake

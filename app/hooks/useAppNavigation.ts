@@ -29,7 +29,7 @@ export function useAppNavigation() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedField, setSelectedField] = useState<string>('year');
+  const [selectedField, setSelectedField] = useState<string>('name');
   const [selectedYear, setSelectedYear] = useState('');
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
   const [selectedModel, setSelectedModel] = useState<CarData | null>(null);
@@ -257,9 +257,9 @@ export function useAppNavigation() {
     const tag = params.get('tag');
     const view = params.get('view');
     const q = params.get('q') || '';
-    // Default to "By year" on a fresh load; a grid search without an explicit
-    // field param is a name search (buildViewUrl omits field when it's 'name').
-    const field = params.get('field') || (q ? 'name' : 'year');
+    // Default to name search on a fresh load; buildViewUrl omits the field param
+    // when it's 'name', so a missing field param always means a name search.
+    const field = params.get('field') || 'name';
     const year = params.get('year') || '';
 
     setTableView(null);

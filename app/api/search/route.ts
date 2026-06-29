@@ -4,6 +4,7 @@ import { VARIANT_FIELDS, isModelSearchField } from '../../consts';
 import { loadCarsData } from '../../lib/carsData';
 import { carMatchesQuery, includesAll, tokenize } from '../../lib/carSearch';
 import { loadCastingTags, castingMatchesTag } from '../../lib/tagsData';
+import { isStandardScale } from '../../lib/seriesCategory';
 import { STATIC_CACHE_HEADERS } from '../../lib/http';
 
 // Casting results only need year/image flag/id per variant (for the card preview).
@@ -24,7 +25,14 @@ export async function GET(request: Request) {
     // Casting results carry make + model year so the grid can sort by them.
     const asCasting = (car: CarData): CarData => {
       const tag = tags.get(car.lnk);
-      return { ...trimVariants(car), tags: { mk: tag?.mk, yr: tag?.yr, ye: tag?.ye } };
+      // Scale (from `Sr`) is dropped by trimVariants, so flag here whether the
+      // casting has any standard 1:64 variant — drives the grid's scale filter.
+      return {
+        ...trimVariants(car),
+        s164: car.d.some(isStandardScale),
+        sOth: car.d.some((v) => !isStandardScale(v)),
+        tags: { mk: tag?.mk, yr: tag?.yr, ye: tag?.ye },
+      };
     };
 
     let filteredData = carsData;

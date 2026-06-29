@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { CarData } from '../../types';
 import { loadCarsData } from '../../lib/carsData';
 import { AUTOCOMPLETE_FIELDS } from '../../consts';
+import { formatCarName } from '../../utils';
 import { STATIC_CACHE_HEADERS } from '../../lib/http';
 
 const cache: Record<string, string[]> = {};
@@ -41,7 +42,20 @@ export async function GET(request: Request) {
   }
 
   if (!cache[field]) {
-    cache[field] = collect(field, await loadCarsData());
+    if (field === 'name') {
+      // Name search autocompletes the casting names (the search matches the
+      // formatted name, so suggest exactly that). Covers brands and sub-brands
+      // (e.g. "Acura") that aren't top-level makes.
+      const cars = await loadCarsData();
+      const set = new Set<string>();
+      for (const c of cars) {
+        const n = formatCarName(c.lnk).trim();
+        if (n) set.add(n);
+      }
+      cache[field] = [...set].filter((s) => !s.includes('?')).sort((a, b) => a.localeCompare(b));
+    } else {
+      cache[field] = collect(field, await loadCarsData());
+    }
   }
   return NextResponse.json(cache[field], { headers: STATIC_CACHE_HEADERS });
 }

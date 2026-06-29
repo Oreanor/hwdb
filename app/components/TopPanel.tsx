@@ -51,10 +51,13 @@ export default function TopPanel({
 }: TopPanelProps) {
   const isYearAvailable = (year: string) => (availableYears ? availableYears.includes(year) : true);
 
-  // One "search by" selector: "By year" (select-only) plus the typed fields.
+  // One "search by" selector: name first (autocompletes makes), then "By year"
+  // (select-only), then the remaining typed fields.
+  const [nameField, ...restFields] = SEARCH_FIELDS;
   const parameterOptions = [
+    { value: nameField.key, label: t(`search.fields.${nameField.key}`) },
     { value: 'year', label: t('common.byYear') },
-    ...SEARCH_FIELDS.map((field) => ({ value: field.key, label: t(`search.fields.${field.key}`) })),
+    ...restFields.map((field) => ({ value: field.key, label: t(`search.fields.${field.key}`) })),
   ];
 
   // Newest year first.

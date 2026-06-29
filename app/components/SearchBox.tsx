@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Search, X } from 'lucide-react';
 import { t } from '../i18n';
 import { MAX_SUGGESTIONS } from '../consts';
+import { tokenize, includesAll } from '../lib/carSearch';
 
 interface SearchBoxProps {
   value: string;
@@ -26,12 +27,11 @@ export default function SearchBox({
   // Render in chunks; grow as the user scrolls to the bottom of the list.
   const [limit, setLimit] = useState(MAX_SUGGESTIONS);
 
-  // With text: filter by it. Empty + focused: show the first values as a preview.
-  const matches = suggestions
-    ? value
-      ? suggestions.filter((s) => s.toLowerCase().includes(value.toLowerCase()))
-      : suggestions
-    : [];
+  // With text: filter with the same word-by-word, typo-tolerant logic the search
+  // uses, so a suggestion appears whenever the query would actually find it
+  // (e.g. "acura concept" -> "'12 Acura NSX Concept"). Empty + focused: preview.
+  const words = value.trim() ? tokenize(value) : [];
+  const matches = !suggestions ? [] : words.length ? suggestions.filter((s) => includesAll(s, words)) : suggestions;
   const filtered = matches.slice(0, limit);
   const showList = open && filtered.length > 0;
 

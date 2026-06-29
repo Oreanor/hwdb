@@ -72,8 +72,22 @@ export const VIEW_MODE_KEYS = {
   castingPage: 'hwdb_view_casting_page', // a single casting's variants
 } as const;
 
-// Search fields that get a type-to-filter autocomplete list.
-export const AUTOCOMPLETE_FIELDS: string[] = ['designer', 'wheels', 'series'];
+// Remembered filter / sort choices (localStorage). Scale is shared across the
+// variants view and the castings grid, so a 1:64 preference set in one applies
+// to the other.
+export const FILTER_STORAGE_KEYS = {
+  scale: 'hwdb_filter_scale', // ScaleFilter: only164 / other / all
+  series: 'hwdb_filter_series', // SeriesFilter: all / mainline / premium
+  castingSort: 'hwdb_sort_castings', // "make:asc" | "make:desc" | "model:asc" | "model:desc"
+} as const;
+
+// Search fields that get a type-to-filter autocomplete list. 'name' suggests
+// the available makes (from casting tags); the rest suggest their own values.
+export const AUTOCOMPLETE_FIELDS: string[] = ['name', 'designer', 'wheels', 'series'];
+
+// Series that are a larger scale than 1:64 but don't name the scale in `Sr`,
+// so the "1:NN" detector can't catch them. Hot Wheels XL is 1:43.
+export const LARGE_SCALE_SERIES = new Set<string>(['Hot Wheels XL']);
 
 // Max autocomplete suggestions shown at once (the list scrolls).
 export const MAX_SUGGESTIONS = 50;

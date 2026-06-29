@@ -81,7 +81,8 @@
       "mainline": "Мейнлайн",
       "premium": "Премиум и спец",
       "shown": "Показано",
-      "allScales": "Все масштабы"
+      "allScales": "Все масштабы",
+      "otherScales": "Другие масштабы"
     },
     "table": {
       "add": "Добавить",
@@ -190,7 +191,8 @@
       "mainline": "Mainline",
       "premium": "Premium & special",
       "shown": "Shown",
-      "allScales": "All scales"
+      "allScales": "All scales",
+      "otherScales": "Other scales"
     },
     "table": {
       "add": "Add",
@@ -299,7 +301,8 @@
       "mainline": "Mainline",
       "premium": "Premium & Spezial",
       "shown": "Angezeigt",
-      "allScales": "Alle Maßstäbe"
+      "allScales": "Alle Maßstäbe",
+      "otherScales": "Andere Maßstäbe"
     },
     "table": {
       "add": "Hinzufügen",
@@ -408,7 +411,8 @@
       "mainline": "Mainline",
       "premium": "Premium y especiales",
       "shown": "Mostrado",
-      "allScales": "Todas las escalas"
+      "allScales": "Todas las escalas",
+      "otherScales": "Otras escalas"
     },
     "table": {
       "add": "Añadir",
@@ -517,7 +521,8 @@
       "mainline": "Mainline",
       "premium": "Premium & spéciales",
       "shown": "Affiché",
-      "allScales": "Toutes les échelles"
+      "allScales": "Toutes les échelles",
+      "otherScales": "Autres échelles"
     },
     "table": {
       "add": "Ajouter",
@@ -626,7 +631,8 @@
       "mainline": "Mainline",
       "premium": "Premium e especiais",
       "shown": "Exibido",
-      "allScales": "Todas as escalas"
+      "allScales": "Todas as escalas",
+      "otherScales": "Outras escalas"
     },
     "table": {
       "add": "Adicionar",
@@ -735,7 +741,8 @@
       "mainline": "Mainline",
       "premium": "Premium & speciaal",
       "shown": "Getoond",
-      "allScales": "Alle schalen"
+      "allScales": "Alle schalen",
+      "otherScales": "Andere schalen"
     },
     "table": {
       "add": "Toevoegen",
@@ -844,7 +851,8 @@
       "mainline": "Мейнлайн",
       "premium": "Преміум і спец",
       "shown": "Показано",
-      "allScales": "Усі масштаби"
+      "allScales": "Усі масштаби",
+      "otherScales": "Інші масштаби"
     },
     "table": {
       "add": "Додати",

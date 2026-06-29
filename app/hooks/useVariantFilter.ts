@@ -1,8 +1,13 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { CarData } from '../types';
 import { SeriesFilter, ScaleFilter, matchesVariantFilter, matchesScaleFilter, isMainline, isStandardScale } from '../lib/seriesCategory';
+import { usePersistedState } from './usePersistedState';
+import { FILTER_STORAGE_KEYS } from '../consts';
+
+const isSeriesFilter = (v: string): v is SeriesFilter => v === 'all' || v === 'mainline' || v === 'premium';
+export const isScaleFilter = (v: string): v is ScaleFilter => v === 'only164' || v === 'other' || v === 'all';
 
 export interface VariantFilterState {
   filter: SeriesFilter;
@@ -11,7 +16,7 @@ export interface VariantFilterState {
   setScale: (scale: ScaleFilter) => void;
   filteredCars: CarData[];
   counts: { all: number; mainline: number; premium: number };
-  scaleCounts: { only164: number; all: number };
+  scaleCounts: { only164: number; other: number; all: number };
   shownCount: number;
 }
 
@@ -19,8 +24,9 @@ export interface VariantFilterState {
 // any variants view (collection, series, year, single casting). Keeps the
 // filters, per-bucket counts and the filtered list in one place.
 export function useVariantFilter(cars: CarData[]): VariantFilterState {
-  const [filter, setFilter] = useState<SeriesFilter>('all');
-  const [scale, setScale] = useState<ScaleFilter>('only164'); // default: standard 1:64 only
+  const [filter, setFilter] = usePersistedState<SeriesFilter>(FILTER_STORAGE_KEYS.series, 'all', isSeriesFilter);
+  // default: standard 1:64 only; shared with the castings grid scale filter.
+  const [scale, setScale] = usePersistedState<ScaleFilter>(FILTER_STORAGE_KEYS.scale, 'only164', isScaleFilter);
 
   // Scale is applied first; the mainline filter and its counts work within it.
   const scaleCars = useMemo(() => {
@@ -58,7 +64,7 @@ export function useVariantFilter(cars: CarData[]): VariantFilterState {
         if (isStandardScale(v)) only164++;
       }
     }
-    return { all, only164 };
+    return { all, only164, other: all - only164 };
   }, [cars]);
 
   const shownCount = filter === 'all' ? counts.all : filter === 'mainline' ? counts.mainline : counts.premium;

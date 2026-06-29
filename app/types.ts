@@ -34,6 +34,8 @@ export type CarData = {
   dsc?: string;
   d: CarDataItem[];
   tags?: CastingTags; // browse tags, attached by /api/car
+  s164?: boolean; // casting has >=1 standard 1:64 variant (set on casting search results)
+  sOth?: boolean; // casting has >=1 non-1:64 (other-scale) variant
 };
 
 export type SortConfig = {

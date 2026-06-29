@@ -27,6 +27,7 @@ export default function VariantFilterControls({ filterState, view, onToggleView 
         onValueChange={(v) => setScale(v as ScaleFilter)}
         options={[
           { value: 'only164', label: `1:64 (${scaleCounts.only164})` },
+          { value: 'other', label: `${t('filter.otherScales')} (${scaleCounts.other})` },
           { value: 'all', label: `${t('filter.allScales')} (${scaleCounts.all})` },
         ]}
         ariaLabel={t('filter.allScales')}
