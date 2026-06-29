@@ -55,9 +55,9 @@ export default function TopPanel({
   // (select-only), then the remaining typed fields.
   const [nameField, ...restFields] = SEARCH_FIELDS;
   const parameterOptions = [
-    { value: nameField.key, label: t(`search.fields.${nameField.key}`) },
+    { value: nameField, label: t(`search.fields.${nameField}`) },
     { value: 'year', label: t('common.byYear') },
-    ...restFields.map((field) => ({ value: field.key, label: t(`search.fields.${field.key}`) })),
+    ...restFields.map((field) => ({ value: field, label: t(`search.fields.${field}`) })),
   ];
 
   // Newest year first.
@@ -82,7 +82,7 @@ export default function TopPanel({
         <div className="flex items-center justify-between sm:justify-start">
           <div className="flex items-center gap-1 cursor-pointer" onClick={onLogoClick}>
             <div className="relative h-7 xs:h-8 sm:h-8 w-7 xs:w-8 sm:w-8">
-              <Image src="/logo.png" alt="Logo" fill className="object-contain" sizes="32px" />
+              <Image src="/logo.png" alt="HWDB" fill className="object-contain" sizes="32px" />
             </div>
             <div className="relative block -ml-3">
               <h1 className="text-xl md:text-3xl font-['Impact','Arial_Narrow',Arial,sans-serif] text-[#82807C] tracking-wider italic">

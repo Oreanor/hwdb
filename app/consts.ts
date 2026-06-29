@@ -26,18 +26,12 @@ export const YEARS = Array.from(
 ).reverse();
 YEARS.unshift({ value: '', label: 'All Years' });
 
-export const SEARCH_FIELDS = [
-  { key: 'name', label: 'Name' },
-  { key: 'designer', label: 'Designer' },
-  { key: 'description', label: 'Description' },
-  { key: 'series', label: 'Series' },
-  { key: 'wheels', label: 'Wheels' }
-] as const;
+// Search field keys; their display labels come from i18n (search.fields.*).
+export const SEARCH_FIELDS = ['name', 'designer', 'description', 'series', 'wheels'] as const;
 
 // How a search field's results are shaped:
-//  - casting fields describe the whole casting  -> results are castings.
-//  - model fields describe a single variant      -> results are individual models.
-export const CASTING_SEARCH_FIELDS: string[] = ['name', 'designer', 'description'];
+//  - model fields describe a single variant -> results are individual models;
+//  - everything else describes the whole casting -> results are castings.
 export const MODEL_SEARCH_FIELDS: string[] = ['series', 'wheels'];
 
 export const isModelSearchField = (field: string): boolean => MODEL_SEARCH_FIELDS.includes(field);
@@ -91,9 +85,6 @@ export const LARGE_SCALE_SERIES = new Set<string>(['Hot Wheels XL']);
 
 // Max autocomplete suggestions shown at once (the list scrolls).
 export const MAX_SUGGESTIONS = 50;
-
-// Sentinel for the "All Years" option (Radix Select forbids an empty value).
-export const ALL_YEARS_VALUE = '__ALL__';
 
 export const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'ru', label: 'РУ' },

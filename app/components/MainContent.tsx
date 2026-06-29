@@ -1,7 +1,8 @@
 'use client';
 
-import { CarData, SortConfig, TableView } from '../types';
+import { CarData, SortConfig, TableView, ResultTitle } from '../types';
 import { t } from '../i18n';
+import { formatResultTitle } from '../lib/resultTitle';
 import Spinner from './Spinner';
 import ResultsView from './ResultsView';
 import ModelDescription from './ModelDescription';
@@ -14,7 +15,7 @@ interface MainContentProps {
   showCollection: boolean;
   selectedModel: CarData | null;
   cars: CarData[];
-  castingsTitle: string;
+  castingsTitle: ResultTitle | null;
   filteredCollectionCars: CarData[];
   collection: string[];
   selectedYear: string;
@@ -81,8 +82,8 @@ export default function MainContent(props: MainContentProps) {
               title={
                 tableView.kind === 'series'
                   ? `${t('search.fields.series')}: ${tableView.value}`
-                  : tableView.kind === 'field'
-                    ? tableView.title
+                  : tableView.kind === 'field' && tableView.title
+                    ? formatResultTitle(tableView.title)
                     : tableView.value
               }
               onBack={tableView.kind === 'series' ? onCloseTable : onBackHome}
@@ -115,7 +116,7 @@ export default function MainContent(props: MainContentProps) {
               onTagClick={onTagClick}
             />
           ) : cars.length > 0 ? (
-            <ResultsView mode="castings" cars={cars} onModelClick={onModelClick} selectedYear={selectedYear} title={castingsTitle} onBack={onBackHome} />
+            <ResultsView mode="castings" cars={cars} onModelClick={onModelClick} selectedYear={selectedYear} title={castingsTitle ? formatResultTitle(castingsTitle) : undefined} onBack={onBackHome} />
           ) : (
             <WelcomeMessage isLoggedIn={isLoggedIn} onTagClick={onTagClick} />
           )}

@@ -54,7 +54,7 @@ export default function ImageModal({
 
           <Image
             src={imageUrl}
-            alt="Full size"
+            alt={t('common.fullSize')}
             width={1200}
             height={800}
             className="block w-auto h-auto max-w-[90vw] max-h-[90vh] bg-white border-4 border-white rounded-sm shadow-lg"
@@ -69,7 +69,7 @@ export default function ImageModal({
           )}
 
           <Dialog.Close
-            aria-label="Close"
+            aria-label={t('common.close')}
             className="fixed right-6 top-6 w-10 h-10 flex items-center justify-center text-white hover:text-gray-300 transition-colors bg-black/30 backdrop-blur-sm rounded-full border border-white/20 shadow-lg cursor-pointer"
           >
             <X className="w-6 h-6" />
@@ -78,7 +78,7 @@ export default function ImageModal({
           <button
             onClick={hasPrev ? onPrev : undefined}
             disabled={!hasPrev}
-            aria-label="Previous"
+            aria-label={t('common.previous')}
             className={`${navBtn} left-6 ${hasPrev ? 'text-white hover:text-gray-300 cursor-pointer' : 'text-white/30 cursor-default'}`}
           >
             <ChevronLeft className="w-6 h-6" />
@@ -86,7 +86,7 @@ export default function ImageModal({
           <button
             onClick={hasNext ? onNext : undefined}
             disabled={!hasNext}
-            aria-label="Next"
+            aria-label={t('common.next')}
             className={`${navBtn} right-6 ${hasNext ? 'text-white hover:text-gray-300 cursor-pointer' : 'text-white/30 cursor-default'}`}
           >
             <ChevronRight className="w-6 h-6" />

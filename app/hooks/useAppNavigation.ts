@@ -14,7 +14,7 @@ import {
 } from '../services/carService';
 import { YEARS, isModelSearchField } from '../consts';
 import { tagLabel } from '../lib/tags';
-import { CarData, SortConfig, TableView } from '../types';
+import { CarData, SortConfig, TableView, ResultTitle } from '../types';
 import { addToCollection, getCollection, removeFromCollection } from '../services/collectionService';
 import { ViewState, pushUrl } from '../lib/navigation';
 
@@ -24,7 +24,7 @@ import { ViewState, pushUrl } from '../lib/navigation';
 export function useAppNavigation() {
   const [cars, setCars] = useState<CarData[]>([]);
   // Header for the castings results view (e.g. "Designer: Larry Wood").
-  const [castingsTitle, setCastingsTitle] = useState('');
+  const [castingsTitle, setCastingsTitle] = useState<ResultTitle | null>(null);
   const [filteredCollectionCars, setFilteredCollectionCars] = useState<CarData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -93,7 +93,7 @@ export function useAppNavigation() {
       setShowCollection(false);
       setSearchQuery('');
       const data = await fetchCars('tag', value);
-      setCastingsTitle(tagLabel(value));
+      setCastingsTitle({ text: tagLabel(value) });
       setCars(data);
       pushUrl({ view: 'grid', tag: value });
     } catch (err) {
@@ -228,10 +228,10 @@ export function useAppNavigation() {
             kind: 'field',
             value: convertedQuery,
             cars: data,
-            title: `${t(`search.fields.${field}`)}: ${convertedQuery}`,
+            title: { field, query: convertedQuery },
           });
         } else {
-          setCastingsTitle(`${t(`search.fields.${field}`)}: ${convertedQuery}`);
+          setCastingsTitle({ field, query: convertedQuery });
           setCars(data);
         }
         pushState({ view: 'grid', year: searchYear, searchQuery: convertedQuery, selectedField: field });
@@ -277,7 +277,7 @@ export function useAppNavigation() {
       fetchSeriesCars(series).then((d) => setTableView({ kind: 'series', value: series, cars: d })).finally(() => setLoading(false));
     } else if (tag) {
       setLoading(true);
-      fetchCars('tag', tag).then((d) => { setCastingsTitle(tagLabel(tag)); setCars(d); }).finally(() => setLoading(false));
+      fetchCars('tag', tag).then((d) => { setCastingsTitle({ text: tagLabel(tag) }); setCars(d); }).finally(() => setLoading(false));
     } else if (year && !q) {
       handleSearch(year, { fromHistory: true, query: '' });
     } else if (view === 'collection') {

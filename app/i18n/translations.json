@@ -20,7 +20,11 @@
       "lightMode": "Светлая тема",
       "byYear": "По году",
       "selectYear": "Выберите год",
-      "noResults": "Ничего не найдено"
+      "noResults": "Ничего не найдено",
+      "close": "Закрыть",
+      "previous": "Предыдущее",
+      "next": "Следующее",
+      "fullSize": "Полный размер"
     },
     "auth": {
       "login": "Войти",
@@ -131,7 +135,11 @@
       "lightMode": "Light mode",
       "byYear": "By year",
       "selectYear": "Select year",
-      "noResults": "Nothing found"
+      "noResults": "Nothing found",
+      "close": "Close",
+      "previous": "Previous",
+      "next": "Next",
+      "fullSize": "Full size"
     },
     "auth": {
       "login": "Login",
@@ -242,7 +250,11 @@
       "lightMode": "Helles Design",
       "byYear": "Nach Jahr",
       "selectYear": "Jahr wählen",
-      "noResults": "Nichts gefunden"
+      "noResults": "Nichts gefunden",
+      "close": "Schließen",
+      "previous": "Vorheriges",
+      "next": "Nächstes",
+      "fullSize": "Volle Größe"
     },
     "auth": {
       "login": "Anmelden",
@@ -353,7 +365,11 @@
       "lightMode": "Modo claro",
       "byYear": "Por año",
       "selectYear": "Elegir año",
-      "noResults": "No se encontró nada"
+      "noResults": "No se encontró nada",
+      "close": "Cerrar",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "fullSize": "Tamaño completo"
     },
     "auth": {
       "login": "Iniciar sesión",
@@ -464,7 +480,11 @@
       "lightMode": "Mode clair",
       "byYear": "Par année",
       "selectYear": "Choisir l’année",
-      "noResults": "Aucun résultat"
+      "noResults": "Aucun résultat",
+      "close": "Fermer",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "fullSize": "Taille réelle"
     },
     "auth": {
       "login": "Connexion",
@@ -575,7 +595,11 @@
       "lightMode": "Modo claro",
       "byYear": "Por ano",
       "selectYear": "Escolher ano",
-      "noResults": "Nada encontrado"
+      "noResults": "Nada encontrado",
+      "close": "Fechar",
+      "previous": "Anterior",
+      "next": "Próximo",
+      "fullSize": "Tamanho completo"
     },
     "auth": {
       "login": "Entrar",
@@ -686,7 +710,11 @@
       "lightMode": "Licht thema",
       "byYear": "Op jaar",
       "selectYear": "Kies jaar",
-      "noResults": "Niets gevonden"
+      "noResults": "Niets gevonden",
+      "close": "Sluiten",
+      "previous": "Vorige",
+      "next": "Volgende",
+      "fullSize": "Volledige grootte"
     },
     "auth": {
       "login": "Inloggen",
@@ -797,7 +825,11 @@
       "lightMode": "Світла тема",
       "byYear": "За роком",
       "selectYear": "Оберіть рік",
-      "noResults": "Нічого не знайдено"
+      "noResults": "Нічого не знайдено",
+      "close": "Закрити",
+      "previous": "Попереднє",
+      "next": "Наступне",
+      "fullSize": "Повний розмір"
     },
     "auth": {
       "login": "Увійти",

@@ -43,13 +43,18 @@ export type SortConfig = {
   direction: 'asc' | 'desc';
 } | null;
 
+// A results-view heading kept as raw parts (not a pre-translated string) so it
+// re-localizes on language change. `search` -> "Series: 5SP"; `text` is an
+// already-final label (e.g. a tag like "Supercar · Nissan").
+export type ResultTitle = { field: string; query: string } | { text: string };
+
 // A models (variants) view: opened by clicking a series, selecting a year, or
 // searching a model field (series / wheels). `title` overrides the default header.
 export type TableView = {
   kind: 'series' | 'year' | 'field';
   value: string;
   cars: CarData[];
-  title?: string;
+  title?: ResultTitle;
 };
 
 declare module 'next-auth' {

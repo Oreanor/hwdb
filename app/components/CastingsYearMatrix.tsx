@@ -38,10 +38,9 @@ interface Props {
   stickyTop?: number;
 }
 
-// Header pins to the top of the matrix's own scroll region (top-0), not to the
-// page — the grid is too wide to live in the page flow, so it scrolls both axes
-// in a self-contained box.
-const HEAD = 'sticky top-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700';
+// Header pins below the filter bar (top: stickyTop) using the page scroll — no
+// own scroll box, so the page has a single scrollbar. `top` is set inline.
+const HEAD = 'sticky bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700';
 
 const Row = memo(function Row({
   car,
@@ -137,11 +136,7 @@ export default function CastingsYearMatrix({ cars, onModelClick, stickyTop = 0 }
   const [hover, setHover] = useState<HoverState | null>(null);
 
   return (
-    <div
-      className="w-full overflow-auto rounded border border-gray-200 dark:border-gray-700"
-      style={{ maxHeight: `calc(100dvh - ${stickyTop + 96}px)` }}
-      onMouseLeave={() => setHover(null)}
-    >
+    <div onMouseLeave={() => setHover(null)}>
       <table className="table-fixed border-collapse text-xs" style={{ width: NAME_COL_W + YEAR_LIST.length * YEAR_COL_W }}>
         <colgroup>
           <col style={{ width: NAME_COL_W }} />
@@ -151,11 +146,18 @@ export default function CastingsYearMatrix({ cars, onModelClick, stickyTop = 0 }
         </colgroup>
         <thead>
           <tr>
-            <th className={`${HEAD} left-0 z-30 px-2 py-1 text-left font-medium text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-700`}>
+            <th
+              className={`${HEAD} left-0 z-30 px-2 py-1 text-left font-medium text-gray-500 dark:text-gray-400 border-r border-gray-200 dark:border-gray-700`}
+              style={{ top: stickyTop }}
+            >
               {t('table.casting')}
             </th>
             {YEAR_LIST.map((y) => (
-              <th key={y} className={`${HEAD} z-20 overflow-hidden px-0 align-bottom text-[10px] font-normal text-gray-500 dark:text-gray-400`}>
+              <th
+                key={y}
+                className={`${HEAD} z-20 overflow-hidden px-0 align-bottom text-[10px] font-normal text-gray-500 dark:text-gray-400`}
+                style={{ top: stickyTop }}
+              >
                 <span className="mx-auto block [writing-mode:vertical-rl] rotate-180 py-2 leading-none">{y}</span>
               </th>
             ))}

@@ -15,10 +15,9 @@ import VariantsGallery from './VariantsGallery';
 import CastingsTable from './CastingsTable';
 import ModelsGrid from './ModelsGrid';
 import CastingsYearMatrix from './CastingsYearMatrix';
-import ViewToggle from './ViewToggle';
 import VariantFilterControls from './VariantFilterControls';
+import ResultsControls from './ResultsControls';
 import ResultsHeader from './ResultsHeader';
-import Select from './ui/Select';
 
 interface ResultsViewProps {
   // 'models'  -> table of variants  <-> gallery of variants (with All/Main/Prem filter)
@@ -130,20 +129,14 @@ export default function ResultsView({
           (mode === 'models' ? (
             <VariantFilterControls filterState={filterState} viewNext={viewNext} onToggleView={toggleView} />
           ) : (
-            <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
-              <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                {t('filter.shown')}: {cardsForBody.length}
-              </span>
-              <Select
-                value={castScale}
-                onValueChange={(v) => setCastScale(v as ScaleFilter)}
-                options={[
-                  { value: 'only164', label: `1:64 (${castScaleCounts.only164})` },
-                  { value: 'other', label: `${t('filter.otherScales')} (${castScaleCounts.other})` },
-                  { value: 'all', label: `${t('filter.allScales')} (${castScaleCounts.all})` },
-                ]}
-                ariaLabel={t('filter.allScales')}
-              />
+            <ResultsControls
+              shownCount={cardsForBody.length}
+              scale={castScale}
+              onScaleChange={setCastScale}
+              scaleCounts={castScaleCounts}
+              viewNext={viewNext}
+              onToggleView={toggleView}
+            >
               {(view === 'gallery' || view === 'stats') && (
                 <div className="flex items-center gap-1">
                   {(singleMake
@@ -165,8 +158,7 @@ export default function ResultsView({
                   ))}
                 </div>
               )}
-              <ViewToggle next={viewNext} onToggle={toggleView} />
-            </div>
+            </ResultsControls>
           ))}
       </ResultsHeader>
 
