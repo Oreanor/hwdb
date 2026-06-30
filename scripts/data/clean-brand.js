@@ -40,6 +40,8 @@ function main() {
   let cnFixed = 0;
   let srCrystallized = 0;
   let cnCodeMoved = 0;
+  let whTidied = 0;
+  let cTidied = 0;
   for (const c of db) {
     for (const v of c.d ?? []) {
       // "Serie: X" (often at the end of Notes, sometimes after other notes) -> Sr
@@ -66,6 +68,17 @@ function main() {
         const fix = CN_TYPOS[v.Cn.trim().toLowerCase()];
         if (fix && fix !== v.Cn) { v.Cn = fix; cnFixed++; }
       }
+      // Strip leaked leading/trailing separators on Wheels (from <br> splits:
+      // "/ Brown", "Red /").
+      if (v.Wh) {
+        const t = v.Wh.replace(/^[/&,\s]+|[/&,\s]+$/g, '').trim();
+        if (t !== v.Wh) { if (t) v.Wh = t; else delete v.Wh; whTidied++; }
+      }
+      // Normalize color separators ("Red/ Black" -> "Red / Black").
+      if (v.c) {
+        const t = v.c.replace(/\s*\/\s*/g, ' / ').replace(/\s+/g, ' ').trim();
+        if (t !== v.c) { v.c = t; cTidied++; }
+      }
     }
   }
 
@@ -75,7 +88,7 @@ function main() {
     return `${withSr}/${total}`;
   };
 
-  console.log(`${brand.name}: Serie:->Sr ${serieToSr} | Sr crystallized ${srCrystallized} | Cn code->Tn ${cnCodeMoved} | Cn typos ${cnFixed}`);
+  console.log(`${brand.name}: Serie:->Sr ${serieToSr} | Sr crystallized ${srCrystallized} | Cn code->Tn ${cnCodeMoved} | Cn typos ${cnFixed} | Wh tidied ${whTidied} | color tidied ${cTidied}`);
   console.log(`Sr coverage now: ${srCoverage()}`);
 
   if (!apply) { console.log('\n[dry run] nothing written. Re-run with --apply.'); return; }

@@ -1,9 +1,9 @@
 import { CarData } from '../types';
-import { TagsIndex } from '../lib/tags';
+import { BrandTagsIndex } from '../lib/tags';
 
 // Browse index for the home page (category -> makes with counts). `no-store`
 // bypasses any stale browser-cached copy (the index is tiny).
-export const fetchTagsIndex = async (): Promise<TagsIndex | null> => {
+export const fetchTagsIndex = async (): Promise<BrandTagsIndex | null> => {
   const response = await fetch('/api/tags', { cache: 'no-store' });
   if (!response.ok) return null;
   return response.json();

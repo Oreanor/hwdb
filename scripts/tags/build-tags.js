@@ -17,9 +17,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const { getBrand } = require('../lib/brands');
 
-const DB = path.join('data', 'hw.json');
-const OUT = path.join('scripts', 'output', 'casting-tags.json');
+// Classify one brand at a time (default Hot Wheels). Browse tags are embedded in
+// that brand's data file; the browse index is keyed by brand.
+const brand = getBrand(process.argv[2] || 'hw');
+const DB = brand.dataFile;
+const OUT = path.join('scripts', 'output', `casting-tags-${brand.key}.json`);
+const INDEX = path.join('data', 'tags-index.json');
 
 // make -> region + aliases (names as written) + models. `infer` models imply the
 // make even with no make in the name ("Custom Camaro" -> Chevrolet); ambiguous
@@ -319,7 +324,12 @@ for (const c of db) {
   }
 }
 fs.writeFileSync(DB, JSON.stringify(db, null, 2));
-fs.writeFileSync(path.join('data', 'tags-index.json'), JSON.stringify({ regions, themes, eras }, null, 2));
+// Browse index keyed by brand — preserve the other brands' entries.
+const index = fs.existsSync(INDEX) && /^\s*\{\s*"(hw|mb|mj)"/.test(fs.readFileSync(INDEX, 'utf8'))
+  ? JSON.parse(fs.readFileSync(INDEX, 'utf8'))
+  : {};
+index[brand.key] = { regions, themes, eras };
+fs.writeFileSync(INDEX, JSON.stringify(index, null, 2));
 
 console.log(`castings: ${db.length}`);
 console.log(`with make: ${withMake} (${(withMake / db.length * 100).toFixed(0)}%) | unmatched: ${unmatched.length}`);

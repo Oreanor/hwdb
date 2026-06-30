@@ -13,6 +13,10 @@ export interface TagsIndex {
   eras: Record<string, TagBucket>;
 }
 
+// The browse index is keyed by brand (hw / mb / mj) so the home page can show a
+// separate block per base.
+export type BrandTagsIndex = Record<string, TagsIndex>;
+
 // Human label for a tag value: "th:Supercar,mk:Nissan" -> "Supercar · Nissan".
 export function tagLabel(value: string): string {
   return value

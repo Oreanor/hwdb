@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { t } from '../i18n';
-import { TagsIndex, TagBucket } from '../lib/tags';
+import { BrandTagsIndex, TagBucket } from '../lib/tags';
 import { BRANDS } from '../lib/brands';
 import { fetchTagsIndex, fetchStats } from '../services/carService';
 
@@ -25,7 +25,7 @@ const topMakes = (bucket: TagBucket, n = 18) =>
     .sort((a, b) => a[0].localeCompare(b[0]));
 
 export default function WelcomeMessage({ brandScope = 'all', onTagClick }: WelcomeMessageProps) {
-  const [index, setIndex] = useState<TagsIndex | null>(null);
+  const [index, setIndex] = useState<BrandTagsIndex | null>(null);
   const [stats, setStats] = useState<Stats | null>(null);
 
   useEffect(() => {
@@ -36,6 +36,10 @@ export default function WelcomeMessage({ brandScope = 'all', onTagClick }: Welco
   // Catalog sizes for the current base: all brands, or just the selected one.
   const statBrands = stats
     ? BRANDS.filter((b) => (brandScope === 'all' ? stats[b.key]?.castings : b.key === brandScope))
+    : [];
+  // Browse blocks: one per brand when viewing all, else just the selected base.
+  const browseBrands = index
+    ? BRANDS.filter((b) => (brandScope === 'all' ? index[b.key] : b.key === brandScope))
     : [];
 
   // One category as a column: clickable heading + its makes listed vertically.
@@ -97,13 +101,19 @@ export default function WelcomeMessage({ brandScope = 'all', onTagClick }: Welco
           ))}
         </div>
       )}
-      {index && (
-        <>
-          {section(t('welcome.byRegion'), REGION_ORDER, index.regions ?? {}, (c) => `rg:${c}`, (_c, mk) => `mk:${mk}`)}
-          {section(t('welcome.byEra'), Object.keys(index.eras ?? {}).sort(), index.eras ?? {}, (c) => `th:${c}`, (c, mk) => `th:${c},mk:${mk}`)}
-          {section(t('welcome.byStyle'), THEME_ORDER, index.themes ?? {}, (c) => `th:${c}`, (c, mk) => `th:${c},mk:${mk}`)}
-        </>
-      )}
+      {browseBrands.map((b) => {
+        const idx = index![b.key];
+        return (
+          <div key={b.key} className="flex flex-col gap-5">
+            {brandScope === 'all' && browseBrands.length > 1 && (
+              <h2 className="border-b border-gray-200 dark:border-gray-700 pb-1 text-base font-bold text-gray-800 dark:text-gray-100">{b.name}</h2>
+            )}
+            {section(t('welcome.byRegion'), REGION_ORDER, idx.regions ?? {}, (c) => `rg:${c}`, (_c, mk) => `mk:${mk}`)}
+            {section(t('welcome.byEra'), Object.keys(idx.eras ?? {}).sort(), idx.eras ?? {}, (c) => `th:${c}`, (c, mk) => `th:${c},mk:${mk}`)}
+            {section(t('welcome.byStyle'), THEME_ORDER, idx.themes ?? {}, (c) => `th:${c}`, (c, mk) => `th:${c},mk:${mk}`)}
+          </div>
+        );
+      })}
     </div>
   );
 }

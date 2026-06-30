@@ -73,7 +73,16 @@
         "_img": "Porsche930 1975 green chrome.JPG",
         "id": "77272"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche 930",
+      "th": [
+        "1970s"
+      ],
+      "yr": 1975
+    }
   },
   {
     "lnk": "6_x_6_All_Terrain",
@@ -691,7 +700,12 @@
         "id": "77319",
         "Sr": "Street Cars - Alfa Romeo Serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Alfa Romeo",
+      "rg": "European",
+      "md": "Alfa Romeo 4C"
+    }
   },
   {
     "lnk": "Alfa_Romeo_75",
@@ -754,7 +768,11 @@
         "id": "77323",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Alfa Romeo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Alfa_Romeo_Giulia",
@@ -855,7 +873,7 @@
       {
         "N": "271D",
         "y": "2025",
-        "c": "blue/red",
+        "c": "blue / red",
         "Bs": "black / plastic",
         "In": "v",
         "Nt": "opening doors",
@@ -864,7 +882,12 @@
         "id": "77331",
         "Sr": "Color Changers"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Alfa Romeo",
+      "rg": "European",
+      "md": "Alfa Romeo Giulia"
+    }
   },
   {
     "lnk": "Alfa_Romeo_Giulietta",
@@ -885,7 +908,12 @@
         "id": "77332",
         "Sr": "Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Alfa Romeo",
+      "rg": "European",
+      "md": "Alfa Romeo Giulietta"
+    }
   },
   {
     "lnk": "Alfa_Romeo_Giulietta_(Type_116)",
@@ -980,7 +1008,12 @@
         "id": "77338",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Alfa Romeo",
+      "rg": "European",
+      "md": "Alfa Romeo Giulietta"
+    }
   },
   {
     "lnk": "Alfa_Romeo_Serie",
@@ -1099,7 +1132,11 @@
         "_img": "Alfa_Romeo_Giulia_racing_(white).jpg",
         "id": "77348"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Alfa Romeo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Alfa_Romeo_Tonale",
@@ -1176,7 +1213,11 @@
         "id": "77353",
         "Sr": "Showroom Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Alfa Romeo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "ALPHA_MODS_P._D._Giftpack_1.0",
@@ -1426,7 +1467,7 @@
       {
         "N": "211N-1",
         "y": "2025",
-        "c": "Red/Blue",
+        "c": "Red / Blue",
         "Bs": "black plastic",
         "Wn": "clear",
         "In": "black",
@@ -1464,7 +1505,7 @@
       {
         "N": "211N-1",
         "y": "2026",
-        "c": "blue/white",
+        "c": "blue / white",
         "Tm": "\"Alpine 110\" on sides, \"Alpine\" on front, black hood",
         "Bs": "black/metal",
         "Wn": "clear",
@@ -1474,7 +1515,12 @@
         "id": "77374",
         "Sr": "Deluxe Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault Alpine"
+    }
   },
   {
     "lnk": "Alpine_Vision_Gran_Turismo",
@@ -1532,7 +1578,12 @@
         "id": "77378",
         "Sr": "Vision Gran Turismo - Giftpack 2018"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault Alpine"
+    }
   },
   {
     "lnk": "American_LaFrance_Type_100",
@@ -2024,7 +2075,11 @@
         "id": "77416",
         "Sr": "Monsters"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Aston Martin",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Aston_Martin_DB9",
@@ -2098,7 +2153,12 @@
         "id": "77421",
         "Sr": "200"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Aston Martin",
+      "rg": "European",
+      "md": "Aston Martin DB9"
+    }
   },
   {
     "lnk": "Aston_Martin_Vantage_GT8",
@@ -2121,7 +2181,7 @@
       {
         "N": "229D",
         "y": "2018 - 2019 - 2020",
-        "c": "light silver/green metallic",
+        "c": "light silver / green metallic",
         "Tm": "detail front and back print, neon green deco stripes around",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -2202,7 +2262,7 @@
       {
         "N": "229D",
         "y": "2025",
-        "c": "red/green",
+        "c": "red / green",
         "Bs": "black / plastic",
         "Wn": "clear",
         "In": "black",
@@ -2226,7 +2286,12 @@
         "id": "77430",
         "Sr": "Showroom Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Aston Martin",
+      "rg": "European",
+      "md": "Aston Martin Vantage"
+    }
   },
   {
     "lnk": "Audi_90",
@@ -2305,7 +2370,11 @@
         "id": "77435",
         "Sr": "Camel"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Audi_A1",
@@ -2429,7 +2498,12 @@
         "id": "77443",
         "Sr": "Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European",
+      "md": "Audi A1"
+    }
   },
   {
     "lnk": "Audi_A1_Sport",
@@ -2507,7 +2581,12 @@
         "id": "77448",
         "Sr": "FC Bayern München Serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European",
+      "md": "Audi A1"
+    }
   },
   {
     "lnk": "Audi_A1_Sportback",
@@ -2597,7 +2676,12 @@
         "id": "77454",
         "Sr": "Limited Edition Serie 11 - Gidtpack 9+4"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European",
+      "md": "Audi A1"
+    }
   },
   {
     "lnk": "Audi_A5_Coupe",
@@ -2855,7 +2939,11 @@
         "Cn": "Thailand",
         "id": "77472"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Audi_Q4_e-tron",
@@ -2928,7 +3016,11 @@
         "id": "77477",
         "Sr": "Shoroom Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Audi_Quattro",
@@ -3021,7 +3113,12 @@
         "id": "77483",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European",
+      "md": "Audi Quattro"
+    }
   },
   {
     "lnk": "Audi_R8_Mk1",
@@ -3103,7 +3200,12 @@
         "id": "77489",
         "Sr": "Limited Edition 3"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European",
+      "md": "Audi R8"
+    }
   },
   {
     "lnk": "Audi_R8_Mk2_Coupé",
@@ -3390,7 +3492,12 @@
         "id": "77511",
         "Sr": "Polizei Giftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European",
+      "md": "Audi R8"
+    }
   },
   {
     "lnk": "Audi_R8_Mk2_Spyder",
@@ -3549,7 +3656,12 @@
         "id": "77523",
         "Sr": "Street Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European",
+      "md": "Audi R8"
+    }
   },
   {
     "lnk": "Audi_RS6_Avant_(C8)",
@@ -3581,7 +3693,12 @@
         "id": "77525",
         "Sr": "Advent Calendar 2"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European",
+      "md": "Audi RS6"
+    }
   },
   {
     "lnk": "Audi_RS_e-tron_GT",
@@ -3644,7 +3761,7 @@
       {
         "N": "237K-2",
         "y": "2025",
-        "c": "red/burgundy",
+        "c": "red / burgundy",
         "Bs": "black / plastic",
         "Wn": "clear",
         "In": "black",
@@ -3667,7 +3784,11 @@
         "id": "77531",
         "Sr": "Shoroom Premium Car"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Audi_S5_Coupe",
@@ -3784,7 +3905,11 @@
         "_img": "Audi S5 2025 essen motor show.JPG",
         "id": "77539"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Audi_TT",
@@ -4023,7 +4148,12 @@
         "_img": "Audi tt light blue iguanodon.JPG",
         "id": "77557"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European",
+      "md": "Audi TT"
+    }
   },
   {
     "lnk": "Audi_TT_Convertible",
@@ -4127,7 +4257,12 @@
         "id": "77565",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Audi",
+      "rg": "European",
+      "md": "Audi TT"
+    }
   },
   {
     "lnk": "Autobianchi_A112",
@@ -4402,7 +4537,7 @@
     "d": [
       {
         "y": "Helicoptere asst",
-        "c": "blue/white",
+        "c": "blue / white",
         "Tm": "\"mercyflight\" on sides",
         "Bs": "blue/ plastic",
         "Nt": "working rotor; : 2015 - 2016 - 2017 - 2018 - 2019 - 2020 - 2021",
@@ -4434,7 +4569,7 @@
       },
       {
         "y": "Helicoptere asst",
-        "c": "white/black",
+        "c": "white / black",
         "Tm": "\"Police\" on sides",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -4446,7 +4581,7 @@
       },
       {
         "y": "S.O.S Theme",
-        "c": "white/black",
+        "c": "white / black",
         "Tm": "\"Police\" on sides",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -4458,7 +4593,7 @@
       },
       {
         "y": "Gangster Chase",
-        "c": "white/black",
+        "c": "white / black",
         "Tm": "\"Police\" on sides",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -4480,7 +4615,7 @@
       },
       {
         "y": "Police Force Giftpack",
-        "c": "white/black",
+        "c": "white / black",
         "Tm": "blue \"MJ1635\" & \"Police\" on sides",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -4683,7 +4818,12 @@
         "id": "77605",
         "Sr": "Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Bentley",
+      "rg": "European",
+      "md": "Bentley Continental"
+    }
   },
   {
     "lnk": "Bernard_Chalet_Truck",
@@ -5538,7 +5678,11 @@
         "Cn": "Thailand",
         "id": "77670"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European"
+    }
   },
   {
     "lnk": "BMW-M_Edition_Giftpack",
@@ -5594,7 +5738,11 @@
         "Cn": "Thailand",
         "id": "77675"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European"
+    }
   },
   {
     "lnk": "BMW-M_Premium_Cars",
@@ -5663,7 +5811,11 @@
         "Cn": "Thailand",
         "id": "77681"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European"
+    }
   },
   {
     "lnk": "BMW_325i_(E30)",
@@ -5757,7 +5909,12 @@
         "id": "77687",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European",
+      "md": "BMW E30"
+    }
   },
   {
     "lnk": "BMW_325i_(E36)",
@@ -5922,7 +6079,12 @@
         "id": "77698",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European",
+      "md": "BMW E36"
+    }
   },
   {
     "lnk": "BMW_325_M3_Convertible",
@@ -6019,7 +6181,12 @@
         "id": "77705",
         "Sr": "Pullback Motor Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European",
+      "md": "BMW M3"
+    }
   },
   {
     "lnk": "BMW_3.0_CSI",
@@ -6305,7 +6472,11 @@
         "id": "77725",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European"
+    }
   },
   {
     "lnk": "BMW_3.0_CSL_(1975)",
@@ -6323,7 +6494,12 @@
         "id": "77726",
         "Sr": "Collection"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European",
+      "md": "BMW 3.0 CSL"
+    }
   },
   {
     "lnk": "BMW_733",
@@ -6690,7 +6866,11 @@
         "_img": "BMW 733 (tan, black interior, black stripe).jpg",
         "id": "77751"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European"
+    }
   },
   {
     "lnk": "BMW_750i",
@@ -6726,7 +6906,11 @@
         "Cn": "Thailand",
         "id": "77754"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European"
+    }
   },
   {
     "lnk": "BMW_M3",
@@ -7328,7 +7512,12 @@
         "id": "77795",
         "Sr": "S.O.S. Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European",
+      "md": "BMW M3"
+    }
   },
   {
     "lnk": "BMW_M3_Touring_(G20)",
@@ -7388,7 +7577,12 @@
         "id": "77799",
         "Sr": "Street Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European",
+      "md": "BMW M3"
+    }
   },
   {
     "lnk": "BMW_M3_(E30)",
@@ -7438,7 +7632,12 @@
         "id": "77803",
         "Sr": "Showroom Deluxe Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European",
+      "md": "BMW E30"
+    }
   },
   {
     "lnk": "BMW_M3_(G20)",
@@ -7512,7 +7711,12 @@
         "id": "77808",
         "Sr": "BMW Edition"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European",
+      "md": "BMW M3"
+    }
   },
   {
     "lnk": "BMW_M4_GT3_Evo",
@@ -7532,7 +7736,12 @@
         "id": "77809",
         "Sr": "BMW Edition"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European",
+      "md": "BMW M4"
+    }
   },
   {
     "lnk": "BMW_Serie_1",
@@ -7718,7 +7927,11 @@
         "id": "77823",
         "Sr": "Street Cars Limited Edition 2"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European"
+    }
   },
   {
     "lnk": "BMW_Serie_5_Touring",
@@ -7960,7 +8173,11 @@
         "id": "77840",
         "Sr": "Limited Edition 2"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European"
+    }
   },
   {
     "lnk": "BMW_X5M_Competition",
@@ -8007,7 +8224,11 @@
         "id": "77843",
         "Sr": "Showroom Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European"
+    }
   },
   {
     "lnk": "BMW_X6",
@@ -8088,7 +8309,11 @@
         "id": "77848",
         "Sr": "Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European"
+    }
   },
   {
     "lnk": "BMW_Z3_Coupé",
@@ -8405,7 +8630,12 @@
         "_img": "BMW Z3 Coupé (blue, star light).jpg",
         "id": "77870"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European",
+      "md": "BMW Z3"
+    }
   },
   {
     "lnk": "BMW_Z4_Roadster",
@@ -8576,7 +8806,12 @@
         "id": "77881",
         "Sr": "Street Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European",
+      "md": "BMW Z4"
+    }
   },
   {
     "lnk": "BMW_Z8",
@@ -8791,7 +9026,11 @@
         "id": "77896",
         "Sr": "Pullback Motor Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Boat_Trailer_(2018)",
@@ -9130,7 +9369,15 @@
         "id": "77919",
         "Sr": "French Touch Blue Range Giftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Bugatti",
+      "rg": "European",
+      "md": "Bugatti Chiron",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Bulldozer",
@@ -9273,7 +9520,7 @@
       {
         "N": "254I",
         "y": "2010 - 2011",
-        "c": "red/yellow/blue",
+        "c": "red / yellow / blue",
         "Tm": "Citroënlogo, raceNr 1 & French flag on white roof, CITROËN TOTAL Red Bull on sides, TOTAL on hood",
         "Bs": "black / plastic",
         "Wn": "black",
@@ -9287,7 +9534,7 @@
       {
         "N": "254I",
         "y": "2011 - 2012 - 2013",
-        "c": "white/red/yellow/blue",
+        "c": "white / red / yellow / blue",
         "Tm": "Citroënlogo, raceNr 1 & French flag on white roof, CITROËN TOTAL Red Bull on sides, TOTAL on hood",
         "Bs": "black / plastic",
         "Wn": "black",
@@ -9301,7 +9548,7 @@
       {
         "N": "254I",
         "y": "2011 - 2012 - 2013",
-        "c": "white/red/yellow/blue",
+        "c": "white / red / yellow / blue",
         "Tm": "Citroënlogo, raceNr 7 & French flag on white roof, CITROËN TOTAL Red Bull on sides, TOTAL on hood",
         "Bs": "black / plastic",
         "Wn": "black",
@@ -9315,7 +9562,7 @@
       {
         "N": "254I",
         "y": "2011 - 2012 - 2013",
-        "c": "white/red/yellow/blue",
+        "c": "white / red / yellow / blue",
         "Tm": "Citroënlogo, raceNr 2 & Spanish flag on white roof, CITROËN TOTAL Red Bull on sides, TOTAL on hood",
         "Bs": "black / plastic",
         "Wn": "black",
@@ -9664,7 +9911,11 @@
         "id": "77965",
         "Sr": "Promotional"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Cadillac",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Cadillac_Stretch_Limousine",
@@ -9792,7 +10043,11 @@
         "id": "77974",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Cadillac",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Camion_Missile_Launcher",
@@ -9829,7 +10084,7 @@
       {
         "N": "2332",
         "y": "1992 - 1993",
-        "c": "olive /gray",
+        "c": "olive / gray",
         "Tm": "camouflage",
         "Bs": "black / plastic",
         "Wn": "black",
@@ -10772,7 +11027,11 @@
         "id": "78043",
         "Sr": "200 Serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Chevrolet_Bel_Air_(1955)",
@@ -10804,7 +11063,12 @@
         "id": "78045",
         "Sr": "Collection"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Bel Air"
+    }
   },
   {
     "lnk": "Chevrolet_Blazer",
@@ -10824,7 +11088,12 @@
         "id": "78046",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Blazer"
+    }
   },
   {
     "lnk": "Chevrolet_Blazer_4x4",
@@ -11348,7 +11617,12 @@
         "id": "78082",
         "Sr": "Super Rockers"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Blazer"
+    }
   },
   {
     "lnk": "Chevrolet_Blazer_4x4_Dépanneuse",
@@ -11543,7 +11817,12 @@
         "id": "78095",
         "Sr": "Sun"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Blazer"
+    }
   },
   {
     "lnk": "Chevrolet_C10_(1963)",
@@ -11577,7 +11856,12 @@
         "id": "78097",
         "Sr": "Ride Now"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet C10"
+    }
   },
   {
     "lnk": "Chevrolet_Camaro_2010",
@@ -11758,7 +12042,15 @@
         "id": "78109",
         "Sr": "Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Camaro",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Chevrolet_Camaro_Mk6",
@@ -11922,7 +12214,15 @@
         "id": "78120",
         "Sr": "Limited Serie 12"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Camaro",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Chevrolet_Camaro_SS",
@@ -12040,7 +12340,15 @@
         "id": "78129",
         "Sr": "Limited Edition Serie 11 - Gitpack 9+4"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Camaro SS",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Chevrolet_Camaro_(1985)",
@@ -12074,7 +12382,15 @@
         "id": "78131",
         "Sr": "Collection"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Camaro",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Chevrolet_Corvette",
@@ -12767,7 +13083,12 @@
         "id": "78178",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Corvette"
+    }
   },
   {
     "lnk": "Chevrolet_Corvette_C4_ZR-1_(1990)",
@@ -12874,7 +13195,12 @@
         "id": "78185",
         "Sr": "Deluxe Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Corvette"
+    }
   },
   {
     "lnk": "Chevrolet_Corvette_C6-R_(2005)",
@@ -12883,7 +13209,7 @@
       {
         "N": "279G",
         "y": "2025",
-        "c": "Yellow/Black",
+        "c": "Yellow / Black",
         "Tm": "\"69, Majorette\" on sides",
         "Bs": "Black / Metal",
         "Wn": "clear",
@@ -12897,7 +13223,7 @@
       {
         "N": "279G",
         "y": "2025",
-        "c": "White/Black",
+        "c": "White / Black",
         "Tm": "\"16\" on sides, \"racing\" on wing",
         "Bs": "Black / Metal",
         "Wn": "clear",
@@ -12908,7 +13234,12 @@
         "id": "78187",
         "Sr": "Collection"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Corvette"
+    }
   },
   {
     "lnk": "Chevrolet_Corvette_C8",
@@ -12938,7 +13269,12 @@
         "id": "78189",
         "Sr": "Showroom Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Corvette"
+    }
   },
   {
     "lnk": "Chevrolet_Corvette_GMTM",
@@ -13041,7 +13377,12 @@
         "id": "78196",
         "Sr": "Deluxe Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Corvette"
+    }
   },
   {
     "lnk": "Chevrolet_Corvette_'58",
@@ -13337,7 +13678,16 @@
         "id": "78219",
         "Sr": "single asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Corvette",
+      "th": [
+        "1950s"
+      ],
+      "yr": 1958
+    }
   },
   {
     "lnk": "Chevrolet_Impala",
@@ -13712,7 +14062,12 @@
         "id": "78245",
         "Sr": "Sonic Flasher"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Impala"
+    }
   },
   {
     "lnk": "Chevrolet_Pick_Up",
@@ -13954,7 +14309,11 @@
         "_img": "Chevrolet Pick Up (orange, black interior).jpg",
         "id": "78262"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Chevrolet_Silverado",
@@ -14223,7 +14582,12 @@
         "id": "78281",
         "Sr": "Hero Patrol"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet Silverado"
+    }
   },
   {
     "lnk": "Chevy_'57",
@@ -14609,7 +14973,15 @@
         "_img": "Chevy 57 red mikihouse.JPG",
         "id": "78309"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "th": [
+        "1950s"
+      ],
+      "yr": 1957
+    }
   },
   {
     "lnk": "Chrome_Cars_Set",
@@ -14858,7 +15230,11 @@
         "id": "78328",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chrysler",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Circus_Pinder",
@@ -16366,7 +16742,7 @@
       {
         "N": "254F",
         "y": "2006",
-        "c": "yellow/red",
+        "c": "yellow / red",
         "Tm": "1B, Val Thorens, Majorette, Samse, Andros, Solido",
         "Bs": "black plastic",
         "Wn": "dark smoked",
@@ -16379,7 +16755,7 @@
       {
         "N": "254F",
         "y": "2007 - 2008 - 2009 - 2010 - 2011",
-        "c": "yellow/red",
+        "c": "yellow / red",
         "Tm": "1B, Val Thorens, Majorette, Samse, Andros, Solido",
         "Bs": "black / plastic",
         "Wn": "dark smoked",
@@ -16392,7 +16768,7 @@
       {
         "N": "254F",
         "y": "2012 - 2013",
-        "c": "yellow/red",
+        "c": "yellow / red",
         "Tm": "1B, Val Thorens, Majorette, Samse, Andros, Solido",
         "Bs": "black / plastic",
         "Wn": "dark smoked",
@@ -17263,7 +17639,7 @@
       {
         "N": "254I",
         "y": "2010 - 2011",
-        "c": "red/yellow/blue",
+        "c": "red / yellow / blue",
         "Tm": "Citroënlogo, raceNr 1 & French flag on white roof, CITROËN TOTAL Red Bull on sides, TOTAL on hood",
         "Bs": "black / plastic",
         "Wn": "black",
@@ -17277,7 +17653,7 @@
       {
         "N": "254I",
         "y": "2011 - 2012 - 2013",
-        "c": "white/red/yellow/blue",
+        "c": "white / red / yellow / blue",
         "Tm": "Citroënlogo, raceNr 1 & French flag on white roof, CITROËN TOTAL Red Bull on sides, TOTAL on hood",
         "Bs": "black / plastic",
         "Wn": "black",
@@ -17291,7 +17667,7 @@
       {
         "N": "254I",
         "y": "2011 - 2012 - 2013",
-        "c": "white/red/yellow/blue",
+        "c": "white / red / yellow / blue",
         "Tm": "Citroënlogo, raceNr 7 & French flag on white roof, CITROËN TOTAL Red Bull on sides, TOTAL on hood",
         "Bs": "black / plastic",
         "Wn": "black",
@@ -17305,7 +17681,7 @@
       {
         "N": "254I",
         "y": "2011 - 2012 - 2013",
-        "c": "white/red/yellow/blue",
+        "c": "white / red / yellow / blue",
         "Tm": "Citroënlogo, raceNr 2 & Spanish flag on white roof, CITROËN TOTAL Red Bull on sides, TOTAL on hood",
         "Bs": "black / plastic",
         "Wn": "black",
@@ -17849,7 +18225,7 @@
       {
         "N": "253C",
         "y": "2025",
-        "c": "blue/white/red",
+        "c": "blue / white / red",
         "Bs": "black / plastic",
         "Wn": "clear",
         "In": "black",
@@ -17952,7 +18328,7 @@
       {
         "N": "245A",
         "y": "2019",
-        "c": "blue/white",
+        "c": "blue / white",
         "Tm": "\"e)entel Experia, Total\" on sides, \"e)xperia\" on hood & roof",
         "Bs": "black / plastic",
         "Wn": "dark black tinted",
@@ -17965,7 +18341,7 @@
       {
         "N": "245A",
         "y": "2019",
-        "c": "red/white",
+        "c": "red / white",
         "Tm": "\"KUS', expert\" on sides, \"Total\" on hood",
         "Bs": "black / plastic",
         "Wn": "dark black tinted",
@@ -21080,7 +21456,14 @@
         "id": "78780",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Maserati",
+      "rg": "European",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Citroën_XM",
@@ -21252,7 +21635,7 @@
       {
         "N": "254E",
         "y": "2005 - 2006",
-        "c": "Red/Blue",
+        "c": "Red / Blue",
         "Tm": "18, Rallye Sanremo, Rallye d'Italia, Citroën, Total, Telefonica, MoviStar",
         "Bs": "Black / Plastic",
         "Wn": "Dark Smoke",
@@ -21266,7 +21649,7 @@
       {
         "N": "254E",
         "y": "2005 - 2006",
-        "c": "Red/Blue",
+        "c": "Red / Blue",
         "Tm": "18, Wales Rally GB, Citroën, Total, Telefonica, MoviStar",
         "Bs": "Black / Plastic",
         "Wn": "Dark Smoke",
@@ -21280,7 +21663,7 @@
       {
         "N": "254E",
         "y": "2007 - 2008 - 2009 - 2010",
-        "c": "Red/Blue",
+        "c": "Red / Blue",
         "Tm": "18, Rallye Sanremo, Rallye d'Italia, Citroën, Total, Telefonica, MoviStar",
         "Bs": "Black / Plastic",
         "Wn": "Dark Smoke",
@@ -21294,7 +21677,7 @@
       {
         "N": "254E",
         "y": "2007 - 2008 - 2009 - 2010",
-        "c": "Red/Blue",
+        "c": "Red / Blue",
         "Tm": "18, Wales Rally GB, Citroën, Total, Telefonica, MoviStar",
         "Bs": "Black / Plastic",
         "Wn": "Dark Smoke",
@@ -21680,7 +22063,7 @@
       {
         "N": "2026",
         "y": "2020 - 2021",
-        "c": "white/black",
+        "c": "white / black",
         "_img": "City Rockerz Jeep Wrangler Rubicon police.jpg",
         "Nt": "Car: Jeep Wrangler Rubicon - \"Police\"",
         "id": "78827"
@@ -21735,7 +22118,7 @@
     "d": [
       {
         "y": "2023 - 2024 - 2025",
-        "c": "blue/orange",
+        "c": "blue / orange",
         "Cn": "Thailand",
         "_img": "Mercedes_actros_hors_board_blue_orange.JPG",
         "Nt": "Model: Mercedes-Bens Actros",
@@ -21759,7 +22142,7 @@
       },
       {
         "y": "2023 - 2024 - 2025",
-        "c": "white/blue",
+        "c": "white / blue",
         "Cn": "Thailand",
         "_img": "Mercedes_actros_spacefleet.JPG",
         "Nt": "Model: Mercedes-Bens Actros",
@@ -22110,7 +22493,7 @@
       {
         "N": "279G",
         "y": "2025",
-        "c": "Yellow/Black",
+        "c": "Yellow / Black",
         "Tm": "\"69, Majorette\" on sides",
         "Wn": "clear",
         "In": "black",
@@ -22190,7 +22573,7 @@
       {
         "N": "279G",
         "y": "2025",
-        "c": "White/Black",
+        "c": "White / Black",
         "Tm": "\"16\" on sides, \"racing\" on wing",
         "Wn": "clear",
         "In": "black",
@@ -22624,7 +23007,11 @@
         "Nt": "Car: Volvo FMX Show Truck",
         "id": "78921"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Crazy_Car_4x4",
@@ -23381,7 +23768,12 @@
         "id": "78977",
         "Sr": "S.O.S."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Plymouth",
+      "rg": "American",
+      "md": "Plymouth Duster"
+    }
   },
   {
     "lnk": "Dacia_Duster_III",
@@ -23490,7 +23882,12 @@
         "id": "78984",
         "Sr": "Dacia Duster Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Plymouth",
+      "rg": "American",
+      "md": "Plymouth Duster"
+    }
   },
   {
     "lnk": "Daf_2600_Covered_Truck",
@@ -23598,7 +23995,11 @@
         "id": "78991",
         "Sr": "Vintage Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Datsun",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Datsun_260_Z",
@@ -23834,7 +24235,11 @@
         "id": "79007",
         "Sr": "Globe Toys"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Datsun",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Deluxe_Cars",
@@ -24985,7 +25390,7 @@
       {
         "N": "209",
         "y": "1975 - 1976 - 1977 - 1978",
-        "c": "green/multicolor",
+        "c": "green / multicolor",
         "Bs": "Unpainted metal",
         "Wn": "Amber/green",
         "Wh": "3S",
@@ -25046,7 +25451,11 @@
         "id": "79113",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Dodge",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Dodge_Challenger_SRT",
@@ -25343,7 +25752,15 @@
         "id": "79134",
         "Sr": "Rescue World Giftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Dodge",
+      "rg": "American",
+      "md": "Dodge Challenger",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Dodge_Charger_R/T",
@@ -25470,7 +25887,15 @@
         "id": "79143",
         "Sr": "Vintage Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Dodge",
+      "rg": "American",
+      "md": "Dodge Charger",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Dodge_Charger_SRT_(2020)",
@@ -25545,7 +25970,15 @@
         "id": "79148",
         "Sr": "Ride Now"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Dodge",
+      "rg": "American",
+      "md": "Dodge Charger",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Dodge_Concept_Car",
@@ -25731,7 +26164,11 @@
         "id": "79162",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Dodge",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Dodge_D_Pick-Up",
@@ -25739,7 +26176,7 @@
       {
         "N": "311",
         "y": "1972 - ?",
-        "c": "white w/zebra stripes",
+        "c": "white w / zebra stripes",
         "Bs": "unpainted / metal",
         "Wn": "blue",
         "Wh": "3S",
@@ -25762,7 +26199,11 @@
         "id": "79164",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Dodge",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Dodge_Pompier",
@@ -25857,7 +26298,11 @@
         "id": "79171",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Dodge",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Dodge_Service",
@@ -26015,7 +26460,11 @@
         "id": "79182",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Dodge",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Dodge_SRT_Viper",
@@ -26201,7 +26650,12 @@
         "id": "79195",
         "Sr": "Limited Edition Serie 12 - Giftpack 9+4"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Dodge",
+      "rg": "American",
+      "md": "Dodge Viper"
+    }
   },
   {
     "lnk": "Dodge_Wrecker",
@@ -26474,7 +26928,11 @@
         "id": "79215",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Dodge",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Dream_Cars",
@@ -26861,7 +27319,7 @@
       {
         "N": "245E",
         "y": "2025",
-        "c": "green/light green",
+        "c": "green / light green",
         "Bs": "black/ plastic",
         "Wn": "clear",
         "In": "black",
@@ -28365,7 +28823,12 @@
         "id": "79356",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Chevrolet",
+      "rg": "American",
+      "md": "Chevrolet El Camino"
+    }
   },
   {
     "lnk": "ERIBA_Puck",
@@ -28388,7 +28851,7 @@
       {
         "N": "R13A",
         "y": "2018 - 2019 - 2020",
-        "c": "yellow /creme",
+        "c": "yellow / creme",
         "Tm": "printed backlights",
         "Bs": "black metal/plastic",
         "Wn": "black smoked",
@@ -28444,7 +28907,7 @@
       {
         "N": "R13A",
         "y": "2022",
-        "c": "red/cream white",
+        "c": "red / cream white",
         "Tm": "orange/brown/cream design",
         "Bs": "black/plastic",
         "Wn": "black smoked",
@@ -28458,7 +28921,7 @@
       {
         "N": "R13A",
         "y": "2022",
-        "c": "yellow/ vream white",
+        "c": "yellow / vream white",
         "Tm": "\"Volkswagen\", \"Majorette Vintage\", brown/cream design",
         "Bs": "black/plastic",
         "Wn": "black smoked",
@@ -28506,7 +28969,7 @@
       {
         "N": "322B",
         "y": "2015 - 2016 - 2017 - 2018 - 2019 - 2020 - 2021",
-        "c": "red/yellow",
+        "c": "red / yellow",
         "Tm": "\"securite civile\" on sides",
         "Bs": "yellow / plastic",
         "Wn": "clear",
@@ -28534,7 +28997,7 @@
       {
         "N": "322B",
         "y": "2019 - 2020 - 2021",
-        "c": "blue/gray",
+        "c": "blue / gray",
         "Tm": "German \"Polizei\" design",
         "Bs": "blue / plastic",
         "Wn": "clear",
@@ -28548,7 +29011,7 @@
       {
         "N": "322B",
         "y": "2018 - 2019 - 2020 - 2021 - 2022",
-        "c": "blue/gray",
+        "c": "blue / gray",
         "Tm": "German \"Polizei\" design",
         "Bs": "blue / plastic",
         "Wn": "clear",
@@ -28719,7 +29182,12 @@
         "Nt": "Model: Siemens Avenio Tram",
         "id": "79383"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lotus",
+      "rg": "European",
+      "md": "Lotus Europa"
+    }
   },
   {
     "lnk": "Excalibur",
@@ -29305,7 +29773,15 @@
         "id": "79433",
         "Sr": "Novacar"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "McLaren",
+      "rg": "European",
+      "md": "McLaren F1",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "F1_BRM",
@@ -29371,7 +29847,15 @@
         "id": "79439",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "McLaren",
+      "rg": "European",
+      "md": "McLaren F1",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "F1_Ferrari",
@@ -29454,7 +29938,14 @@
         "id": "79446",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ferrari",
+      "rg": "European",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "F1_Ferrari_(1986)",
@@ -29586,7 +30077,14 @@
         "id": "79455",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ferrari",
+      "rg": "European",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "F1_Lotus",
@@ -29642,7 +30140,11 @@
         "id": "79460",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lotus",
+      "rg": "European"
+    }
   },
   {
     "lnk": "F1_Mc_Laren",
@@ -29687,7 +30189,15 @@
         "id": "79463",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "McLaren",
+      "rg": "European",
+      "md": "McLaren F1",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "F1_Racing",
@@ -29810,7 +30320,15 @@
         "id": "79472",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "McLaren",
+      "rg": "European",
+      "md": "McLaren F1",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "F1_Repco_Brabham",
@@ -29856,7 +30374,15 @@
         "id": "79476",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "McLaren",
+      "rg": "European",
+      "md": "McLaren F1",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "F1_(1995)",
@@ -29962,7 +30488,15 @@
         "_img": "F1 (1995) (black).jpg",
         "id": "79484"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "McLaren",
+      "rg": "European",
+      "md": "McLaren F1",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "F1_(2002)",
@@ -30095,7 +30629,12 @@
         "id": "79494",
         "Sr": "Majopub"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European",
+      "md": "BMW 2002"
+    }
   },
   {
     "lnk": "Farm_2_pieces_set",
@@ -30817,7 +31356,14 @@
         "id": "79547",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ferrari",
+      "rg": "European",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Ferrari_348_(GTB)",
@@ -30865,7 +31411,14 @@
         "id": "79550",
         "Sr": "Novacar"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ferrari",
+      "rg": "European",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Ferrari_456_GT",
@@ -30910,7 +31463,14 @@
         "id": "79553",
         "Sr": "SuperS"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ferrari",
+      "rg": "European",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Ferrari_F40",
@@ -31031,7 +31591,15 @@
         "id": "79561",
         "Sr": "majopub"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ferrari",
+      "rg": "European",
+      "md": "Ferrari F40",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Ferrari_F50",
@@ -31051,7 +31619,15 @@
         "id": "79562",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ferrari",
+      "rg": "European",
+      "md": "Ferrari F50",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Ferrari_GTO",
@@ -31219,7 +31795,15 @@
         "id": "79573",
         "Sr": "SuperS"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ferrari",
+      "rg": "European",
+      "th": [
+        "Supercar",
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Ferrari_Testarossa",
@@ -31359,7 +31943,15 @@
         "id": "79583",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ferrari",
+      "rg": "European",
+      "md": "Ferrari Testarossa",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Fiat_127",
@@ -31505,7 +32097,11 @@
         "_img": "Majorette Fiat 127 (metallic light green, NUCS wheels).jpg",
         "id": "79593"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Fiat",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Fiat_500",
@@ -31698,7 +32294,12 @@
         "id": "79607",
         "Sr": "Holyday Set"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Fiat",
+      "rg": "European",
+      "md": "Fiat 500"
+    }
   },
   {
     "lnk": "Fiat_500_D",
@@ -31717,7 +32318,12 @@
         "id": "79608",
         "Sr": "Vintage Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Fiat",
+      "rg": "European",
+      "md": "Fiat 500"
+    }
   },
   {
     "lnk": "Fiat_500_Icon",
@@ -31832,7 +32438,7 @@
       {
         "N": "286E",
         "y": "2025",
-        "c": "grey/red",
+        "c": "grey / red",
         "Tm": "Italian flag on the top, number 22 on the sides",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -31842,7 +32448,12 @@
         "id": "79617",
         "Sr": "Racing Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Fiat",
+      "rg": "European",
+      "md": "Fiat 500"
+    }
   },
   {
     "lnk": "Fiat_Coupe",
@@ -32006,7 +32617,11 @@
         "id": "79628",
         "Sr": "Monsters"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Fiat",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Fiat_Panda_4x4",
@@ -32331,7 +32946,11 @@
         "id": "79653",
         "Sr": "Single Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Fiat",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Fiat_Ritmo",
@@ -32437,7 +33056,11 @@
         "id": "79660",
         "Sr": "Globe Toys"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Fiat",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Fiat_Tipo",
@@ -32539,7 +33162,11 @@
         "id": "79667",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Fiat",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Fliegl_ASW_271",
@@ -32815,7 +33442,12 @@
         "id": "79686",
         "Sr": "Sonic Flashers"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Bronco"
+    }
   },
   {
     "lnk": "Ford_Bronco_MkVI",
@@ -33003,7 +33635,12 @@
         "id": "79699",
         "Sr": "Showroom Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Bronco"
+    }
   },
   {
     "lnk": "Ford_Capri",
@@ -33211,7 +33848,12 @@
         "id": "79713",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Capri"
+    }
   },
   {
     "lnk": "Ford_Cargo_Covered_Truck",
@@ -33307,7 +33949,11 @@
         "id": "79719",
         "Sr": "Cadbury's"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Ford_Cargo_Tanker",
@@ -33864,7 +34510,11 @@
         "id": "79756",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Ford_Cargo_Tanker_Trailer",
@@ -33987,7 +34637,11 @@
         "id": "79765",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Ford_Econoline",
@@ -34435,7 +35089,11 @@
         "id": "79795",
         "Sr": "Single Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Ford_Escort_GT",
@@ -34541,7 +35199,12 @@
         "id": "79802",
         "Sr": "Speed Wheelers"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Escort"
+    }
   },
   {
     "lnk": "Ford_Escort_MKII_RS_1800",
@@ -34586,7 +35249,12 @@
         "id": "79805",
         "Sr": "Vintage Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Escort"
+    }
   },
   {
     "lnk": "Ford_Escort_XR3",
@@ -34696,7 +35364,12 @@
         "id": "79812",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Escort"
+    }
   },
   {
     "lnk": "Ford_F-150",
@@ -35059,7 +35732,12 @@
         "id": "79837",
         "Sr": "Race Trailer"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford F-150"
+    }
   },
   {
     "lnk": "Ford_F-150_Mk14",
@@ -35178,7 +35856,12 @@
         "id": "79846",
         "Sr": "Showroom Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford F-150"
+    }
   },
   {
     "lnk": "Ford_Fiesta_RS_WRC",
@@ -35270,7 +35953,11 @@
         "id": "79852",
         "Sr": "Racing Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Ford_Fiesta_WRC",
@@ -35317,7 +36004,11 @@
         "id": "79855",
         "Sr": "Racing Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Ford_Focus_MkIV",
@@ -35349,7 +36040,12 @@
         "id": "79857",
         "Sr": "Street Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Focus"
+    }
   },
   {
     "lnk": "Ford_Focus_Street",
@@ -35459,7 +36155,12 @@
         "id": "79865",
         "Sr": "Single Asst. Majorette 50 Years Car Pack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Focus"
+    }
   },
   {
     "lnk": "Ford_Focus_WRC",
@@ -35586,7 +36287,7 @@
       {
         "N": "201A",
         "y": "2013 - 2014",
-        "c": "blue/yellow",
+        "c": "blue / yellow",
         "Bs": "black / plastic",
         "Wn": "black",
         "In": "no interior",
@@ -35596,7 +36297,12 @@
         "id": "79874",
         "Sr": "Racing Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Focus"
+    }
   },
   {
     "lnk": "Ford_GT",
@@ -35972,7 +36678,15 @@
         "id": "79901",
         "Sr": "Easter eggs"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford GT",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Ford_GT40_Mk1",
@@ -35990,7 +36704,15 @@
         "id": "79902",
         "Sr": "Collection"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford GT40",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Ford_Ka",
@@ -36165,7 +36887,11 @@
         "id": "79915",
         "Sr": "200 collector"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Ford_Model_A_Van",
@@ -36379,7 +37105,12 @@
         "_img": "Ford Model A Van (red & black, McVitties Digestive).jpg",
         "id": "79930"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Model A"
+    }
   },
   {
     "lnk": "Ford_Mondeo",
@@ -36571,7 +37302,11 @@
         "_img": "Ford mondeo white polis.JPG",
         "id": "79943"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Ford_Mustang_1967",
@@ -36805,7 +37540,15 @@
         "id": "79959",
         "Sr": "Castheads Giftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Mustang",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Ford_Mustang_Boss_302",
@@ -37132,7 +37875,15 @@
         "id": "79982",
         "Sr": "Hero Patrol"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Mustang",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Ford_Mustang_Convertible",
@@ -37317,7 +38068,15 @@
         "id": "79995",
         "Sr": "kabaya"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Mustang",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Ford_Mustang_GT",
@@ -37649,7 +38408,15 @@
         "id": "80017",
         "Sr": "Deluxe Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Mustang",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Ford_Mustang_GT_Mk4",
@@ -37854,7 +38621,15 @@
         "id": "80032",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Mustang",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Ford_Mustang_GT_Series",
@@ -37915,7 +38690,15 @@
         "_img": "Ford Mustang GT 2019 black - green floral deco204C.jpg",
         "id": "80036"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Mustang",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Ford_Mustang_Mk7_Dark_Horse",
@@ -37975,7 +38758,15 @@
         "id": "80040",
         "Sr": "Showroom Premium Cars - Chase Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Mustang",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Ford_Puma",
@@ -38007,7 +38798,11 @@
         "id": "80042",
         "Sr": "Street Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Ford_Ranger_Ambulance",
@@ -38339,7 +39134,12 @@
         "_img": "MAJ255-D02g.jpg",
         "id": "80066"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Ranger"
+    }
   },
   {
     "lnk": "Ford_Sierra",
@@ -38610,7 +39410,12 @@
         "id": "80084",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Sierra"
+    }
   },
   {
     "lnk": "Ford_Thunderbird",
@@ -38790,7 +39595,12 @@
         "id": "80096",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Thunderbird"
+    }
   },
   {
     "lnk": "Ford_Thunderbird_'57",
@@ -38974,7 +39784,16 @@
         "id": "80110",
         "Sr": "Authentic"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Thunderbird",
+      "th": [
+        "1950s"
+      ],
+      "yr": 1957
+    }
   },
   {
     "lnk": "Ford_Transit",
@@ -39256,7 +40075,11 @@
         "id": "80129",
         "Sr": "Sonic Flashers"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Ford_Transit_Tug",
@@ -39561,7 +40384,11 @@
         "id": "80149",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Forest_Trailer",
@@ -40947,7 +41774,7 @@
       {
         "N": "245E",
         "y": "2024 - 2025",
-        "c": "yellow/white",
+        "c": "yellow / white",
         "Tm": "\"fromagerie\" on sides",
         "Wn": "clear",
         "In": "yellow",
@@ -41496,7 +42323,11 @@
         "id": "80315",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "GMC",
+      "rg": "American"
+    }
   },
   {
     "lnk": "GMC_Brigadier_Crane_Truck",
@@ -41600,7 +42431,11 @@
         "id": "80322",
         "Sr": "eXtractor"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "GMC",
+      "rg": "American"
+    }
   },
   {
     "lnk": "GMC_Brigadier_Semi_Gas_Tanker",
@@ -41634,7 +42469,11 @@
         "id": "80324",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "GMC",
+      "rg": "American"
+    }
   },
   {
     "lnk": "GMC_Brigadier_Semi_Powder_Transporter",
@@ -41710,7 +42549,11 @@
         "id": "80329",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "GMC",
+      "rg": "American"
+    }
   },
   {
     "lnk": "GMC_Hummer_EV",
@@ -41789,7 +42632,11 @@
         "id": "80336",
         "Sr": "Showroom Premium Cars; Openning: hood"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Hummer",
+      "rg": "American"
+    }
   },
   {
     "lnk": "GMC_Jimmy",
@@ -42015,7 +42862,12 @@
         "id": "80351",
         "Sr": "Monsters"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "GMC",
+      "rg": "American",
+      "md": "GMC Jimmy"
+    }
   },
   {
     "lnk": "Gold_Rockerz_Monstertruck_-_Series_9",
@@ -42191,7 +43043,12 @@
         "id": "80364",
         "Sr": "Monsters"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Opel",
+      "rg": "European",
+      "md": "Opel GT"
+    }
   },
   {
     "lnk": "GT_Racing",
@@ -42318,7 +43175,12 @@
         "id": "80373",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Opel",
+      "rg": "European",
+      "md": "Opel GT"
+    }
   },
   {
     "lnk": "Hamm_H20i",
@@ -42547,7 +43409,7 @@
       {
         "N": "203G",
         "y": "2019",
-        "c": "light blue/white",
+        "c": "light blue / white",
         "Tm": "yellow peace sign at side, \"Surf\", \"Rode Easter Classic 2014\"",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -42743,7 +43605,12 @@
         "id": "80404",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Honda",
+      "rg": "Japanese",
+      "md": "Honda Accord"
+    }
   },
   {
     "lnk": "Honda_Civic_Type_-R_(ek9)",
@@ -42823,7 +43690,15 @@
         "id": "80410",
         "Sr": "JDM Legends Deluxe Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Honda",
+      "rg": "Japanese",
+      "md": "Honda Civic",
+      "th": [
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Honda_Civic_Type_R",
@@ -42961,7 +43836,15 @@
         "id": "80419",
         "Sr": "Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Honda",
+      "rg": "Japanese",
+      "md": "Honda Type R",
+      "th": [
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Honda_CRZ",
@@ -43132,7 +44015,11 @@
         "id": "80430",
         "Sr": "Kabaya Series"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Honda",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Honda_E",
@@ -43182,7 +44069,11 @@
         "id": "80434",
         "Sr": "Street Cars Chase"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Honda",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Honda_NSX-R_GT",
@@ -43216,7 +44107,16 @@
         "id": "80436",
         "Sr": "Collection"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Honda",
+      "rg": "Japanese",
+      "md": "Honda NSX",
+      "th": [
+        "Supercar",
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Honda_NSX",
@@ -43452,7 +44352,7 @@
       {
         "N": "220",
         "y": "2005 - 2006",
-        "c": "black/dark green",
+        "c": "black / dark green",
         "Tm": "red print, \"26\", \"COMPETITION\", \"SPORT\", \"MFR WINNER\"",
         "Bs": "unpainted / metal",
         "Wn": "clear",
@@ -43478,7 +44378,7 @@
       {
         "N": "220",
         "y": "2008",
-        "c": "black/dark green",
+        "c": "black / dark green",
         "Tm": "red print, \"26\", \"COMPETITION\", \"SPORT\", \"MFR WINNER\"",
         "Bs": "unpainted / metal",
         "Wn": "clear",
@@ -43488,7 +44388,16 @@
         "id": "80457",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Honda",
+      "rg": "Japanese",
+      "md": "Honda NSX",
+      "th": [
+        "Supercar",
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Honda_Prelude",
@@ -43553,7 +44462,12 @@
         "id": "80461",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Honda",
+      "rg": "Japanese",
+      "md": "Honda Prelude"
+    }
   },
   {
     "lnk": "Honda_S2000",
@@ -43609,7 +44523,15 @@
         "id": "80465",
         "Sr": "Showroom Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Honda",
+      "rg": "Japanese",
+      "md": "Honda S2000",
+      "th": [
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Horse_Trailer_2020",
@@ -43630,7 +44552,7 @@
       {
         "N": "R11A",
         "y": "2020 - 2021",
-        "c": "candy red/ mint",
+        "c": "candy red / mint",
         "Tm": "white and dark red deco (Heart/Animal pawn/horseshoe) transparent mint horse box",
         "Bs": "metal/ candy red",
         "Nt": "+ Jeep Wrangler Rubicon opening ramp, white horse",
@@ -43934,7 +44856,12 @@
         "id": "80489",
         "Sr": "Single Asst"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Hummer",
+      "rg": "American",
+      "md": "Hummer H2"
+    }
   },
   {
     "lnk": "Hymermobil_Exsis-i",
@@ -44044,7 +44971,11 @@
         "id": "80496",
         "Sr": "WRC Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Hyundai",
+      "rg": "Korean"
+    }
   },
   {
     "lnk": "Hyundai_i30_N",
@@ -44126,7 +45057,12 @@
         "id": "80502",
         "Sr": "Racing Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Hyundai",
+      "rg": "Korean",
+      "md": "Hyundai i30"
+    }
   },
   {
     "lnk": "Infiniti_Concept_Vision_Gran_Turismo",
@@ -44691,7 +45627,12 @@
         "id": "80546",
         "Sr": "Vintage Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jaguar",
+      "rg": "European",
+      "md": "Jaguar E-Type"
+    }
   },
   {
     "lnk": "Jaguar_F-Type",
@@ -44870,7 +45811,12 @@
         "id": "80558",
         "Sr": "Pink Slips"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jaguar",
+      "rg": "European",
+      "md": "Jaguar F-Type"
+    }
   },
   {
     "lnk": "Jaguar_S-Type",
@@ -44930,7 +45876,11 @@
         "_img": "Jaguar S-Type(dark blue).jpg",
         "id": "80562"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jaguar",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Jaguar_Type_E_V12",
@@ -45286,7 +46236,11 @@
         "id": "80586",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jaguar",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Jaguar_XJ-SC",
@@ -45320,7 +46274,12 @@
         "id": "80588",
         "Sr": "Deluxe Collection"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jaguar",
+      "rg": "European",
+      "md": "Jaguar XJ"
+    }
   },
   {
     "lnk": "Jaguar_XJ6",
@@ -45396,7 +46355,11 @@
         "id": "80593",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jaguar",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Jaguar_XJ6_Police",
@@ -45477,7 +46440,11 @@
         "id": "80598",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jaguar",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Japan_Series_1_Bonus_Box",
@@ -46773,7 +47740,7 @@
       {
         "N": "236",
         "y": "2001",
-        "c": "yellow/orange",
+        "c": "yellow / orange",
         "Tm": "eXtractor",
         "Bs": "unpainted metal",
         "Wn": "clear",
@@ -47078,7 +48045,12 @@
         "id": "80719",
         "Sr": "Rockerz"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jeep",
+      "rg": "American",
+      "md": "Jeep Cherokee"
+    }
   },
   {
     "lnk": "Jeep_Cherokee_Ambulance",
@@ -47189,7 +48161,12 @@
         "id": "80726",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jeep",
+      "rg": "American",
+      "md": "Jeep Cherokee"
+    }
   },
   {
     "lnk": "Jeep_Cherokee_Limited",
@@ -47344,7 +48321,12 @@
         "id": "80736",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jeep",
+      "rg": "American",
+      "md": "Jeep Cherokee"
+    }
   },
   {
     "lnk": "Jeep_Cherokee_Sheriff",
@@ -47584,7 +48566,12 @@
         "id": "80752",
         "Sr": "Squad Forces"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jeep",
+      "rg": "American",
+      "md": "Jeep Cherokee"
+    }
   },
   {
     "lnk": "Jeep_CJ-7",
@@ -47880,7 +48867,12 @@
         "id": "80773",
         "Sr": "Special Forces"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jeep",
+      "rg": "American",
+      "md": "Jeep CJ-7"
+    }
   },
   {
     "lnk": "Jeep_CJ-7_4_x_4",
@@ -48339,7 +49331,12 @@
         "id": "80806",
         "Sr": "Jungle Mission"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jeep",
+      "rg": "American",
+      "md": "Jeep CJ-7"
+    }
   },
   {
     "lnk": "Jeep_Wrangler_4XE",
@@ -48415,7 +49412,12 @@
         "id": "80811",
         "Sr": "Showroom Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jeep",
+      "rg": "American",
+      "md": "Jeep Wrangler"
+    }
   },
   {
     "lnk": "Jeep_Wrangler_Rubicon",
@@ -48781,7 +49783,7 @@
       {
         "N": "2026",
         "y": "2021 - 2022 - 2023 - 2024",
-        "c": "blue/purple",
+        "c": "blue / purple",
         "Tm": "\"Jeep \" on hood & sides",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -48949,7 +49951,12 @@
         "id": "80847",
         "Sr": "Limited Edition serie 10 - Giftpack 9+4"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Jeep",
+      "rg": "American",
+      "md": "Jeep Wrangler"
+    }
   },
   {
     "lnk": "Jungle_Mission",
@@ -49211,7 +50218,11 @@
         "id": "80870",
         "Sr": "Color Changers"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Kia",
+      "rg": "Korean"
+    }
   },
   {
     "lnk": "Lamborghini_Aventador",
@@ -49564,7 +50575,15 @@
         "Nt": "Serie...............: Chase Street Cars",
         "id": "80895"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lamborghini",
+      "rg": "European",
+      "md": "Lamborghini Aventador",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Lamborghini_Aventador_SV_Roadster",
@@ -49736,7 +50755,15 @@
         "id": "80907",
         "Sr": "Sports Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lamborghini",
+      "rg": "European",
+      "md": "Lamborghini Aventador",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Lamborghini_Centenario",
@@ -49795,7 +50822,14 @@
         "id": "80911",
         "Sr": "Lamborghini 5 Pieces Gidftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lamborghini",
+      "rg": "European",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Lamborghini_Countach",
@@ -50145,7 +51179,15 @@
         "id": "80935",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lamborghini",
+      "rg": "European",
+      "md": "Lamborghini Countach",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Lamborghini_Countach_LP400",
@@ -50258,7 +51300,15 @@
         "id": "80943",
         "Sr": "Vintage Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lamborghini",
+      "rg": "European",
+      "md": "Lamborghini Countach",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Lamborghini_Countach_LPI_800-4",
@@ -50317,7 +51367,15 @@
         "_img": "Lamborghini lpi 800 red giftpack.JPG",
         "id": "80947"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lamborghini",
+      "rg": "European",
+      "md": "Lamborghini Countach",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Lamborghini_Diablo",
@@ -50446,7 +51504,15 @@
         "_img": "Lamborghini diablo red.JPG",
         "id": "80956"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lamborghini",
+      "rg": "European",
+      "md": "Lamborghini Diablo",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Lamborghini_Gallardo",
@@ -50586,7 +51652,15 @@
         "id": "80966",
         "Sr": "Lamborghini"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lamborghini",
+      "rg": "European",
+      "md": "Lamborghini Gallardo",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Lamborghini_Huracán_Avio",
@@ -50865,7 +51939,14 @@
         "id": "80985",
         "Sr": "Showroom Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lamborghini",
+      "rg": "European",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Lamborghini_Reventón",
@@ -50987,7 +52068,14 @@
         "Nt": "Serie........: Limited Edition 5",
         "id": "80994"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lamborghini",
+      "rg": "European",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Lamborghini_Sian_FKP_37",
@@ -51087,7 +52175,14 @@
         "id": "81001",
         "Sr": "Showroom premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lamborghini",
+      "rg": "European",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Lamborghini_Urus",
@@ -51327,7 +52422,15 @@
         "id": "81017",
         "Sr": "Premium Cars - Chase Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lamborghini",
+      "rg": "European",
+      "md": "Lamborghini Urus",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Lancia_Delta_Integrale_Evoluzione",
@@ -51357,7 +52460,12 @@
         "id": "81019",
         "Sr": "Racing Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lancia",
+      "rg": "European",
+      "md": "Lancia Delta Integrale"
+    }
   },
   {
     "lnk": "Lancia_Montecarlo",
@@ -51461,7 +52569,11 @@
         "id": "81026",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lancia",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Land_Rover_90_Raid",
@@ -52361,7 +53473,11 @@
         "_img": "Land rover 90 raid dark red.JPG",
         "id": "81087"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Land Rover",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Land_Rover_Defender_110",
@@ -52582,7 +53698,12 @@
         "id": "81102",
         "Sr": "Deluxe Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Land Rover",
+      "rg": "European",
+      "md": "Land Rover Defender"
+    }
   },
   {
     "lnk": "Land_Rover_Defender_90",
@@ -52728,7 +53849,12 @@
         "id": "81112",
         "Sr": "Black Edition Giftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Land Rover",
+      "rg": "European",
+      "md": "Land Rover Defender"
+    }
   },
   {
     "lnk": "Lexus_RX400h",
@@ -52876,7 +54002,11 @@
         "id": "81123",
         "Sr": "street cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Lexus",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Liebherr_L538",
@@ -62175,7 +63305,7 @@
       },
       {
         "y": "1979",
-        "c": "red /white",
+        "c": "red / white",
         "_img": "Minibus (red white, airport, 5 passengers).jpg",
         "Nt": "Serie nr: 262; Model: Minibus Airport; Brand: Buses",
         "id": "82337"
@@ -68099,7 +69229,16 @@
         "Nt": "Serie nr: 299A; Model: Kart",
         "id": "83174"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European",
+      "md": "BMW 2002",
+      "th": [
+        "1990s"
+      ],
+      "yr": 1995
+    }
   },
   {
     "lnk": "List_of_2003_Majorette",
@@ -70217,7 +71356,7 @@
       },
       {
         "y": "2006",
-        "c": "white/blue/red",
+        "c": "white / blue / red",
         "_img": "Majorette Toyota Corolla WRC white blue red, 8B, samse, toyota).jpg",
         "Nt": "Serie nr: 292E; Model: Toyota Corolla WRC; Brand: Toyota",
         "id": "83474"
@@ -70741,7 +71880,7 @@
       },
       {
         "y": "2006",
-        "c": "white/blue/red",
+        "c": "white / blue / red",
         "_img": "Majorette Toyota Corolla WRC white blue red, 8B, samse, toyota).jpg",
         "Nt": "Serie nr: 292E; Model: Toyota Corolla WRC; Brand: Toyota",
         "id": "83548"
@@ -71188,7 +72327,7 @@
       },
       {
         "y": "2006",
-        "c": "white/blue/red",
+        "c": "white / blue / red",
         "_img": "Majorette Toyota Corolla WRC white blue red, 8B, samse, toyota).jpg",
         "Nt": "Serie nr: 292E; Model: Toyota Corolla WRC; Brand: Toyota",
         "id": "83611"
@@ -71628,7 +72767,7 @@
       },
       {
         "y": "2006",
-        "c": "white/blue/red",
+        "c": "white / blue / red",
         "_img": "Majorette Toyota Corolla WRC white blue red, 8B, samse, toyota).jpg",
         "Nt": "Serie nr: 292E; Model: Toyota Corolla WRC; Brand: Toyota",
         "id": "83673"
@@ -71949,7 +73088,7 @@
       },
       {
         "y": "2007",
-        "c": "red/yellow/blue",
+        "c": "red / yellow / blue",
         "_img": "Citroën C4 Red Bull WRC (2010).jpg",
         "Nt": "Serie nr: 254I; Model: Citroën C4 WRC; Brand: Citroën",
         "id": "83718"
@@ -72089,7 +73228,7 @@
       },
       {
         "y": "2006",
-        "c": "white/blue/red",
+        "c": "white / blue / red",
         "_img": "Majorette Toyota Corolla WRC white blue red, 8B, samse, toyota).jpg",
         "Nt": "Serie nr: 292E; Model: Toyota Corolla WRC; Brand: Toyota",
         "id": "83738"
@@ -72438,7 +73577,7 @@
       },
       {
         "y": "2007",
-        "c": "red/yellow/blue",
+        "c": "red / yellow / blue",
         "_img": "Citroën C4 Red Bull WRC (2010).jpg",
         "Nt": "Serie nr: 254I; Model: Citroën C4 WRC; Brand: Citroën",
         "id": "83787"
@@ -72564,7 +73703,7 @@
       },
       {
         "y": "2006",
-        "c": "white/blue/red",
+        "c": "white / blue / red",
         "_img": "Majorette Toyota Corolla WRC white blue red, 8B, samse, toyota).jpg",
         "Nt": "Serie nr: 292E; Model: Toyota Corolla WRC; Brand: Toyota",
         "id": "83805"
@@ -72955,7 +74094,7 @@
       },
       {
         "y": "2007",
-        "c": "white/red/yellow/blue",
+        "c": "white / red / yellow / blue",
         "_img": "Citroen C4 WRC Loeb 2010.jpg",
         "Nt": "Serie nr: 254I; Model: Citroën C4 WRC; Brand: Citroën",
         "id": "83860"
@@ -73088,7 +74227,7 @@
       },
       {
         "y": "2006",
-        "c": "white/blue/red",
+        "c": "white / blue / red",
         "_img": "Majorette Toyota Corolla WRC white blue red, 8B, samse, toyota).jpg",
         "Nt": "Serie nr: 292E; Model: Toyota Corolla WRC; Brand: Toyota",
         "id": "83879"
@@ -73486,7 +74625,7 @@
       },
       {
         "y": "2007",
-        "c": "white/red/yellow/blue",
+        "c": "white / red / yellow / blue",
         "_img": "Citroen C4 WRC Loeb 2010.jpg",
         "Nt": "Serie nr: 254I; Model: Citroën C4 WRC; Brand: Citroën",
         "id": "83935"
@@ -73584,7 +74723,7 @@
       },
       {
         "y": "2006",
-        "c": "white/blue/red",
+        "c": "white / blue / red",
         "_img": "Majorette Toyota Corolla WRC white blue red, 8B, samse, toyota).jpg",
         "Nt": "Serie nr: 292E; Model: Toyota Corolla WRC; Brand: Toyota",
         "id": "83949"
@@ -76022,7 +77161,7 @@
       },
       {
         "y": "2018",
-        "c": "light silver/green metallic",
+        "c": "light silver / green metallic",
         "_img": "Aston Martin Vantage GT8 Premium Cars.jpg",
         "Nt": "Serie nr: 229D; Model: Aston Martin Vantage GT8; Brand: Aston Martin",
         "id": "84293"
@@ -76379,7 +77518,7 @@
       },
       {
         "y": "2018",
-        "c": "yellow/gray",
+        "c": "yellow / gray",
         "_img": "MAN TGS Tow Truck 2018 City yellow.jpg",
         "Nt": "Serie nr: 299F; Model: MAN TGS Tow Truck; Brand: MAN",
         "id": "84344"
@@ -76400,7 +77539,7 @@
       },
       {
         "y": "2018",
-        "c": "creme/yellow",
+        "c": "creme / yellow",
         "_img": "ERIBA Puck Vintage Series yellow creme R13A.jpg",
         "Nt": "Serie nr: R13A; Model: ERIBA Puck; Brand: Trailers",
         "id": "84347"
@@ -76742,7 +77881,7 @@
       },
       {
         "y": "2018",
-        "c": "light silver/green metallic",
+        "c": "light silver / green metallic",
         "_img": "Aston Martin Vantage GT8 Premium Cars.jpg",
         "Nt": "Serie nr: 229D; Model: Aston Martin Vantage GT8; Brand: Aston Martin",
         "id": "84395"
@@ -77127,7 +78266,7 @@
       },
       {
         "y": "2018",
-        "c": "yellow/gray",
+        "c": "yellow / gray",
         "_img": "MAN TGS Tow Truck 2018 City yellow.jpg",
         "Nt": "Serie nr: 299F; Model: MAN TGS Tow Truck; Brand: MAN",
         "id": "84450"
@@ -77148,7 +78287,7 @@
       },
       {
         "y": "2018",
-        "c": "creme/yellow",
+        "c": "creme / yellow",
         "_img": "ERIBA Puck Vintage Series yellow creme R13A.jpg",
         "Nt": "Serie nr: R13A; Model: ERIBA Puck; Brand: Trailers",
         "id": "84453"
@@ -77504,7 +78643,7 @@
       },
       {
         "y": "2018",
-        "c": "light silver/green metallic",
+        "c": "light silver / green metallic",
         "_img": "Aston Martin Vantage GT8 Premium Cars.jpg",
         "Nt": "Serie nr: 229D; Model: Aston Martin Vantage GT8; Brand: Aston Martin",
         "id": "84503"
@@ -77875,7 +79014,7 @@
       },
       {
         "y": "2020",
-        "c": "white/blue",
+        "c": "white / blue",
         "_img": "MAN TGS Eurocargo 299F 2021 ParkNShop blue Logo.jpg",
         "Nt": "Serie nr: 299F; Model: MAN TGS Eurocargo; Brand: MAN",
         "id": "84556"
@@ -77910,7 +79049,7 @@
       },
       {
         "y": "2018",
-        "c": "yellow/gray",
+        "c": "yellow / gray",
         "_img": "MAN TGS Tow Truck 2018 City yellow.jpg",
         "Nt": "Serie nr: 299F; Model: MAN TGS Tow Truck; Brand: MAN",
         "id": "84561"
@@ -77959,7 +79098,7 @@
       },
       {
         "y": "2018",
-        "c": "creme/yellow",
+        "c": "creme / yellow",
         "_img": "ERIBA Puck Vintage Series yellow creme R13A.jpg",
         "Nt": "Serie nr: R13A; Model: ERIBA Puck; Brand: Trailers",
         "id": "84568"
@@ -78664,7 +79803,7 @@
       },
       {
         "y": "2018",
-        "c": "creme/yellow",
+        "c": "creme / yellow",
         "_img": "ERIBA Puck Vintage Series yellow creme R13A.jpg",
         "Nt": "Serie nr: R13A; Model: ERIBA Puck; Brand: Trailers",
         "id": "84668"
@@ -78985,7 +80124,7 @@
       },
       {
         "y": "2017",
-        "c": "red/black",
+        "c": "red / black",
         "_img": "Dodge Challenger - Demon (red, premium cars cars, 2020).jpg",
         "Nt": "Serie nr: 238C; Model: Dodge Challenger SRT; Brand: Dodge",
         "id": "84713"
@@ -79604,7 +80743,7 @@
       },
       {
         "y": "2018",
-        "c": "blue/purple",
+        "c": "blue / purple",
         "_img": "Audi S5 Coupe purple colour changers).jpg",
         "Nt": "Serie nr: 237H; Model: Ausi S5 coupe; Brand: Audi",
         "id": "84798",
@@ -79956,7 +81095,7 @@
       },
       {
         "y": "2016",
-        "c": "red/brown",
+        "c": "red / brown",
         "_img": "Dodge Viper SRT 2020 color changers cold dark red-brown.jpg",
         "Nt": "Serie nr: 238B; Model: Dodge Viper SRT; Brand: Dodge",
         "id": "84842",
@@ -80315,7 +81454,7 @@
       },
       {
         "y": "2019",
-        "c": "white/black",
+        "c": "white / black",
         "_img": "Hyundai_i20_Coupe_WRC_2020_WRC_Cars_rubber_tires.jpg",
         "Nt": "Serie nr: 280A; Model: Hyundai i20 Coupe WRC; Brand: Hyundai",
         "id": "84887",
@@ -81019,7 +82158,7 @@
       },
       {
         "y": "2018",
-        "c": "olive/black",
+        "c": "olive / black",
         "_img": "Peugeot_3008_GT_2018_dark_olive_metallic_Premium_Cars.jpg",
         "Nt": "Serie nr: 205L; Model: Peugeot 3008 G; Brand: Peugeot",
         "id": "84975",
@@ -81067,7 +82206,7 @@
       },
       {
         "y": "2018",
-        "c": "black/red",
+        "c": "black / red",
         "_img": "Porsche_911_GT3_RS_209H_Color_Changers_2020_COLD_view.jpg",
         "Nt": "Serie nr: 209H; Model: Porsche GT3 RS; Brand: Porsche",
         "id": "84981",
@@ -81473,7 +82612,7 @@
       },
       {
         "y": "2021",
-        "c": "white/blue",
+        "c": "white / blue",
         "_img": "Porsche Taycan safety car.JPG",
         "Nt": "Serie nr: 209P; Model: Porsche Taycan Turbo S",
         "id": "85033",
@@ -81497,7 +82636,7 @@
       },
       {
         "y": "2023",
-        "c": "yellow/red",
+        "c": "yellow / red",
         "_img": "Porsche 911 Carrera RS 2 7.jpg",
         "Nt": "Serie nr: 269E; Model: Porsche 911 Carrera RS 2.7",
         "id": "85036",
@@ -82192,7 +83331,7 @@
       {
         "N": "295A",
         "y": "2025",
-        "c": "white/green",
+        "c": "white / green",
         "_img": "Iveco eurocargo garbage truck.JPG",
         "Nt": "Model: Eurocargo; Brand: Iveco",
         "id": "85118",
@@ -82772,7 +83911,7 @@
       },
       {
         "y": "2023 - 2024",
-        "c": "blue/gray",
+        "c": "blue / gray",
         "Tm": "\"Maersk\" on sides",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -82784,7 +83923,7 @@
       },
       {
         "y": "2023 - 2024",
-        "c": "blue/white",
+        "c": "blue / white",
         "Tm": "\"Maersk\" on sides",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -83733,7 +84872,7 @@
       {
         "N": "299F",
         "y": "2020",
-        "c": "white/blue",
+        "c": "white / blue",
         "Tm": "ParkNShop logo",
         "Bs": "black plastic",
         "Wn": "clear",
@@ -83759,7 +84898,7 @@
       {
         "N": "299F",
         "y": "2020",
-        "c": "yellow/light blue",
+        "c": "yellow / light blue",
         "Tm": "Calbee Jagabee",
         "Bs": "black plastic",
         "Wn": "clear",
@@ -83772,7 +84911,7 @@
       {
         "N": "299F",
         "y": "2020",
-        "c": "yellow/black",
+        "c": "yellow / black",
         "Tm": "Knife Oil",
         "Bs": "black plastic",
         "Wn": "clear",
@@ -83798,7 +84937,7 @@
       {
         "N": "299F",
         "y": "2020",
-        "c": "white/blue",
+        "c": "white / blue",
         "Tm": "Pocari Seat",
         "Bs": "black plastic",
         "Wn": "clear",
@@ -84673,7 +85812,11 @@
         "id": "85309",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mazda",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Mc_Laren_675_LT",
@@ -84847,7 +85990,15 @@
         "id": "85321",
         "Sr": "Racing Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "McLaren",
+      "rg": "European",
+      "md": "McLaren Senna",
+      "th": [
+        "Supercar"
+      ]
+    }
   },
   {
     "lnk": "Mercedes-AMG_5_Pieces_Gitpack",
@@ -84912,7 +86063,12 @@
         "Cn": "Thailand",
         "id": "85326"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-AMG_A_35_4MATIC",
@@ -84993,7 +86149,12 @@
         "id": "85332",
         "Sr": "Mercedes-AMG Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-AMG_CLE_53_S",
@@ -85053,7 +86214,12 @@
         "id": "85336",
         "Sr": "Mercedes-AMG Deluxe Trailer"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-AMG_Deluxe_Cars",
@@ -85136,7 +86302,12 @@
         "Cn": "Thailand",
         "id": "85342"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-AMG_Deluxe_Trailers",
@@ -85219,7 +86390,12 @@
         "Cn": "Thailand",
         "id": "85348"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-AMG_G500",
@@ -85391,7 +86567,12 @@
         "id": "85360",
         "Sr": "Castheads series"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-AMG_G63",
@@ -85633,7 +86814,12 @@
         "id": "85376",
         "Sr": "Mercedes-AMG Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-AMG_G63_Color_Edition",
@@ -85708,7 +86894,12 @@
         "_img": "Mercedes-AMG G 63 Giftpack (yellow).jpg",
         "id": "85381"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-AMG_GLC_63_S",
@@ -85783,7 +86974,12 @@
         "id": "85386",
         "Sr": "Mercedes-AMG Deluxe Trailer"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-AMG_GT",
@@ -86078,7 +87274,12 @@
         "_img": "Mercedes amg gt feuerwehr.JPG",
         "id": "85406"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-AMG_GT_63",
@@ -86123,7 +87324,12 @@
         "id": "85409",
         "Sr": "Mercedes-AMG Deluxe Trailer"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-AMG_GT_R",
@@ -86281,7 +87487,12 @@
         "id": "85421",
         "Sr": "Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-AMG_Premium_Cars",
@@ -86359,7 +87570,12 @@
         "Cn": "Thailand",
         "id": "85427"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-AMG_SL63",
@@ -86443,7 +87659,12 @@
         "id": "85433",
         "Sr": "Mercedes-AMG Deluxe Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-Benz_190E_2.5_EVO_II",
@@ -86514,7 +87735,11 @@
         "id": "85438",
         "Sr": "Limited Edition Serie 11"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_190_E_2.3-16",
@@ -86710,7 +87935,11 @@
         "_img": "Mercedes-Benz 190 E 2.3-16 (white, antar 3).jpg",
         "id": "85452"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_280_SE",
@@ -86842,7 +88071,11 @@
         "id": "85463",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_300_TE",
@@ -87068,7 +88301,11 @@
         "id": "85478",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_350_SL",
@@ -87258,7 +88495,11 @@
         "id": "85492",
         "Sr": "Globe Toys"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_450_SE",
@@ -87446,7 +88687,11 @@
         "id": "85505",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_450_SEL",
@@ -87479,7 +88724,11 @@
         "id": "85507",
         "Sr": "Vintage Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_500_SL",
@@ -87710,7 +88959,11 @@
         "id": "85524",
         "Sr": "Monsters"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_A-Class",
@@ -87746,7 +88999,11 @@
         "id": "85526",
         "Sr": "Racing Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_A-Class_Mk1",
@@ -87921,7 +89178,11 @@
         "id": "85538",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_AMG_Vision_Gran_Turismo",
@@ -87955,7 +89216,12 @@
         "id": "85540",
         "Sr": "Vision Gran Turismo Vision Gran Turismo - Giftpack 2018"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-Benz_Animal_Truck",
@@ -88031,7 +89297,11 @@
         "id": "85545",
         "Sr": "Dallas"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_Arocs",
@@ -88077,7 +89347,11 @@
         "id": "85548",
         "Sr": "City Premium Vehicles"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_E-Class_All-Terrain",
@@ -88170,7 +89444,11 @@
         "id": "85554",
         "Sr": "City Premium Vehicles"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_E-Class_All-Terrain_Emergency_Box",
@@ -88231,7 +89509,11 @@
         "_img": "Mercedes-Benz E-Class All-Terrain 232I 2021 Notarzt.png",
         "id": "85558"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_GL",
@@ -88266,7 +89548,11 @@
         "id": "85560",
         "Sr": "Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_NG_Farm_Truck",
@@ -88324,7 +89610,11 @@
         "id": "85564",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_NG_Garbage_Truck",
@@ -88412,7 +89702,11 @@
         "id": "85570",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_SLK",
@@ -88622,7 +89916,11 @@
         "id": "85586",
         "Sr": "single asst"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_SLS_AMG",
@@ -88781,7 +90079,12 @@
         "id": "85597",
         "Sr": "Dubai Police Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz AMG"
+    }
   },
   {
     "lnk": "Mercedes-Benz_Sprinter",
@@ -88801,7 +90104,11 @@
         "id": "85598",
         "Sr": "majoteams"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_Sprinter_(Type_907)",
@@ -88902,7 +90209,11 @@
         "id": "85605",
         "Sr": "MAERSK Giftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_T2_Pompier_Aéroport",
@@ -88975,7 +90286,11 @@
         "id": "85610",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_Unimog",
@@ -89149,7 +90464,12 @@
         "_img": "Mercedes-Benz unimog snowplow (orange, blue tarpaulin, 5RDL wheels).jpg",
         "id": "85622"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz Unimog"
+    }
   },
   {
     "lnk": "Mercedes-Benz_Unimog_U530",
@@ -89183,7 +90503,12 @@
         "id": "85624",
         "Sr": "Farm Trailer"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz Unimog"
+    }
   },
   {
     "lnk": "Mercedes-Benz_Zetros_Dump_Truck",
@@ -89215,7 +90540,11 @@
         "id": "85626",
         "Sr": "Construction Asst. Construction 3 pieces set"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_Zetros_Fire_Truck",
@@ -89288,7 +90617,11 @@
         "id": "85631",
         "Sr": "S.O.S. Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_Zetros_Recycling_Truck",
@@ -89364,7 +90697,11 @@
         "id": "85636",
         "Sr": "Technisches Hilfswerk Gift Pack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_Zetros_Research_Truck",
@@ -89384,7 +90721,11 @@
         "id": "85637",
         "Sr": "Explorer Asst. Explorer Trailer Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Benz_Zetros_Wood_Truck",
@@ -89462,7 +90803,11 @@
         "_img": "Mercedes-Benz Atris Wood Truck 279B green with trailer.jpg",
         "id": "85643"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes-Maybach_G_650_Landaulet",
@@ -89522,7 +90867,11 @@
         "id": "85647",
         "Sr": "Pink Slips"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes_Car_Carrier",
@@ -89570,7 +90919,11 @@
         "id": "85650",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes_CLK_GTR",
@@ -89833,7 +91186,12 @@
         "_img": "Mercedes clk silver 10s.JPG",
         "id": "85669"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European",
+      "md": "Mercedes-Benz CLK"
+    }
   },
   {
     "lnk": "Mercedes_Semi_Tank_Truck",
@@ -89959,7 +91317,11 @@
         "id": "85677",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes_Stretch_Limousine",
@@ -90051,7 +91413,11 @@
         "id": "85683",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Mercedes_TraX_Publics",
@@ -90286,7 +91652,11 @@
         "id": "85699",
         "Sr": "Majokit"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mercedes-Benz",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Metallic_Series",
@@ -91385,7 +92755,12 @@
         "_img": "Mini cooper metal sand.jpg",
         "id": "85778"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mini",
+      "rg": "European",
+      "md": "Mini Cooper"
+    }
   },
   {
     "lnk": "Mini_Cooper_Cabrio",
@@ -91482,7 +92857,12 @@
         "id": "85785",
         "Sr": "Single Cars Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mini",
+      "rg": "European",
+      "md": "Mini Cooper"
+    }
   },
   {
     "lnk": "Mini_Cooper_WRC",
@@ -91579,7 +92959,12 @@
         "id": "85792",
         "Sr": "Holyday Set"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mini",
+      "rg": "European",
+      "md": "Mini Cooper"
+    }
   },
   {
     "lnk": "Mini_Go_Kart_Trailer",
@@ -91646,7 +93031,11 @@
         "id": "85798",
         "Sr": "Trailer Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mini",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Misubishi_Concept_XR-Phev_Evolution_Vision_Gran_Turismo",
@@ -91756,7 +93145,11 @@
         "id": "85805",
         "Sr": "Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mitsubishi",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Mitsubishi_Lancer_EVO_9",
@@ -91842,7 +93235,12 @@
         "id": "85811",
         "Sr": "JDM Legends Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mitsubishi",
+      "rg": "Japanese",
+      "md": "Mitsubishi Lancer"
+    }
   },
   {
     "lnk": "Mitsubishi_Lancer_WRC",
@@ -91874,7 +93272,12 @@
         "id": "85813",
         "Sr": "Racing Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mitsubishi",
+      "rg": "Japanese",
+      "md": "Mitsubishi Lancer"
+    }
   },
   {
     "lnk": "Mitsubishi_Outlander",
@@ -91922,7 +93325,11 @@
         "id": "85816",
         "Sr": "Single Asst"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mitsubishi",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Mitsubishi_Pajero",
@@ -92095,7 +93502,12 @@
         "id": "85828",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mitsubishi",
+      "rg": "Japanese",
+      "md": "Mitsubishi Pajero"
+    }
   },
   {
     "lnk": "Mitsubishi_Pajero_Evo",
@@ -92113,7 +93525,12 @@
         "_img": "Majorette Mitsubishi Pajero Evo (metallic blue).jpg",
         "id": "85829"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Mitsubishi",
+      "rg": "Japanese",
+      "md": "Mitsubishi Pajero"
+    }
   },
   {
     "lnk": "Monsters_Serie",
@@ -93014,7 +94431,15 @@
         "_img": "Majorette Mustang SVO (red, blue interior, ELO wheels).jpg",
         "id": "85905"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Ford",
+      "rg": "American",
+      "md": "Ford Mustang",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Neon_Edition",
@@ -93594,7 +95019,7 @@
       {
         "N": "373",
         "y": "1998",
-        "c": "orange /white",
+        "c": "orange / white",
         "Tm": "Swiss PTT postal bus",
         "Bs": "orange / metal",
         "Wn": "clear",
@@ -93896,7 +95321,11 @@
         "id": "85969",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Nissan",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Nissan_Cefiro_A31",
@@ -94104,7 +95533,11 @@
         "id": "85984",
         "Sr": "JDM Legends Deluxe Cars Chase Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Nissan",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Nissan_Concept_2020_Vision_Gran_Turismo",
@@ -94176,7 +95609,11 @@
         "id": "85989",
         "Sr": "Street Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Nissan",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Nissan_GT-R_Nismo_GT3",
@@ -94353,7 +95790,16 @@
         "id": "86001",
         "Sr": "Premium Cars Chase Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Nissan",
+      "rg": "Japanese",
+      "md": "Nissan GT-R",
+      "th": [
+        "Supercar",
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Nissan_GT-R_R35_(214D)",
@@ -94544,7 +95990,16 @@
         "id": "86014",
         "Sr": "Taiwan Limited"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Nissan",
+      "rg": "Japanese",
+      "md": "Nissan GT-R",
+      "th": [
+        "Supercar",
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Nissan_GT-R_R35_(214G)",
@@ -94759,7 +96214,16 @@
         "id": "86029",
         "Sr": "Japan Serie Prime"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Nissan",
+      "rg": "Japanese",
+      "md": "Nissan GT-R",
+      "th": [
+        "Supercar",
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Nissan_GTR",
@@ -94949,7 +96413,11 @@
         "id": "86042",
         "Sr": "Taiwan Limited"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Nissan",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Nissan_Micra",
@@ -95083,7 +96551,11 @@
         "id": "86052",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Nissan",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Nissan_Murano",
@@ -95268,7 +96740,11 @@
         "id": "86065",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Nissan",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Nissan_Pathfinder",
@@ -95299,7 +96775,11 @@
         "id": "86067",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Nissan",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Nissan_Skyline_GT-R_(R34)",
@@ -95475,7 +96955,16 @@
         "id": "86080",
         "Sr": "JDM Legends Deluxe Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Nissan",
+      "rg": "Japanese",
+      "md": "Nissan Skyline",
+      "th": [
+        "Supercar",
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Nissan_Terrano",
@@ -95612,7 +97101,11 @@
         "id": "86089",
         "Sr": "Novacar"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Nissan",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Nissan_Z",
@@ -95811,7 +97304,12 @@
         "id": "86103",
         "Sr": "JDM Legends Deluxe Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Nissan",
+      "rg": "Japanese",
+      "md": "Nissan Z"
+    }
   },
   {
     "lnk": "Niveleuse",
@@ -96260,7 +97758,7 @@
       },
       {
         "N": "253",
-        "c": "gray/blue",
+        "c": "gray / blue",
         "Wn": "light orange",
         "In": "white",
         "Wh": "NUC2",
@@ -96369,7 +97867,11 @@
         "id": "86161",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Oldsmobile",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Opel_Adam",
@@ -96559,7 +98061,11 @@
         "id": "86174",
         "Sr": "Borussia Dortmund"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Opel",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Opel_Corsa",
@@ -96666,7 +98172,11 @@
         "id": "86181",
         "Sr": "Street Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Opel",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Paris_Saint-Germain_Premium_Cars",
@@ -97081,7 +98591,11 @@
         "id": "86218",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_204_Cabriolet",
@@ -97178,7 +98692,11 @@
         "id": "86225",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_205_CTI",
@@ -97380,7 +98898,12 @@
         "id": "86239",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European",
+      "md": "Peugeot 205"
+    }
   },
   {
     "lnk": "Peugeot_205_GTI",
@@ -97579,7 +99102,12 @@
         "id": "86253",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European",
+      "md": "Peugeot 205"
+    }
   },
   {
     "lnk": "Peugeot_205_GTI_1.9",
@@ -97598,7 +99126,7 @@
       },
       {
         "y": "2026",
-        "c": "white/yellow",
+        "c": "white / yellow",
         "Bs": "black / plastic",
         "Wn": "clear",
         "In": "black",
@@ -97607,7 +99135,12 @@
         "id": "86255",
         "Sr": "Racing Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European",
+      "md": "Peugeot 205"
+    }
   },
   {
     "lnk": "Peugeot_206",
@@ -97874,7 +99407,11 @@
         "id": "86274",
         "Sr": "Majopub"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_206_cc",
@@ -98150,7 +99687,11 @@
         "id": "86295",
         "Sr": "Pullback Motor Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_206_WRC",
@@ -98282,7 +99823,11 @@
         "id": "86304",
         "Sr": "Racing Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_208",
@@ -98305,7 +99850,7 @@
       {
         "N": "205N",
         "y": "2021 - 2022 - 2023",
-        "c": "green/black",
+        "c": "green / black",
         "Tm": "detail front and back print",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -98316,7 +99861,12 @@
         "id": "86306",
         "Sr": "Racing Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European",
+      "md": "Peugeot 208"
+    }
   },
   {
     "lnk": "Peugeot_3008_GT",
@@ -98451,7 +100001,11 @@
         "id": "86315",
         "Sr": "Showroom Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_307",
@@ -98534,7 +100088,7 @@
       {
         "N": "205C",
         "y": "2007 - 2008",
-        "c": "Blue/Grey",
+        "c": "Blue / Grey",
         "Bs": "black / plastic",
         "Wn": "Black",
         "Wh": "5CSS",
@@ -98661,7 +100215,11 @@
         "id": "86331",
         "Sr": "Single asst"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_307_WRC",
@@ -98742,7 +100300,11 @@
         "id": "86337",
         "Sr": "Racing Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_308_GT",
@@ -98838,7 +100400,11 @@
         "id": "86343",
         "Sr": "Showroom Premium Cars [French Exclusivity]"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_4007",
@@ -98928,7 +100494,11 @@
         "id": "86349",
         "Sr": "Single Asst Street Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_404",
@@ -99014,7 +100584,7 @@
         "N": "206",
         "y": "1968",
         "Sr": "300 serie",
-        "c": "blue/gray",
+        "c": "blue / gray",
         "Bs": "unpainted / metal",
         "Nt": "opening hood, doors and back door, hook + horse trailer",
         "Cn": "France",
@@ -99109,7 +100679,11 @@
         "_img": "Peugeot 404 green police.JPG",
         "id": "86363"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_405_MI_16",
@@ -99175,7 +100749,12 @@
         "id": "86367",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European",
+      "md": "Peugeot 405"
+    }
   },
   {
     "lnk": "Peugeot_405_T_16",
@@ -99379,7 +100958,12 @@
         "_img": "Peugeot 405 T 16 (white, shell).jpg",
         "id": "86381"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European",
+      "md": "Peugeot 405"
+    }
   },
   {
     "lnk": "Peugeot_406",
@@ -99529,7 +101113,11 @@
         "id": "86391",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_407",
@@ -99771,7 +101359,11 @@
         "id": "86408",
         "Sr": "Majorette 50 Years Car Pack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_504",
@@ -99872,7 +101464,12 @@
         "id": "86416",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European",
+      "md": "Peugeot 504"
+    }
   },
   {
     "lnk": "Peugeot_508_SW",
@@ -99949,7 +101546,11 @@
         "id": "86421",
         "Sr": "Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_508_SW_Mk2",
@@ -100023,7 +101624,11 @@
         "id": "86426",
         "Sr": "Showroom Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_604",
@@ -100367,7 +101972,7 @@
       {
         "N": "238",
         "y": "1980",
-        "c": "blue/gray",
+        "c": "blue / gray",
         "Tm": "white stripes on sides",
         "Bs": "unpainted / metal",
         "Wn": "light yellow",
@@ -100382,7 +101987,7 @@
       {
         "N": "238",
         "y": "1980",
-        "c": "blue/gray",
+        "c": "blue / gray",
         "Tm": "white stripes on sides",
         "Bs": "unpainted / metal",
         "Wn": "light yellow",
@@ -100397,7 +102002,7 @@
       {
         "N": "372",
         "y": "1980",
-        "c": "blue/gray",
+        "c": "blue / gray",
         "Tm": "white stripes on sides",
         "Bs": "unpainted / metal",
         "Wn": "light yellow",
@@ -100454,7 +102059,7 @@
       {
         "N": "238",
         "y": "1981 - 1982",
-        "c": "blue/gray",
+        "c": "blue / gray",
         "Bs": "unpainted / metal",
         "Wn": "light yellow",
         "In": "light yellow",
@@ -100468,7 +102073,7 @@
       {
         "N": "238",
         "y": "1981 - 1982",
-        "c": "blue/gray",
+        "c": "blue / gray",
         "Bs": "unpainted / metal",
         "Wn": "light yellow",
         "In": "light yellow",
@@ -100549,7 +102154,11 @@
         "id": "86463",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_605",
@@ -100582,7 +102191,11 @@
         "id": "86465",
         "Sr": "Novacar"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_Bipper",
@@ -100657,7 +102270,11 @@
         "id": "86470",
         "Sr": "Trailers Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Peugeot_Vision_Gran_Turismo",
@@ -100705,7 +102322,11 @@
         "id": "86473",
         "Sr": "Showroom Premium Cars [French Exclusivity]"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Peugeot",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Pink_Slips",
@@ -101359,7 +102980,12 @@
         "id": "86519",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Plymouth",
+      "rg": "American",
+      "md": "Plymouth Fury"
+    }
   },
   {
     "lnk": "Polaris_RZR_XP®_4_1000_EPS",
@@ -101451,7 +103077,7 @@
       },
       {
         "y": "2023 - 2024",
-        "c": "white/black",
+        "c": "white / black",
         "Tm": "blue \"MJ1635\" & \"Police\" on sides",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -101463,7 +103089,7 @@
       },
       {
         "y": "2023 - 2024",
-        "c": "white/black",
+        "c": "white / black",
         "Bs": "black / plastic",
         "Cn": "Thailand",
         "_img": "Boat trailer police force.JPG",
@@ -101697,7 +103323,12 @@
         "id": "86543",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Pontiac",
+      "rg": "American",
+      "md": "Pontiac Fiero"
+    }
   },
   {
     "lnk": "Pontiac_Firebird",
@@ -102026,7 +103657,15 @@
         "id": "86565",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Pontiac",
+      "rg": "American",
+      "md": "Pontiac Firebird",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Pontiac_Firebird_Pro_Stock",
@@ -102073,7 +103712,15 @@
         "id": "86568",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Pontiac",
+      "rg": "American",
+      "md": "Pontiac Firebird",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Pontiac_Firebird_(4th_Generation)",
@@ -102372,7 +104019,15 @@
         "_img": "Pontiac firebird 4th metal blue.jpg",
         "id": "86588"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Pontiac",
+      "rg": "American",
+      "md": "Pontiac Firebird",
+      "th": [
+        "Muscle"
+      ]
+    }
   },
   {
     "lnk": "Pontiac_Trans_Sport",
@@ -102490,7 +104145,11 @@
         "id": "86596",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Pontiac",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Porsche_718_Boxster",
@@ -102721,7 +104380,12 @@
         "id": "86611",
         "Sr": "Porsche Edition Discovery Pack 20 + 2"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche Boxster"
+    }
   },
   {
     "lnk": "Porsche_911_Carrera_RS_2.7",
@@ -102827,7 +104491,12 @@
         "id": "86618",
         "Sr": "Casthead Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche Carrera"
+    }
   },
   {
     "lnk": "Porsche_911_Carrera_S_(992)",
@@ -103058,7 +104727,7 @@
       {
         "N": "209K",
         "y": "2025",
-        "c": "blue/silver",
+        "c": "blue / silver",
         "Tm": "blue front, silver rear, \"Polizei\" printing.",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -103082,7 +104751,12 @@
         "id": "86635",
         "Sr": "Porsche Thailand"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche Carrera"
+    }
   },
   {
     "lnk": "Porsche_911_Carrera_(997)",
@@ -103158,7 +104832,12 @@
         "id": "86640",
         "Sr": "Limited Edition 3"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche Carrera"
+    }
   },
   {
     "lnk": "Porsche_911_GT3",
@@ -103397,7 +105076,12 @@
         "id": "86656",
         "Sr": "Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche 911"
+    }
   },
   {
     "lnk": "Porsche_911_GT3_Cup_(992)",
@@ -103459,7 +105143,12 @@
         "id": "86660",
         "Sr": "Limited Edition Serie 10 - Colour Trace"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche 911"
+    }
   },
   {
     "lnk": "Porsche_911_GT3_RS",
@@ -103879,7 +105568,12 @@
         "id": "86688",
         "Sr": "Europa Park Series"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche 911"
+    }
   },
   {
     "lnk": "Porsche_917",
@@ -103976,7 +105670,7 @@
       {
         "N": "247C",
         "y": "2021 - 2022",
-        "c": "green/purple",
+        "c": "green / purple",
         "Tm": "raceNo 35",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -103991,7 +105685,7 @@
       {
         "N": "247C",
         "y": "2021 - 2022",
-        "c": "green/purple",
+        "c": "green / purple",
         "Tm": "raceNo 35",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -104092,7 +105786,11 @@
         "id": "86702",
         "Sr": "Porsche Motorsport Premium Cars - Porsche Edition Giftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Porsche_918_Spyder",
@@ -104312,7 +106010,12 @@
         "id": "86718",
         "Sr": "Pink Slips"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche 918"
+    }
   },
   {
     "lnk": "Porsche_924",
@@ -104500,7 +106203,7 @@
       {
         "N": "247A",
         "y": "2000",
-        "c": "turquoise/gray",
+        "c": "turquoise / gray",
         "Tm": "painted rear window",
         "Bs": "unpainted / metal",
         "Wn": "clear",
@@ -104515,7 +106218,7 @@
       {
         "N": "247A",
         "y": "2001-2002-2003",
-        "c": "turquoise/gray",
+        "c": "turquoise / gray",
         "Bs": "unpainted / metal",
         "Wn": "clear",
         "In": "red",
@@ -104563,7 +106266,11 @@
         "Cn": "France",
         "id": "86735"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Porsche_928",
@@ -104671,7 +106378,11 @@
         "id": "86744",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Porsche_934",
@@ -104883,7 +106594,11 @@
         "id": "86758",
         "Sr": "Vintage Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Porsche_935_K3",
@@ -104932,7 +106647,11 @@
         "id": "86761",
         "Sr": "Porsche Motorsport Deluxe Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Porsche_996",
@@ -105372,7 +107091,11 @@
         "_img": "Porsche 996 (yellow, checkered flag print, 30).jpg",
         "id": "86791"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Porsche_Boxster",
@@ -105625,7 +107348,12 @@
         "id": "86809",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche Boxster"
+    }
   },
   {
     "lnk": "Porsche_Cayenne_Turbo_S",
@@ -105764,7 +107492,12 @@
         "id": "86818",
         "Sr": "Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche Cayenne"
+    }
   },
   {
     "lnk": "Porsche_Cayenne_Turbo_S_E-Hybrid",
@@ -105825,7 +107558,12 @@
         "id": "86822",
         "Sr": "Pink Slips"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche Cayenne"
+    }
   },
   {
     "lnk": "Porsche_Cayenne_(955)",
@@ -105844,7 +107582,12 @@
         "id": "86823",
         "Sr": "Single. Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche Cayenne"
+    }
   },
   {
     "lnk": "Porsche_Le_Mans",
@@ -105968,7 +107711,11 @@
         "_img": "Porsche le mans (yellow, nuc wheels).jpg",
         "id": "86832"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Porsche_Motorsport_Race_Trailer",
@@ -106051,7 +107798,11 @@
         "Nt": "opening doors; Model: Porsche 935 K3",
         "id": "86838"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Porsche_Panamera",
@@ -106147,7 +107898,12 @@
         "id": "86844",
         "Sr": "City Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche Panamera"
+    }
   },
   {
     "lnk": "Porsche_Panamera_Turbo",
@@ -106303,7 +108059,12 @@
         "id": "86854",
         "Sr": "Adventure Trailer"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche Panamera"
+    }
   },
   {
     "lnk": "Porsche_Taycan_Turbo_S",
@@ -106479,7 +108240,12 @@
         "id": "86866",
         "Sr": "Delux Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European",
+      "md": "Porsche Taycan"
+    }
   },
   {
     "lnk": "Porsche_Turbo",
@@ -106968,7 +108734,11 @@
         "id": "86899",
         "Sr": "Transport Set"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Porsche_Turbo_(MOTOR)",
@@ -107116,7 +108886,11 @@
         "id": "86912",
         "Sr": "MOTOR"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Porsche_Vision_Gran_Turismo",
@@ -107164,7 +108938,11 @@
         "id": "86915",
         "Sr": "Porsche Motrsport Deluxe Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Porsche",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Punch_Buggy_Slug_Bug",
@@ -107200,7 +108978,7 @@
       {
         "N": "243A",
         "y": "2020",
-        "c": "black/white",
+        "c": "black / white",
         "Tm": "floral design",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -107214,7 +108992,7 @@
       {
         "N": "243A",
         "y": "2021",
-        "c": "matt black/orange",
+        "c": "matt black / orange",
         "Tm": "stripe design",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -107228,7 +109006,7 @@
       {
         "N": "243A",
         "y": "2021",
-        "c": "blue/white",
+        "c": "blue / white",
         "Tm": "dark blue deco line",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -107298,7 +109076,7 @@
       {
         "N": "243A",
         "y": "2021",
-        "c": "gray/tan",
+        "c": "gray / tan",
         "Bs": "gray / plastic",
         "Wn": "clear",
         "In": "gray",
@@ -107311,7 +109089,7 @@
       {
         "N": "243A",
         "y": "2021",
-        "c": "light yellow/white",
+        "c": "light yellow / white",
         "Tm": "orange logo \"Punch Buggy\" at doors",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -107325,7 +109103,7 @@
       {
         "N": "243A",
         "y": "2021",
-        "c": "brown/white",
+        "c": "brown / white",
         "Tm": "golden deco line and dog paw, \"World Class Dog Walkers\", \"Scoop ee Doo\" at doors",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -107353,7 +109131,7 @@
       {
         "N": "243A",
         "y": "2022",
-        "c": "turquoise/white",
+        "c": "turquoise / white",
         "Bs": "white/ plastic",
         "Wn": "clear",
         "In": "white",
@@ -107464,7 +109242,7 @@
       {
         "N": "243A",
         "y": "2022",
-        "c": "orange/white",
+        "c": "orange / white",
         "Tm": "black flames deco",
         "Bs": "black / plastic",
         "Wn": "smoke",
@@ -107478,7 +109256,7 @@
       {
         "N": "243A",
         "y": "2022",
-        "c": "white/mint",
+        "c": "white / mint",
         "Bs": "gray / plastic",
         "Wn": "vlear",
         "In": "black",
@@ -107491,7 +109269,7 @@
       {
         "N": "243A",
         "y": "2022",
-        "c": "white/green",
+        "c": "white / green",
         "Tm": "\"Arrowhead Ski Lodge\", \"Slopes and Trail for Beginners & Experts\"",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -107505,7 +109283,7 @@
       {
         "N": "243A",
         "y": "2023",
-        "c": "purple/white",
+        "c": "purple / white",
         "Tm": "black flames deco",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -107533,7 +109311,7 @@
       {
         "N": "243A",
         "y": "2023",
-        "c": "white/blue",
+        "c": "white / blue",
         "Tm": "\"Love, Peace\", \"flower design",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -107586,7 +109364,12 @@
         "id": "86945",
         "Sr": "Volkswagen Beetle - Wave 6"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen Bug"
+    }
   },
   {
     "lnk": "R5_Turbo",
@@ -107860,7 +109643,7 @@
       {
         "N": "286E",
         "y": "2025",
-        "c": "grey/red",
+        "c": "grey / red",
         "_img": "Fiat_500_Icon.png",
         "Nt": "Modele: Fiat 500 Icon",
         "id": "86972"
@@ -108104,7 +109887,12 @@
         "id": "86990",
         "Sr": "Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Land Rover",
+      "rg": "European",
+      "md": "Land Rover Range Rover"
+    }
   },
   {
     "lnk": "Range_Rover_Rescue_Team",
@@ -108341,7 +110129,12 @@
         "id": "87006",
         "Sr": "?"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Land Rover",
+      "rg": "European",
+      "md": "Land Rover Range Rover"
+    }
   },
   {
     "lnk": "Range_Rover_Rescue_Unit",
@@ -108477,7 +110270,12 @@
         "id": "87015",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Land Rover",
+      "rg": "European",
+      "md": "Land Rover Range Rover"
+    }
   },
   {
     "lnk": "Range_Rover_(MOTOR)",
@@ -108554,7 +110352,12 @@
         "id": "87021",
         "Sr": "MOTOR"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Land Rover",
+      "rg": "European",
+      "md": "Land Rover Range Rover"
+    }
   },
   {
     "lnk": "Range_Stormer_Concept_Car",
@@ -108699,7 +110502,11 @@
         "id": "87030",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_16",
@@ -109080,7 +110887,11 @@
         "id": "87057",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_17_TS",
@@ -109351,7 +111162,11 @@
         "id": "87075",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_18",
@@ -109540,7 +111355,11 @@
         "id": "87089",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_19_Cabriolet",
@@ -109600,7 +111419,11 @@
         "id": "87093",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_25",
@@ -109723,7 +111546,11 @@
         "id": "87102",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_4_L",
@@ -109883,7 +111710,11 @@
         "id": "87113",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_4_L_(F4)",
@@ -109906,7 +111737,7 @@
       {
         "N": "210E",
         "y": "2025",
-        "c": "blue/white/red",
+        "c": "blue / white / red",
         "Bs": "black / plastic",
         "Wn": "clear",
         "In": "black",
@@ -109944,7 +111775,11 @@
         "id": "87117",
         "Sr": "Vintage Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_5",
@@ -110044,7 +111879,11 @@
         "id": "87124",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_5_E-Tech",
@@ -110067,7 +111906,11 @@
         "id": "87126",
         "Sr": "Showroom Premium Cars; Openning: doors"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_5_Supercinq_GT_Turbo",
@@ -110275,7 +112118,11 @@
         "_img": "Supercinq GT Turbo (red, racing team).jpg",
         "id": "87140"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_5_Turbo",
@@ -110346,7 +112193,12 @@
         "id": "87146",
         "Sr": "French Touch Monument Giftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault 5 Turbo"
+    }
   },
   {
     "lnk": "Renault_5_Turbo_(MOTOR)",
@@ -110502,7 +112354,12 @@
         "id": "87160",
         "Sr": "MOTOR"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault 5 Turbo"
+    }
   },
   {
     "lnk": "Renault_5_(5_doors)",
@@ -110553,7 +112410,11 @@
         "id": "87163",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_Alpine_A110-50",
@@ -110629,7 +112490,12 @@
         "id": "87168",
         "Sr": "Racing Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault Alpine"
+    }
   },
   {
     "lnk": "Renault_Alpine_A110",
@@ -110685,7 +112551,12 @@
         "id": "87172",
         "Sr": "Vintage Deluxe CArs"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault Alpine"
+    }
   },
   {
     "lnk": "Renault_Alpine_A310",
@@ -110803,7 +112674,12 @@
         "id": "87180",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault Alpine"
+    }
   },
   {
     "lnk": "Renault_Alpine_A310_(MOTOR)",
@@ -110892,7 +112768,12 @@
         "id": "87187",
         "Sr": "Motor"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault Alpine"
+    }
   },
   {
     "lnk": "Renault_Clio",
@@ -111094,7 +112975,12 @@
         "id": "87201",
         "Sr": "Monsters serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault Clio"
+    }
   },
   {
     "lnk": "Renault_Clio_16S",
@@ -111155,7 +113041,12 @@
         "id": "87205",
         "Sr": "Vintage Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault Clio"
+    }
   },
   {
     "lnk": "Renault_Clio_III",
@@ -111344,7 +113235,12 @@
         "id": "87219",
         "Sr": "Single Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault Clio"
+    }
   },
   {
     "lnk": "Renault_Clio_Sport",
@@ -111402,7 +113298,7 @@
       {
         "N": "221G",
         "y": "2016",
-        "c": "White/Blue",
+        "c": "White / Blue",
         "Bs": "black / plastic",
         "Wn": "clear",
         "In": "black",
@@ -111414,7 +113310,7 @@
       {
         "N": "221G",
         "y": "2016",
-        "c": "White/Yellow",
+        "c": "White / Yellow",
         "Bs": "black / plastic",
         "Wn": "clear",
         "In": "black",
@@ -111447,7 +113343,12 @@
         "id": "87227",
         "Sr": "Racing Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault Clio"
+    }
   },
   {
     "lnk": "Renault_Espace",
@@ -111693,7 +113594,11 @@
         "id": "87244",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_Express",
@@ -111839,7 +113744,11 @@
         "id": "87254",
         "Sr": "Pinder"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_JP4",
@@ -111961,7 +113870,11 @@
         "id": "87263",
         "Sr": "Crazy Roadsters"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_J_Container",
@@ -112615,7 +114528,11 @@
         "_img": "Renault J Container (light blue, GDF).jpg",
         "id": "87311"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_Kangoo",
@@ -112971,7 +114888,11 @@
         "_img": "Majorette Renault Kangoo (white, dalkia nord, NUC2 wheels).jpg",
         "id": "87336"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_Kangoo_Express",
@@ -113234,7 +115155,11 @@
         "id": "87354",
         "Sr": "French Touch Deluxe Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_Master",
@@ -113670,7 +115595,11 @@
         "_img": "Renault master 3 blue autosport racing.JPG",
         "id": "87383"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_Maxi_5_Turbo",
@@ -113736,7 +115665,12 @@
         "id": "87387",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault 5 Turbo"
+    }
   },
   {
     "lnk": "Renault_Megane_3_Coupé",
@@ -113936,7 +115870,12 @@
         "id": "87400",
         "Sr": "Holyday Set"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault Megane"
+    }
   },
   {
     "lnk": "Renault_Megane_II",
@@ -114422,7 +116361,12 @@
         "id": "87433",
         "Sr": "S.O.S."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault Megane"
+    }
   },
   {
     "lnk": "Renault_Megane_RS",
@@ -114713,7 +116657,7 @@
       {
         "N": "222F",
         "y": "2025",
-        "c": "blue/white/red",
+        "c": "blue / white / red",
         "Bs": "black / plastic",
         "Wn": "clear",
         "In": "black",
@@ -114723,7 +116667,12 @@
         "id": "87454",
         "Sr": "French Touch blue range giftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault Megane"
+    }
   },
   {
     "lnk": "Renault_Megane_Trophy",
@@ -114762,7 +116711,7 @@
       {
         "N": "222D",
         "y": "2011",
-        "c": "grey/black/orange",
+        "c": "grey / black / orange",
         "Tm": "\"Thiriet\"",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -114806,7 +116755,7 @@
       {
         "N": "222D",
         "y": "2011 - 2012 - 2013",
-        "c": "grey/black/orange",
+        "c": "grey / black / orange",
         "Tm": "\"Thiriet\"",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -114866,7 +116815,7 @@
       {
         "N": "222D",
         "y": "2014",
-        "c": "grey/black/orange",
+        "c": "grey / black / orange",
         "Tm": "\"Thiriet\"",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -114881,7 +116830,7 @@
       {
         "N": "222D",
         "y": "2014",
-        "c": "grey/black/orange",
+        "c": "grey / black / orange",
         "Tm": "\"Thiriet\"",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -114968,7 +116917,12 @@
         "id": "87470",
         "Sr": "Racing Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European",
+      "md": "Renault Megane"
+    }
   },
   {
     "lnk": "Renault_Safrane",
@@ -115208,7 +117162,11 @@
         "id": "87488",
         "Sr": "majopub"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_Scenic_I",
@@ -115254,7 +117212,11 @@
         "id": "87491",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_Scenic_II",
@@ -115512,7 +117474,11 @@
         "id": "87509",
         "Sr": "Single Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_Scenic_III",
@@ -115574,7 +117540,11 @@
         "id": "87513",
         "Sr": "Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_Trafic",
@@ -115813,7 +117783,11 @@
         "_img": "Renault_Trafic_Alsace.png",
         "id": "87530"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_Twingo",
@@ -116182,7 +118156,11 @@
         "id": "87557",
         "Sr": "majopub"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_Twingo_Mk2",
@@ -116310,7 +118288,11 @@
         "id": "87566",
         "Sr": "Single Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Renault_Twingo_Mk3",
@@ -116674,7 +118656,11 @@
         "id": "87592",
         "Sr": "Showroom Premium Cars [French Exclusivity]"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Renault",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Rescue_Premium_Car",
@@ -116975,7 +118961,7 @@
       {
         "N": "295A",
         "y": "2025",
-        "c": "White/Green",
+        "c": "White / Green",
         "_img": "Iveco eurocargo garbage truck.JPG",
         "Nt": "Brand: Iveco; Model: Eurocargo Garbage; Year of the model in the series: 2025",
         "id": "87622"
@@ -117019,7 +119005,7 @@
       {
         "N": "256A",
         "y": "2025",
-        "c": "black/green",
+        "c": "black / green",
         "Bs": "black / plastic",
         "Wn": "clear",
         "In": "black",
@@ -117115,7 +119101,7 @@
       {
         "N": "256A",
         "y": "2025",
-        "c": "black/red",
+        "c": "black / red",
         "Bs": "black / plastic",
         "Wn": "clear",
         "In": "black",
@@ -117137,7 +119123,7 @@
       {
         "N": "256A",
         "y": "2025",
-        "c": "black/gold",
+        "c": "black / gold",
         "Bs": "black / plastic",
         "Wn": "clear",
         "In": "black",
@@ -117336,7 +119322,12 @@
         "_img": "Roadster (blue, red interior, ELO).jpg",
         "id": "87651"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Dodge",
+      "rg": "American",
+      "md": "Dodge Viper"
+    }
   },
   {
     "lnk": "Road_Eaters",
@@ -117613,7 +119604,11 @@
         "id": "87680",
         "Sr": "Deluxe Collection"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Rolls-Royce",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Rouleau_Compresseur",
@@ -119482,7 +121477,12 @@
         "id": "87831",
         "Sr": "Vintage Racing Giftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Shelby",
+      "rg": "American",
+      "md": "Shelby Cobra"
+    }
   },
   {
     "lnk": "Shelby_GT_350_(1965)",
@@ -119516,7 +121516,11 @@
         "id": "87833",
         "Sr": "Collection"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Shelby",
+      "rg": "American"
+    }
   },
   {
     "lnk": "Siemens_Avenio",
@@ -119790,7 +121794,7 @@
       {
         "N": "234",
         "y": "1977",
-        "c": "blue/gray",
+        "c": "blue / gray",
         "Bs": "unpainted / metal",
         "Wn": "light yellow",
         "In": "white",
@@ -119803,7 +121807,7 @@
       {
         "N": "234",
         "y": "1977",
-        "c": "blue/gray",
+        "c": "blue / gray",
         "Bs": "unpainted / metal",
         "Wn": "light yellow",
         "In": "white",
@@ -121945,7 +123949,15 @@
         "id": "88051",
         "Sr": "Single asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Subaru",
+      "rg": "Japanese",
+      "md": "Subaru Impreza",
+      "th": [
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Subaru_Impreza_WRC_(Racing_Version)",
@@ -122059,7 +124071,15 @@
         "id": "88060",
         "Sr": "S.O.S. Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Subaru",
+      "rg": "Japanese",
+      "md": "Subaru Impreza",
+      "th": [
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Subaru_Impreza_WRC_(Street_Version)",
@@ -122186,7 +124206,15 @@
         "id": "88071",
         "Sr": "Single Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Subaru",
+      "rg": "Japanese",
+      "md": "Subaru Impreza",
+      "th": [
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Subaru_Impreza_WRX_STI",
@@ -122290,7 +124318,15 @@
         "id": "88078",
         "Sr": "Limited Edition 6"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Subaru",
+      "rg": "Japanese",
+      "md": "Subaru Impreza",
+      "th": [
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "SuperS:_Serie_230",
@@ -123313,7 +125349,11 @@
         "id": "88197",
         "Sr": "Vintage Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Suzuki",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Suzuki_Jimny",
@@ -123573,7 +125613,12 @@
         "id": "88216",
         "Sr": "Rescue Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Suzuki",
+      "rg": "Japanese",
+      "md": "Suzuki Jimny"
+    }
   },
   {
     "lnk": "Suzuki_Jimny_Giftpack",
@@ -123643,7 +125688,12 @@
         "Nt": "Model: Suzuki Jimny",
         "id": "88221"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Suzuki",
+      "rg": "Japanese",
+      "md": "Suzuki Jimny"
+    }
   },
   {
     "lnk": "Suzuki_Swift_Sport",
@@ -123754,7 +125804,12 @@
         "id": "88229",
         "Sr": "Racing Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Suzuki",
+      "rg": "Japanese",
+      "md": "Suzuki Swift"
+    }
   },
   {
     "lnk": "S.O.S._3_pieces_set",
@@ -123818,7 +125873,7 @@
       {
         "N": "209B",
         "y": "2015 • 2016 • 2017 • 2018",
-        "c": "silver/blue",
+        "c": "silver / blue",
         "_img": "Porsche Panamera (2015, silver, polizei).jpg",
         "Nt": "Car: Porsche Panamera Turbo",
         "id": "88237"
@@ -123826,7 +125881,7 @@
       {
         "N": "209I",
         "y": "2019",
-        "c": "silver/blue",
+        "c": "silver / blue",
         "_img": "Porsche Panamera Turbo 2020 Polizei Müller Exclusive.jpg",
         "Nt": "Car: Porsche Panamera Turbo",
         "id": "88238"
@@ -124069,7 +126124,7 @@
       {
         "N": "204A",
         "y": "2017 • 2018 • 2019 • 2020 - 2021",
-        "c": "silver/blue",
+        "c": "silver / blue",
         "_img": "Ford Mustang Boss 302 Polizei.jpg",
         "Nt": "Car: Ford Mustang Boss 302",
         "id": "88267"
@@ -124085,7 +126140,7 @@
       {
         "N": "203I",
         "y": "2018 • 2019 • 2020 - 2021",
-        "c": "silver/blue",
+        "c": "silver / blue",
         "_img": "Volkswagen crafter (white, SOS flasher, 2018).jpg",
         "Nt": "Car: VW Crafter",
         "id": "88269"
@@ -124484,7 +126539,11 @@
         "id": "88304",
         "Sr": "Toyota Racing Giftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Toyota_4WD",
@@ -124577,7 +126636,11 @@
         "id": "88310",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Toyota_Celica_2.0_GT",
@@ -124653,7 +126716,15 @@
         "id": "88315",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese",
+      "md": "Toyota Celica",
+      "th": [
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Toyota_Celica_GT_Coupé",
@@ -124764,7 +126835,15 @@
         "id": "88322",
         "Sr": "Vintage Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese",
+      "md": "Toyota Celica",
+      "th": [
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Toyota_Century_Mk2",
@@ -124806,7 +126885,11 @@
         "id": "88325",
         "Sr": "JDM Legends Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Toyota_Century_Mk_II",
@@ -124847,7 +126930,11 @@
         "id": "88328",
         "Sr": "JDM Legends Series"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Toyota_Corolla_Altis",
@@ -124914,7 +127001,7 @@
       {
         "N": "292J",
         "y": "2017 - 2018 - 2019",
-        "c": "yellow/blue",
+        "c": "yellow / blue",
         "Tm": "taxi",
         "Bs": "black/plastic",
         "Wn": "clear",
@@ -125004,7 +127091,7 @@
       {
         "N": "292J",
         "y": "2017 - 2018 - 2019",
-        "c": "white /green",
+        "c": "white / green",
         "Tm": "taxi",
         "Bs": "black/plastic",
         "Wn": "clear",
@@ -125064,7 +127151,7 @@
       {
         "N": "292J",
         "y": "2017 - 2018 - 2019",
-        "c": "yellow/white",
+        "c": "yellow / white",
         "Tm": "taxi",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -125245,7 +127332,12 @@
         "id": "88355",
         "Sr": "Toyota Racing Giftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese",
+      "md": "Toyota Corolla"
+    }
   },
   {
     "lnk": "Toyota_Corolla_WRC",
@@ -125279,7 +127371,12 @@
         "id": "88357",
         "Sr": "Racing Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese",
+      "md": "Toyota Corolla"
+    }
   },
   {
     "lnk": "Toyota_FJ",
@@ -125432,7 +127529,11 @@
         "id": "88368",
         "Sr": "Monsters Rockerz"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Toyota_GR_Supra",
@@ -125588,7 +127689,15 @@
         "id": "88379",
         "Sr": "JDM Legens Tuning Transporter"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese",
+      "md": "Toyota Supra",
+      "th": [
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Toyota_GR_Yaris_Mk_IV",
@@ -125677,7 +127786,11 @@
         "id": "88385",
         "Sr": "Showroom Premium Cars - Chase Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Toyota_GT86",
@@ -125699,7 +127812,7 @@
       {
         "N": "218D",
         "y": "2021",
-        "c": "matt black/matt dark red",
+        "c": "matt black / matt dark red",
         "Tm": "black hood, \"Majorette Tune Up´s\" at doors, gray/white deco",
         "Bs": "black / plastic",
         "Wn": "orange tinted",
@@ -125873,7 +127986,11 @@
         "Nt": "Serie...............: showroom premium cars",
         "id": "88400"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Toyota_Hiace",
@@ -126182,7 +128299,11 @@
         "id": "88423",
         "Sr": "Japan Series Prime"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Toyota_Hiace_(2026)",
@@ -126216,7 +128337,11 @@
         "id": "88426",
         "Sr": "Rescue Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Toyota_Hilux",
@@ -126423,7 +128548,12 @@
         "_img": "Toyota Hilux (red, beach patrol).jpg",
         "id": "88441"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese",
+      "md": "Toyota Hilux"
+    }
   },
   {
     "lnk": "Toyota_Hilux_Mk8_Revo",
@@ -126822,7 +128952,12 @@
         "id": "88469",
         "Sr": "Toyota Racing Giftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese",
+      "md": "Toyota Hilux"
+    }
   },
   {
     "lnk": "Toyota_Land_Cruiser_(J40)",
@@ -127240,7 +129375,12 @@
         "id": "88499",
         "Sr": "Street Cars [in Asia only]"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese",
+      "md": "Toyota Land Cruiser"
+    }
   },
   {
     "lnk": "Toyota_Lite_Ace",
@@ -127437,7 +129577,11 @@
         "_img": "Toyota Lite Ace (green, 17).jpg",
         "id": "88512"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Toyota_Pick-Up_(Hilux_Mk3)",
@@ -127930,7 +130074,12 @@
         "id": "88547",
         "Sr": "Super Rockers"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese",
+      "md": "Toyota Hilux"
+    }
   },
   {
     "lnk": "Toyota_Prius",
@@ -128001,7 +130150,12 @@
         "id": "88552",
         "Sr": "Majorette 50 Years Car Pack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese",
+      "md": "Toyota Prius"
+    }
   },
   {
     "lnk": "Toyota_Racing_Giftpack",
@@ -128066,7 +130220,11 @@
         "Nt": "Modele: Toyota Corolla Altis",
         "id": "88557"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Toyota_RAV_4",
@@ -128412,7 +130570,11 @@
         "id": "88580",
         "Sr": "Trailer Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Toyota_Runner",
@@ -128667,7 +130829,11 @@
         "_img": "Toyota runner (ambulance).jpg",
         "id": "88597"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Toyota_Supra_Mk4",
@@ -128853,7 +131019,15 @@
         "id": "88610",
         "Sr": "Vintage Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese",
+      "md": "Toyota Supra",
+      "th": [
+        "JDM"
+      ]
+    }
   },
   {
     "lnk": "Toyota_Tacoma_TRD_Pro",
@@ -128928,7 +131102,12 @@
         "id": "88615",
         "Sr": "Deluxe Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese",
+      "md": "Toyota Tacoma"
+    }
   },
   {
     "lnk": "Toyota_Yaris_Mk1",
@@ -129115,7 +131294,11 @@
         "id": "88628",
         "Sr": "Single Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Toyota_Yaris_WRC",
@@ -129148,7 +131331,11 @@
         "id": "88630",
         "Sr": "Ride Now"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Toyota",
+      "rg": "Japanese"
+    }
   },
   {
     "lnk": "Tracteur_(1980)",
@@ -129652,7 +131839,11 @@
         "id": "88669",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Triumph",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Turbo_BMW",
@@ -129877,7 +132068,11 @@
         "id": "88684",
         "Sr": "Globe Toys"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Turbo_BMW_(MOTOR)",
@@ -130036,7 +132231,11 @@
         "id": "88698",
         "Sr": "MOTOR"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "BMW",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Tutti_Frutti:_Serie_460",
@@ -130347,7 +132546,7 @@
       {
         "N": "253A",
         "y": "2024 - 2025",
-        "c": "white/green",
+        "c": "white / green",
         "_img": "Citroën_2CV_253A_Dolly.jpg",
         "Nt": "Model: Citroën 2CV",
         "id": "88727"
@@ -130523,7 +132722,7 @@
       {
         "N": "253A",
         "y": "2019 - 2023",
-        "c": "black/red",
+        "c": "black / red",
         "_img": "Citroën_2CV_(black_&_burgundy)_2019.jpg",
         "Nt": "Model: Citroën 2CV",
         "id": "88749"
@@ -130555,7 +132754,7 @@
       {
         "N": "230B",
         "y": "2019 - 2020 - 2024",
-        "c": "blue/white",
+        "c": "blue / white",
         "_img": "Volkswagen_T1_(blue_white,_2019).jpg",
         "Nt": "Model: Volkswagen T1",
         "id": "88753"
@@ -130579,7 +132778,7 @@
       {
         "N": "230B",
         "y": "2018",
-        "c": "green/white",
+        "c": "green / white",
         "_img": "Volkswagen_T1_(green,_2019).jpg",
         "Nt": "Model: Volkswagen T1",
         "id": "88756"
@@ -130595,7 +132794,7 @@
       {
         "N": "253A",
         "y": "2018",
-        "c": "yellow/black",
+        "c": "yellow / black",
         "_img": "Citroën 2CV (black & yellow) 2018.jpg",
         "Nt": "Model: Citroën 2CV",
         "id": "88758"
@@ -130635,7 +132834,7 @@
       {
         "N": "243A",
         "y": "2018",
-        "c": "yellow/white",
+        "c": "yellow / white",
         "_img": "Volkswagen T1 (yellow, 2017).jpg",
         "Nt": "Model: Volkswagen T1",
         "id": "88763"
@@ -130742,7 +132941,7 @@
       {
         "N": "243A",
         "y": "2019 - 2020",
-        "c": "white/red",
+        "c": "white / red",
         "Tm": "Majorette logo, \"Depius-Since 1964\", Ma voiture miniature préferée\", My favourite miniature car\"",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -131364,7 +133563,7 @@
       {
         "N": "203",
         "y": "2000",
-        "c": "red/black",
+        "c": "red / black",
         "Bs": "clear / metal",
         "Wn": "clear",
         "In": "white",
@@ -131506,7 +133705,11 @@
         "id": "88828",
         "Sr": "majopub"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volkswagen_Amarok",
@@ -131751,7 +133954,11 @@
         "_img": "Volkswagen Amarok 2020 Pickup Series white Tractor Service 203C.jpg",
         "id": "88845"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volkswagen_Beetle",
@@ -132379,7 +134586,12 @@
         "id": "88890",
         "Sr": "Punch Buggy Slug Bug - Wave 6"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen Beetle"
+    }
   },
   {
     "lnk": "Volkswagen_Golf_5",
@@ -132488,7 +134700,12 @@
         "id": "88898",
         "Sr": "single asst"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen Golf"
+    }
   },
   {
     "lnk": "Volkswagen_Golf_GTi_(Mk_II)",
@@ -132693,7 +134910,12 @@
         "id": "88912",
         "Sr": "Majopub"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen Golf"
+    }
   },
   {
     "lnk": "Volkswagen_Golf_GTI_(Mk_IV)",
@@ -132837,7 +135059,12 @@
         "id": "88922",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen Golf"
+    }
   },
   {
     "lnk": "Volkswagen_Golf_GTi_(Mk_I)",
@@ -132899,7 +135126,12 @@
         "id": "88926",
         "Sr": "Kabaya - Prime Model: Historic Car Edition 2"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen Golf"
+    }
   },
   {
     "lnk": "Volkswagen_Golf_GTi_(Mk_VII)",
@@ -133180,7 +135412,12 @@
         "id": "88945",
         "Sr": "Polizei Giftpack"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen Golf"
+    }
   },
   {
     "lnk": "Volkswagen_Golf_(264F)_(Mk_I)",
@@ -133229,7 +135466,12 @@
         "id": "88948",
         "Sr": "Vintage Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen Golf"
+    }
   },
   {
     "lnk": "Volkswagen_Golf_(Mk_III)",
@@ -133462,7 +135704,12 @@
         "id": "88964",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen Golf"
+    }
   },
   {
     "lnk": "Volkswagen_Golf_(Mk_I)",
@@ -133645,7 +135892,12 @@
         "id": "88976",
         "Sr": "200 serie/Globe toys"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen Golf"
+    }
   },
   {
     "lnk": "Volkswagen_ID.BUZZ",
@@ -133726,7 +135978,7 @@
       {
         "N": "234A",
         "y": "2025",
-        "c": "pink/white",
+        "c": "pink / white",
         "Bs": "Black / Plastic",
         "Wn": "clear",
         "Wh": "RA5",
@@ -133793,7 +136045,11 @@
         "id": "88986",
         "Sr": "Showroom Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volkswagen_ID._Buggy",
@@ -133812,7 +136068,11 @@
         "id": "88987",
         "Sr": "Ride Now"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volkswagen_K70",
@@ -133958,7 +136218,11 @@
         "id": "88997",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volkswagen_New_Beetle",
@@ -134091,7 +136355,12 @@
         "_img": "VW Beetle GSR Zamac.jpg",
         "id": "89006"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen Beetle"
+    }
   },
   {
     "lnk": "Volkswagen_New_Beetle_Cabriolet",
@@ -134307,7 +136576,12 @@
         "id": "89020",
         "Sr": "Street Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen Beetle"
+    }
   },
   {
     "lnk": "Volkswagen_New_Beetle_RSI",
@@ -134325,7 +136599,12 @@
         "id": "89021",
         "Sr": "Single Asst."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen Beetle"
+    }
   },
   {
     "lnk": "Volkswagen_Polo_R_WRC",
@@ -134376,7 +136655,11 @@
         "id": "89024",
         "Sr": "WRC Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volkswagen_T1",
@@ -134422,7 +136705,7 @@
       {
         "N": "243A",
         "y": "2018",
-        "c": "white/red",
+        "c": "white / red",
         "Bs": "gray / plastic",
         "Wn": "clear",
         "In": "white",
@@ -134569,7 +136852,7 @@
       {
         "N": "243A",
         "y": "2019 - 2020",
-        "c": "white/red",
+        "c": "white / red",
         "Tm": "Majorette logo, \"Depius-Since 1964\", Ma voiture miniature préferée\", My favourite miniature car\"",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -134640,7 +136923,7 @@
       {
         "N": "243A",
         "y": "2020",
-        "c": "black/white",
+        "c": "black / white",
         "Tm": "floral design",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -134777,7 +137060,7 @@
       {
         "N": "243A",
         "y": "2021",
-        "c": "matt black/orange",
+        "c": "matt black / orange",
         "Tm": "stripe design",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -134791,7 +137074,7 @@
       {
         "N": "243A",
         "y": "2021",
-        "c": "blue/white",
+        "c": "blue / white",
         "Tm": "dark blue deco line",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -134805,7 +137088,7 @@
       {
         "N": "243A",
         "y": "2021",
-        "c": "matt red/black",
+        "c": "matt red / black",
         "Tm": "Majorette tune ups logo, #majorettetuneups, 7Surprices at sides, \"NEW 2021\" at doors, \"Tune Your Car!\" print inside roof",
         "Bs": "white / plastic",
         "Wn": "yellow tinted",
@@ -134818,7 +137101,7 @@
       },
       {
         "y": "2021",
-        "c": "white/red",
+        "c": "white / red",
         "Wn": "clear",
         "Wh": "5VW",
         "Nt": "+ ERIBA Puck surfboard on roof, opening back door, hook",
@@ -134843,7 +137126,7 @@
       {
         "N": "243A",
         "y": "2021",
-        "c": "gray/tan",
+        "c": "gray / tan",
         "Bs": "gray / plastic",
         "Wn": "clear",
         "In": "gray",
@@ -134856,7 +137139,7 @@
       {
         "N": "243A",
         "y": "2021",
-        "c": "light yellow/white",
+        "c": "light yellow / white",
         "Tm": "orange logo \"Punch Buggy\" at doors",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -134870,7 +137153,7 @@
       {
         "N": "243A",
         "y": "2021",
-        "c": "brown/white",
+        "c": "brown / white",
         "Tm": "golden deco line and dog paw, \"World Class Dog Walkers\", \"Scoop ee Doo\" at doors",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -134912,7 +137195,7 @@
       {
         "N": "243A",
         "y": "2022",
-        "c": "turquoise/white",
+        "c": "turquoise / white",
         "Bs": "white/ plastic",
         "Wn": "clear",
         "In": "white",
@@ -134939,7 +137222,7 @@
       {
         "N": "243A",
         "y": "2022",
-        "c": "orange/white",
+        "c": "orange / white",
         "Tm": "black flames deco",
         "Bs": "black / plastic",
         "Wn": "smoke",
@@ -134953,7 +137236,7 @@
       {
         "N": "243A",
         "y": "2022",
-        "c": "white/mint",
+        "c": "white / mint",
         "Bs": "gray / plastic",
         "Wn": "clear",
         "In": "black",
@@ -134966,7 +137249,7 @@
       {
         "N": "243A",
         "y": "2022",
-        "c": "white/green",
+        "c": "white / green",
         "Tm": "\"Arrowhead Ski Lodge\", \"Slopes and Trail for Beginners & Experts\"",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -134995,7 +137278,7 @@
       {
         "N": "243A",
         "y": "2022 - 2023 - 2024 - 2025",
-        "c": "matt black/yellow",
+        "c": "matt black / yellow",
         "Tm": "\"Chillín Camper Club\", red/black grafic design",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -135010,7 +137293,7 @@
       {
         "N": "243A",
         "y": "2022 - 2023 - 2024 - 2025",
-        "c": "turquoise/yellow",
+        "c": "turquoise / yellow",
         "Tm": "\"The Hungry Hippies\" flower deco and peace symbols",
         "Bs": "tan/metal",
         "Wn": "clear",
@@ -135025,7 +137308,7 @@
       {
         "N": "243A",
         "y": "2022 - 2023 - 2024 - 2025",
-        "c": "light blue/white",
+        "c": "light blue / white",
         "Tm": "\"Love, Peace & Music\" white/ blue/pink deco",
         "Bs": "purple/metal",
         "Wn": "clear",
@@ -135040,7 +137323,7 @@
       {
         "N": "243A",
         "y": "2022 - 2023 - 2024 - 2025",
-        "c": "lime green/dark green",
+        "c": "lime green / dark green",
         "Tm": "\"Aloha Camping\" farn deco",
         "Bs": "gray/plastiv",
         "Wn": "clear",
@@ -135055,7 +137338,7 @@
       {
         "N": "243A",
         "y": "2022",
-        "c": "red/white",
+        "c": "red / white",
         "Tm": "\"Farmhouse\", Made Fresh Daily\"",
         "Bs": "gray/plastic",
         "Wn": "black tintet",
@@ -135069,7 +137352,7 @@
       {
         "N": "243A",
         "y": "2022",
-        "c": "red/cream",
+        "c": "red / cream",
         "Tm": "\"The Chocolate Factory\", \"Make Chocolate Yours\"",
         "Bs": "light brown/plastic",
         "Wn": "clear",
@@ -135097,7 +137380,7 @@
       {
         "N": "243A",
         "y": "2023",
-        "c": "purple/white",
+        "c": "purple / white",
         "Tm": "black flames deco",
         "Bs": "black / plastic",
         "Wn": "clear",
@@ -135125,7 +137408,7 @@
       {
         "N": "243A",
         "y": "2023",
-        "c": "white/blue",
+        "c": "white / blue",
         "Tm": "\"Love, Peace\", \"flower design",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -135139,7 +137422,7 @@
       {
         "N": "243A",
         "y": "2023",
-        "c": "white/blue/red",
+        "c": "white / blue / red",
         "Tm": "\"Mcard\", \"Kids´Planet\", mixed color roof design",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -135153,7 +137436,7 @@
       {
         "N": "243A",
         "y": "2023 - 2024",
-        "c": "White/light blue",
+        "c": "White / light blue",
         "Tm": "\"Europa Park\" on sides",
         "Bs": "gray / plastic",
         "Wn": "clear",
@@ -135163,7 +137446,12 @@
         "id": "89082",
         "Sr": "Europa Park Series"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen T1"
+    }
   },
   {
     "lnk": "Volkswagen_T1_Pritsche",
@@ -135229,7 +137517,12 @@
         "id": "89086",
         "Sr": "Volkswagen \"The Originals\" Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen T1"
+    }
   },
   {
     "lnk": "Volkswagen_T2_Ambulance/Police",
@@ -135368,7 +137661,12 @@
         "id": "89095",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen T2"
+    }
   },
   {
     "lnk": "Volkswagen_T2_Fourgon",
@@ -135449,7 +137747,12 @@
         "id": "89100",
         "Sr": "200 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European",
+      "md": "Volkswagen T2"
+    }
   },
   {
     "lnk": "Volkswagen_T3",
@@ -135538,7 +137841,11 @@
         "id": "89106",
         "Sr": "Castheads Premium"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volkswagen_T6",
@@ -135704,7 +138011,11 @@
         "id": "89117",
         "Sr": "promo model"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_240_GL",
@@ -135752,7 +138063,12 @@
         "id": "89120",
         "Sr": "Vintage Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European",
+      "md": "Volvo 240"
+    }
   },
   {
     "lnk": "Volvo_245_DL",
@@ -136085,7 +138401,11 @@
         "id": "89143",
         "Sr": "Globe Toys"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_760_GLE",
@@ -136336,7 +138656,11 @@
         "id": "89160",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_EX90",
@@ -136382,7 +138706,11 @@
         "id": "89163",
         "Sr": "Showroom Premium Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_Excavator_EC950E",
@@ -136398,7 +138726,11 @@
         "id": "89164",
         "Sr": "Construction VOLVO"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_F16_Semi_Container",
@@ -136690,7 +139022,11 @@
         "_img": "Volvo Semi container (chronopost, no logo).jpg",
         "id": "89185"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_F16_Semi_Oil_Tanker",
@@ -136850,7 +139186,11 @@
         "id": "89196",
         "Sr": "300 serie"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_FMX_Cement_Mixer_Truck",
@@ -136868,7 +139208,11 @@
         "id": "89197",
         "Sr": "Construction VOLVO"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_FMX_Dump_Container",
@@ -136885,7 +139229,11 @@
         "id": "89198",
         "Sr": "Construction VOLVO"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_FMX_Dump_Trailer",
@@ -136898,7 +139246,11 @@
         "id": "89199",
         "Sr": "Construction VOLVO"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_FMX_Dump_Truck",
@@ -136927,7 +139279,11 @@
         "id": "89201",
         "Sr": "Construction VOLVO"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_FMX_Show_Truck",
@@ -136943,7 +139299,11 @@
         "id": "89202",
         "Sr": "Construction VOLVO"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_FMX_Tipper",
@@ -136958,7 +139318,11 @@
         "id": "89203",
         "Sr": "Construction VOLVO"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_FMX_Truck_with_2_Construction_Containers",
@@ -136972,7 +139336,11 @@
         "id": "89204",
         "Sr": "Construction VOLVO"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_FMX_Truck_with_Long_Bed_Trailer",
@@ -136986,7 +139354,11 @@
         "id": "89205",
         "Sr": "Construction VOLVO"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_Hauler_A60H",
@@ -137004,7 +139376,11 @@
         "id": "89206",
         "Sr": "Construction VOLVO"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_SD160B",
@@ -137024,7 +139400,11 @@
         "id": "89207",
         "Sr": "Street Cars"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_V90",
@@ -137281,7 +139661,11 @@
         "id": "89225",
         "Sr": "Advent Calendar 2"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_Wheel_Loader_L350H",
@@ -137297,7 +139681,11 @@
         "id": "89226",
         "Sr": "Construction VOLVO"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Volvo_XC90",
@@ -137658,7 +140046,11 @@
         "id": "89251",
         "Sr": "S.O.S."
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volvo",
+      "rg": "European"
+    }
   },
   {
     "lnk": "VW_Crafter",
@@ -137870,7 +140262,11 @@
         "id": "89266",
         "Sr": "La Grande Récré"
       }
-    ]
+    ],
+    "tags": {
+      "mk": "Volkswagen",
+      "rg": "European"
+    }
   },
   {
     "lnk": "Western_Locomotive",
