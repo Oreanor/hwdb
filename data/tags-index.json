@@ -765,5 +765,143 @@
         }
       }
     }
+  },
+  "we": {
+    "regions": {
+      "American": {
+        "total": 38,
+        "makes": {
+          "Ford": 12,
+          "Chevrolet": 13,
+          "Pontiac": 2,
+          "Buick": 1,
+          "GMC": 2,
+          "Dodge": 3,
+          "Cadillac": 1,
+          "Jeep": 3,
+          "Hummer": 1
+        }
+      },
+      "European": {
+        "total": 108,
+        "makes": {
+          "Alfa Romeo": 3,
+          "Mercedes-Benz": 8,
+          "Volkswagen": 12,
+          "Lotus": 5,
+          "Opel": 2,
+          "Jaguar": 4,
+          "Audi": 7,
+          "Bentley": 1,
+          "BMW": 10,
+          "Fiat": 4,
+          "Lamborghini": 7,
+          "Lancia": 1,
+          "Land Rover": 2,
+          "Maserati": 1,
+          "McLaren": 2,
+          "Mini": 4,
+          "Pagani": 1,
+          "Peugeot": 2,
+          "Porsche": 17,
+          "Renault": 5,
+          "Volvo": 10
+        }
+      },
+      "Japanese": {
+        "total": 23,
+        "makes": {
+          "Subaru": 3,
+          "Honda": 4,
+          "Lexus": 1,
+          "Mazda": 1,
+          "Mitsubishi": 3,
+          "Nissan": 3,
+          "Suzuki": 1,
+          "Toyota": 7
+        }
+      },
+      "Korean": {
+        "total": 1,
+        "makes": {
+          "Hyundai": 1
+        }
+      }
+    },
+    "themes": {
+      "Muscle": {
+        "total": 13,
+        "makes": {
+          "Ford": 6,
+          "Pontiac": 1,
+          "Chevrolet": 3,
+          "Buick": 1,
+          "Dodge": 2
+        }
+      },
+      "JDM": {
+        "total": 11,
+        "makes": {
+          "Subaru": 2,
+          "Honda": 4,
+          "Mitsubishi": 2,
+          "Nissan": 2,
+          "Toyota": 1
+        }
+      },
+      "Supercar": {
+        "total": 13,
+        "makes": {
+          "Honda": 1,
+          "Lamborghini": 7,
+          "Maserati": 1,
+          "McLaren": 2,
+          "Nissan": 1,
+          "Pagani": 1
+        }
+      }
+    },
+    "eras": {
+      "1950s": {
+        "total": 7,
+        "makes": {
+          "Ford": 1,
+          "Chevrolet": 3,
+          "Alfa Romeo": 1,
+          "Mercedes-Benz": 2
+        }
+      },
+      "1960s": {
+        "total": 11,
+        "makes": {
+          "Chevrolet": 3,
+          "Volkswagen": 1,
+          "Ford": 3,
+          "Lotus": 1,
+          "Pontiac": 2
+        }
+      },
+      "1970s": {
+        "total": 4,
+        "makes": {
+          "Buick": 1,
+          "Ford": 1,
+          "Chevrolet": 1,
+          "Volkswagen": 1
+        }
+      },
+      "1980s": {
+        "total": 1,
+        "makes": {
+          "Chevrolet": 1
+        }
+      },
+      "1990s": {
+        "total": 1,
+        "makes": {
+          "Ford": 1
+        }
+      }
+    }
   }
 }

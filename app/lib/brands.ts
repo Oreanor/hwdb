@@ -15,6 +15,7 @@ export const BRANDS: BrandInfo[] = [
   { key: 'hw', name: 'Hot Wheels', file: 'hw.json', wiki: 'https://hotwheels.fandom.com/wiki/' },
   { key: 'mb', name: 'Matchbox', file: 'mb.json', wiki: 'https://matchbox.fandom.com/wiki/' },
   { key: 'mj', name: 'Majorette', file: 'mj.json', wiki: 'https://majorette-model-cars.fandom.com/wiki/' },
+  { key: 'we', name: 'Welly', file: 'we.json', wiki: 'https://www.wellydiecast.com/' },
 ];
 
 // Wiki page base for a casting's brand (falls back to Hot Wheels).

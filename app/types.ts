@@ -16,7 +16,7 @@ export type CarDataItem = {
   p?: string;
   id?: string;
   m?: number; // 1 = mainline (toy# is in a "List of YYYY Hot Wheels" page)
-  brand?: 'hw' | 'mb' | 'mj'; // stamped on load; picks the image subfolder
+  brand?: 'hw' | 'mb' | 'mj' | 'we'; // stamped on load; picks the image subfolder
 };
 
 export type CastingTags = {
@@ -34,7 +34,7 @@ export type CarData = {
   num?: string;
   dsc?: string;
   d: CarDataItem[];
-  brand?: 'hw' | 'mb' | 'mj'; // source brand (Hot Wheels / Matchbox / Majorette); absent = hw
+  brand?: 'hw' | 'mb' | 'mj' | 'we'; // source brand (Hot Wheels / Matchbox / Majorette); absent = hw
   tags?: CastingTags; // browse tags, attached by /api/car
   s164?: boolean; // casting has >=1 standard 1:64 variant (set on casting search results)
   sOth?: boolean; // casting has >=1 non-1:64 (other-scale) variant

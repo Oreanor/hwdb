@@ -43,6 +43,14 @@ const BRANDS = {
     dataFile: 'data/mj.json',
     tableRequiresWikitableClass: false,
   },
+  // Welly is a manufacturer catalog (HTML), not a Fandom wiki — scraped by
+  // scripts/sync/scrape-welly.js; only dataFile is used by the shared pipeline.
+  we: {
+    key: 'we',
+    name: 'Welly',
+    wiki: 'https://www.wellydiecast.com/',
+    dataFile: 'data/we.json',
+  },
 };
 
 function getBrand(key) {
