@@ -72,7 +72,11 @@ async function main() {
   const slice = jobs.slice(0, limit);
   console.log(`${brand.name}: ${slice.length} image jobs (of ${jobs.length} missing)`);
 
-  const urlMap = await resolveUrls(brand.api, [...new Set(slice.map((j) => j.file))]);
+  // Wiki brands resolve File: -> URL via the API; Welly's `_img` is already a
+  // direct path on its site, so just prefix the base URL.
+  const urlMap = brand.api
+    ? await resolveUrls(brand.api, [...new Set(slice.map((j) => j.file))])
+    : Object.fromEntries(slice.map((j) => [j.file, brand.wiki + j.file.replace('/middle/', '/large/')]));
   let done = 0, small = 0, skip = 0;
   for (const j of slice) {
     const url = urlMap[j.file];
