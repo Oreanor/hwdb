@@ -23,14 +23,20 @@ const HEADERS = { 'User-Agent': 'HWDB-research/1.0 (oreanor@gmail.com)' };
 // Pull the first `n` content-namespace page titles from a brand's wiki. A
 // rough way to sample castings without a curated title list; non-casting pages
 // (no versions table) simply parse to 0 variants and are skipped at merge.
-async function discoverPages(brand, n) {
-  const url = `${brand.api}?${new URLSearchParams({
-    action: 'query', list: 'allpages', apnamespace: '0', aplimit: String(n), format: 'json',
-  })}`;
-  const res = await fetch(url, { headers: HEADERS });
-  if (!res.ok) throw new Error(`allpages API ${res.status}`);
-  const data = await res.json();
-  return data.query.allpages.map((p) => p.title.replace(/ /g, '_'));
+async function discoverPages(brand, limit) {
+  const titles = [];
+  let cont;
+  do {
+    const params = { action: 'query', list: 'allpages', apnamespace: '0', aplimit: '500', format: 'json' };
+    if (cont) params.apcontinue = cont;
+    const res = await fetch(`${brand.api}?${new URLSearchParams(params)}`, { headers: HEADERS });
+    if (!res.ok) throw new Error(`allpages API ${res.status}`);
+    const data = await res.json();
+    for (const p of data.query.allpages) titles.push(p.title.replace(/ /g, '_'));
+    cont = data.continue && data.continue.apcontinue;
+    if (limit !== 'all' && titles.length >= limit) return titles.slice(0, limit);
+  } while (cont);
+  return titles;
 }
 
 async function main() {
@@ -40,12 +46,16 @@ async function main() {
     process.exit(1);
   }
   const brand = getBrand(brandKey);
-  const slugs = rest[0] === '--discover' ? await discoverPages(brand, Number(rest[1] || 20)) : rest;
+  const slugs = rest[0] === '--discover'
+    ? await discoverPages(brand, rest[1] === 'all' ? 'all' : Number(rest[1] || 20))
+    : rest;
   const outDir = path.join('scripts', 'output', 'parsed', brand.key);
   fs.mkdirSync(outDir, { recursive: true });
 
   let ok = 0;
   for (const slug of slugs) {
+    const outPath = path.join(outDir, `${slug.replace(/[^A-Za-z0-9_-]/g, '_')}.json`);
+    if (fs.existsSync(outPath)) { ok++; continue; } // resume: already scraped, skip the fetch
     try {
       const wt = await fetchWikitext(slug, brand);
       const r = parseCasting(wt, brand);
@@ -58,7 +68,6 @@ async function main() {
         ...(r.description ? { dsc: r.description } : {}),
         d: r.variants,
       };
-      const outPath = path.join(outDir, `${slug.replace(/[^A-Za-z0-9_-]/g, '_')}.json`);
       fs.writeFileSync(outPath, JSON.stringify(rec, null, 2));
       ok++;
       console.log(`✓ ${brand.key}:${slug} — ${r.variants.length} variants` +

@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { SEARCH_FIELDS, YEARS } from '../consts';
+import { BRANDS } from '../lib/brands';
 import { t, Language } from '../i18n';
 import { Theme } from '../theme';
 import Select from './ui/Select';
@@ -10,6 +11,8 @@ import UserControls from './UserControls';
 
 interface TopPanelProps {
   selectedField: string | undefined;
+  selectedBrand: string;
+  onBrandChange: (brand: string) => void;
   selectedYear: string;
   searchQuery: string;
   onFieldChange: (field: string) => void;
@@ -31,6 +34,8 @@ interface TopPanelProps {
 
 export default function TopPanel({
   selectedField,
+  selectedBrand,
+  onBrandChange,
   selectedYear,
   searchQuery,
   onFieldChange,
@@ -53,6 +58,11 @@ export default function TopPanel({
 
   // One "search by" selector: name first (autocompletes makes), then "By year"
   // (select-only), then the remaining typed fields.
+  const brandOptions = [
+    { value: 'all', label: t('filter.allBrands') },
+    ...BRANDS.map((b) => ({ value: b.key, label: b.name })),
+  ];
+
   const [nameField, ...restFields] = SEARCH_FIELDS;
   const parameterOptions = [
     { value: nameField, label: t(`search.fields.${nameField}`) },
@@ -95,6 +105,13 @@ export default function TopPanel({
         </div>
 
         <div className="flex flex-1 items-center gap-1 xs:gap-2 sm:gap-3 min-w-0">
+          <Select
+            value={selectedBrand}
+            onValueChange={onBrandChange}
+            options={brandOptions}
+            ariaLabel={t('filter.allBrands')}
+            className="min-w-[64px] xs:min-w-[72px] sm:min-w-[88px]"
+          />
           <Select
             value={selectedField ?? 'name'}
             onValueChange={onFieldChange}

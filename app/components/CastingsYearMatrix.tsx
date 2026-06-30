@@ -4,6 +4,7 @@ import { memo, useMemo, useState } from 'react';
 import { CarData, CarDataItem } from '../types';
 import { YEARS } from '../consts';
 import { formatCarName, getPreviewUrl, getImageUrl } from '../utils';
+import { variantYears } from '../lib/years';
 import Thumbnail from './Thumbnail';
 import { t } from '../i18n';
 
@@ -50,10 +51,12 @@ const Row = memo(function Row({
   const byYear = useMemo(() => {
     const m = new Map<string, CarDataItem[]>();
     for (const v of car.d) {
-      if (!v.y) continue;
-      const arr = m.get(v.y);
-      if (arr) arr.push(v);
-      else m.set(v.y, [v]);
+      // A multi-year period ("1978 / 1979 / 1980") fills every year it covers.
+      for (const y of new Set(variantYears(v.y))) {
+        const arr = m.get(y);
+        if (arr) arr.push(v);
+        else m.set(y, [v]);
+      }
     }
     return m;
   }, [car.d]);

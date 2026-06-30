@@ -36,26 +36,31 @@ function collect(field: string, cars: CarData[]): string[] {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const field = searchParams.get('field');
+  const brand = searchParams.get('brand');
 
   if (!field || !AUTOCOMPLETE_FIELDS.includes(field)) {
     return NextResponse.json({ error: 'unsupported field' }, { status: 400 });
   }
 
-  if (!cache[field]) {
+  // Scope the option list to the selected base so the dropdowns suggest values
+  // from that brand only (cached per field+brand).
+  const key = `${field}:${brand || 'all'}`;
+  if (!cache[key]) {
+    const all = await loadCarsData();
+    const cars = brand && brand !== 'all' ? all.filter((c) => (c.brand ?? 'hw') === brand) : all;
     if (field === 'name') {
       // Name search autocompletes the casting names (the search matches the
       // formatted name, so suggest exactly that). Covers brands and sub-brands
       // (e.g. "Acura") that aren't top-level makes.
-      const cars = await loadCarsData();
       const set = new Set<string>();
       for (const c of cars) {
         const n = formatCarName(c.lnk).trim();
         if (n) set.add(n);
       }
-      cache[field] = [...set].filter((s) => !s.includes('?')).sort((a, b) => a.localeCompare(b));
+      cache[key] = [...set].filter((s) => !s.includes('?')).sort((a, b) => a.localeCompare(b));
     } else {
-      cache[field] = collect(field, await loadCarsData());
+      cache[key] = collect(field, cars);
     }
   }
-  return NextResponse.json(cache[field], { headers: STATIC_CACHE_HEADERS });
+  return NextResponse.json(cache[key], { headers: STATIC_CACHE_HEADERS });
 }

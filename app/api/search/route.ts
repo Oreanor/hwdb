@@ -5,6 +5,7 @@ import { loadCarsData } from '../../lib/carsData';
 import { carMatchesQuery, includesAll, tokenize } from '../../lib/carSearch';
 import { castingMatchesTag } from '../../lib/tagsData';
 import { isStandardScale } from '../../lib/seriesCategory';
+import { variantHasYear } from '../../lib/years';
 import { STATIC_CACHE_HEADERS } from '../../lib/http';
 
 // Casting results only need year/image flag/id per variant (for the card preview).
@@ -38,7 +39,7 @@ export async function GET(request: Request) {
 
     // Narrow to cars that have at least one variant from the requested year.
     if (year) {
-      filteredData = filteredData.filter(car => car.d.some(item => item.y === year));
+      filteredData = filteredData.filter((car) => car.d.some((item) => variantHasYear(item.y, year)));
     }
 
     // Tag browse (home page): castings matching every token of the tag query.

@@ -6,13 +6,13 @@ import Spinner from './components/Spinner';
 import { useTheme } from './hooks/useTheme';
 import { useLanguage } from './hooks/useLanguage';
 import { useFieldOptions } from './hooks/useFieldOptions';
-import { useAppNavigation } from './hooks/useAppNavigation';
+import { useAppNavigation, BrandScope } from './hooks/useAppNavigation';
 
 export default function Home() {
   const { theme, toggleTheme } = useTheme();
   const { currentLang, changeLanguage, ready: isInitialized } = useLanguage();
   const nav = useAppNavigation();
-  const suggestions = useFieldOptions(nav.selectedField);
+  const suggestions = useFieldOptions(nav.selectedField, nav.selectedBrand);
 
   return (
     <div className="h-screen w-full flex flex-col bg-white dark:bg-gray-900">
@@ -24,6 +24,8 @@ export default function Home() {
           <div className="min-h-[82px]">
             <TopPanel
               selectedField={nav.selectedField}
+              selectedBrand={nav.selectedBrand}
+              onBrandChange={(b) => nav.setSelectedBrand(b as BrandScope)}
               selectedYear={nav.selectedYear}
               searchQuery={nav.searchQuery}
               onFieldChange={nav.handleFieldChange}
@@ -47,6 +49,7 @@ export default function Home() {
             <MainContent
               error={nav.error}
               loading={nav.loading}
+              brandScope={nav.selectedBrand}
               tableView={nav.tableView}
               showCollection={nav.showCollection}
               selectedModel={nav.selectedModel}

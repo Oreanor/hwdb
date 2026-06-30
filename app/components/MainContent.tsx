@@ -11,6 +11,7 @@ import WelcomeMessage from './WelcomeMessage';
 interface MainContentProps {
   error: string | null;
   loading: boolean;
+  brandScope: string;
   tableView: TableView | null;
   showCollection: boolean;
   selectedModel: CarData | null;
@@ -37,6 +38,7 @@ export default function MainContent(props: MainContentProps) {
   const {
     error,
     loading,
+    brandScope,
     tableView,
     showCollection,
     selectedModel,
@@ -116,9 +118,9 @@ export default function MainContent(props: MainContentProps) {
               onTagClick={onTagClick}
             />
           ) : cars.length > 0 ? (
-            <ResultsView mode="castings" cars={cars} onModelClick={onModelClick} selectedYear={selectedYear} title={castingsTitle ? formatResultTitle(castingsTitle) : undefined} onBack={onBackHome} />
+            <ResultsView mode="castings" cars={cars} onModelClick={onModelClick} selectedYear={selectedYear} brandScope={brandScope} title={castingsTitle ? formatResultTitle(castingsTitle) : undefined} onBack={onBackHome} />
           ) : (
-            <WelcomeMessage isLoggedIn={isLoggedIn} onTagClick={onTagClick} />
+            <WelcomeMessage isLoggedIn={isLoggedIn} brandScope={brandScope} onTagClick={onTagClick} />
           )}
         </div>
       )}

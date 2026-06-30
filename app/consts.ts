@@ -71,6 +71,7 @@ export const FILTER_STORAGE_KEYS = {
   scale: 'hwdb_filter_scale', // ScaleFilter: only164 / other / all
   series: 'hwdb_filter_series', // SeriesFilter: all / mainline / premium
   castingSort: 'hwdb_sort_castings', // "make:asc" | "make:desc" | "model:asc" | "model:desc"
+  brand: 'hwdb_brand', // brand scope: all / hw / mb / mj
 } as const;
 
 // Search fields that get a type-to-filter autocomplete list. 'name' suggests

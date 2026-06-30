@@ -62,7 +62,8 @@
       "subtitle2": "Вы можете просматривать данные без авторизации, но для того чтобы добавить модель в свою коллекцию, вам необходимо авторизоваться.",
       "byStyle": "Стиль",
       "byRegion": "Марка / регион",
-      "byEra": "Эпоха"
+      "byEra": "Эпоха",
+      "castings": "кастингов"
     },
     "collection": {
       "empty": "У вас пока нет моделей в коллекции",
@@ -178,7 +179,8 @@
       "subtitle2": "You can browse the data without logging in, but to add a model to your collection, you need to log in.",
       "byStyle": "Style",
       "byRegion": "Make / region",
-      "byEra": "Era"
+      "byEra": "Era",
+      "castings": "castings"
     },
     "collection": {
       "empty": "You don't have any models in your collection yet",
@@ -294,7 +296,8 @@
       "subtitle2": "Du kannst die Daten ohne Anmeldung durchsuchen, aber um ein Modell zu deiner Sammlung hinzuzufügen, musst du dich anmelden.",
       "byStyle": "Stil",
       "byRegion": "Marke / Region",
-      "byEra": "Ära"
+      "byEra": "Ära",
+      "castings": "Castings"
     },
     "view": {
       "label": "Ansicht",
@@ -410,7 +413,8 @@
       "subtitle2": "Puedes ver los datos sin iniciar sesión, pero para añadir un modelo a tu colección necesitas iniciar sesión.",
       "byStyle": "Estilo",
       "byRegion": "Marca / región",
-      "byEra": "Época"
+      "byEra": "Época",
+      "castings": "castings"
     },
     "view": {
       "label": "Vista",
@@ -526,7 +530,8 @@
       "subtitle2": "Vous pouvez parcourir les données sans vous connecter, mais pour ajouter un modèle à votre collection, vous devez vous connecter.",
       "byStyle": "Style",
       "byRegion": "Marque / région",
-      "byEra": "Époque"
+      "byEra": "Époque",
+      "castings": "castings"
     },
     "view": {
       "label": "Vue",
@@ -642,7 +647,8 @@
       "subtitle2": "Você pode navegar pelos dados sem fazer login, mas para adicionar um modelo à sua coleção, é necessário fazer login.",
       "byStyle": "Estilo",
       "byRegion": "Marca / região",
-      "byEra": "Época"
+      "byEra": "Época",
+      "castings": "castings"
     },
     "view": {
       "label": "Visualização",
@@ -758,7 +764,8 @@
       "subtitle2": "Je kunt de gegevens bekijken zonder in te loggen, maar om een model aan je collectie toe te voegen, moet je inloggen.",
       "byStyle": "Stijl",
       "byRegion": "Merk / regio",
-      "byEra": "Tijdperk"
+      "byEra": "Tijdperk",
+      "castings": "castings"
     },
     "collection": {
       "empty": "Je hebt nog geen modellen in je collectie",
@@ -874,7 +881,8 @@
       "subtitle2": "Ви можете переглядати дані без авторизації, але щоб додати модель у свою колекцію, потрібно авторизуватися.",
       "byStyle": "Стиль",
       "byRegion": "Марка / регіон",
-      "byEra": "Епоха"
+      "byEra": "Епоха",
+      "castings": "кастингів"
     },
     "collection": {
       "empty": "У вас поки немає моделей у колекції",

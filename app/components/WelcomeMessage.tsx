@@ -3,12 +3,16 @@
 import { useEffect, useState } from 'react';
 import { t } from '../i18n';
 import { TagsIndex, TagBucket } from '../lib/tags';
-import { fetchTagsIndex } from '../services/carService';
+import { BRANDS } from '../lib/brands';
+import { fetchTagsIndex, fetchStats } from '../services/carService';
 
 interface WelcomeMessageProps {
   isLoggedIn?: boolean;
+  brandScope?: string;
   onTagClick: (value: string) => void;
 }
+
+type Stats = Record<string, { castings: number; variants: number }>;
 
 const THEME_ORDER = ['Muscle', 'JDM', 'Supercar', 'Fantasy'];
 const REGION_ORDER = ['American', 'Japanese', 'European', 'Australian', 'Korean'];
@@ -20,12 +24,19 @@ const topMakes = (bucket: TagBucket, n = 18) =>
     .slice(0, n)
     .sort((a, b) => a[0].localeCompare(b[0]));
 
-export default function WelcomeMessage({ onTagClick }: WelcomeMessageProps) {
+export default function WelcomeMessage({ brandScope = 'all', onTagClick }: WelcomeMessageProps) {
   const [index, setIndex] = useState<TagsIndex | null>(null);
+  const [stats, setStats] = useState<Stats | null>(null);
 
   useEffect(() => {
     fetchTagsIndex().then(setIndex);
+    fetchStats().then(setStats);
   }, []);
+
+  // Catalog sizes for the current base: all brands, or just the selected one.
+  const statBrands = stats
+    ? BRANDS.filter((b) => (brandScope === 'all' ? stats[b.key]?.castings : b.key === brandScope))
+    : [];
 
   // One category as a column: clickable heading + its makes listed vertically.
   const column = (
@@ -76,6 +87,16 @@ export default function WelcomeMessage({ onTagClick }: WelcomeMessageProps) {
 
   return (
     <div className="w-full max-w-5xl mx-auto py-5 flex flex-col gap-7">
+      {statBrands.length > 0 && (
+        <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-500 dark:text-gray-400">
+          {statBrands.map((b) => (
+            <span key={b.key}>
+              <span className="font-semibold text-gray-700 dark:text-gray-200">{b.name}:</span>{' '}
+              {stats![b.key].castings.toLocaleString()} {t('welcome.castings')} · {stats![b.key].variants.toLocaleString()} {t('table.variants')}
+            </span>
+          ))}
+        </div>
+      )}
       {index && (
         <>
           {section(t('welcome.byRegion'), REGION_ORDER, index.regions ?? {}, (c) => `rg:${c}`, (_c, mk) => `mk:${mk}`)}

@@ -1,10 +1,8 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { CarData, SortConfig } from '../types';
 import { ScaleFilter } from '../lib/seriesCategory';
-import { BRANDS, Brand } from '../lib/brands';
-import Select from './ui/Select';
 import { t } from '../i18n';
 import { VIEW_MODE_KEYS, FILTER_STORAGE_KEYS } from '../consts';
 import { formatCarName } from '../utils';
@@ -29,6 +27,7 @@ interface ResultsViewProps {
   title?: string;
   onBack?: () => void;
   selectedYear?: string;
+  brandScope?: string; // 'all' | brand key — base switcher (castings mode)
   onModelClick?: (car: CarData) => void;
   // models mode only:
   sortConfig?: SortConfig;
@@ -45,6 +44,7 @@ export default function ResultsView({
   title,
   onBack,
   selectedYear,
+  brandScope = 'all',
   onModelClick,
   sortConfig,
   onSortChange,
@@ -82,17 +82,17 @@ export default function ResultsView({
     return cars.filter((c) => c.s164 !== false);
   }, [cars, castScale, mode]);
 
-  // Brand filter — only relevant when casting results span more than one brand.
-  const [brandFilter, setBrandFilter] = useState<'all' | Brand>('all');
-  const brandsPresent = useMemo(
-    () => (mode === 'castings' ? BRANDS.filter((b) => cars.some((c) => c.brand === b.key)) : []),
+  // Brand scope comes from the top-panel base switcher. When viewing all brands
+  // and the results span more than one, cards get a brand badge to tell them apart.
+  const multiBrand = useMemo(
+    () => mode === 'castings' && new Set(cars.map((c) => c.brand ?? 'hw')).size > 1,
     [cars, mode]
   );
-  const multiBrand = brandsPresent.length > 1;
+  const showBrandBadge = brandScope === 'all' && multiBrand;
   const castingsByBrand = useMemo(() => {
-    if (!multiBrand || brandFilter === 'all') return castingsByScale;
-    return castingsByScale.filter((c) => (c.brand ?? 'hw') === brandFilter);
-  }, [castingsByScale, brandFilter, multiBrand]);
+    if (mode !== 'castings' || brandScope === 'all') return castingsByScale;
+    return castingsByScale.filter((c) => (c.brand ?? 'hw') === brandScope);
+  }, [castingsByScale, brandScope, mode]);
 
   const cardsForBody = mode === 'models' ? filterState.filteredCars : castingsByBrand;
   const { ref: headerRef, height: headerH } = useStickyOffset<HTMLDivElement>();
@@ -152,20 +152,6 @@ export default function ResultsView({
               setView={setView}
               viewModes={viewModes}
             >
-              {multiBrand && (
-                <Select
-                  value={brandFilter}
-                  onValueChange={(v) => setBrandFilter(v as 'all' | Brand)}
-                  options={[
-                    { value: 'all', label: `${t('filter.allBrands')} (${castingsByScale.length})` },
-                    ...brandsPresent.map((b) => ({
-                      value: b.key,
-                      label: `${b.name} (${castingsByScale.filter((c) => (c.brand ?? 'hw') === b.key).length})`,
-                    })),
-                  ]}
-                  ariaLabel={t('filter.allBrands')}
-                />
-              )}
               {(view === 'gallery' || view === 'stats') && (
                 <div className="flex items-center gap-1">
                   {(singleMake
@@ -222,7 +208,7 @@ export default function ResultsView({
       ) : view === 'stats' ? (
         <CastingsYearMatrix cars={galleryCastings} onModelClick={onModelClick!} stickyTop={headerH} />
       ) : (
-        <ModelsGrid cars={galleryCastings} onModelClick={onModelClick!} selectedYear={selectedYear} showBrand={multiBrand} />
+        <ModelsGrid cars={galleryCastings} onModelClick={onModelClick!} selectedYear={selectedYear} showBrand={showBrandBadge} />
       )}
     </div>
   );

@@ -12,9 +12,14 @@ import {
   fetchSeriesCars,
   fetchYearCars,
 } from '../services/carService';
-import { YEARS, isModelSearchField } from '../consts';
+import { YEARS, isModelSearchField, FILTER_STORAGE_KEYS } from '../consts';
 import { tagLabel } from '../lib/tags';
+import { usePersistedState } from './usePersistedState';
+import { Brand } from '../lib/brands';
 import { CarData, SortConfig, TableView, ResultTitle } from '../types';
+
+export type BrandScope = 'all' | Brand;
+const isBrandScope = (v: string): v is BrandScope => v === 'all' || v === 'hw' || v === 'mb' || v === 'mj';
 import { addToCollection, getCollection, removeFromCollection } from '../services/collectionService';
 import { ViewState, pushUrl } from '../lib/navigation';
 
@@ -30,6 +35,8 @@ export function useAppNavigation() {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedField, setSelectedField] = useState<string>('name');
+  // Brand scope (base switcher) — filters results to one brand's catalog.
+  const [selectedBrand, setSelectedBrand] = usePersistedState<BrandScope>(FILTER_STORAGE_KEYS.brand, 'all', isBrandScope);
   const [selectedYear, setSelectedYear] = useState('');
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
   const [selectedModel, setSelectedModel] = useState<CarData | null>(null);
@@ -437,6 +444,8 @@ export function useAppNavigation() {
     selectedField,
     setSelectedField,
     handleFieldChange,
+    selectedBrand,
+    setSelectedBrand,
     selectedYear,
     searchQuery,
     setSearchQuery,

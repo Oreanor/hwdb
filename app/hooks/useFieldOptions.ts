@@ -5,16 +5,18 @@ import { AUTOCOMPLETE_FIELDS } from '../consts';
 import { fetchFieldOptions } from '../services/carService';
 
 // Lazily loads and caches the autocomplete option list for the selected field,
-// returning the suggestions for the current field (or undefined).
-export function useFieldOptions(selectedField: string): string[] | undefined {
-  const [optionsByField, setOptionsByField] = useState<Record<string, string[]>>({});
+// scoped to the selected brand. Cached per field+brand so switching base swaps
+// the suggestions (and switching back is instant).
+export function useFieldOptions(selectedField: string, brand = 'all'): string[] | undefined {
+  const [optionsByKey, setOptionsByKey] = useState<Record<string, string[]>>({});
+  const key = `${selectedField}:${brand}`;
 
   useEffect(() => {
-    if (!AUTOCOMPLETE_FIELDS.includes(selectedField) || optionsByField[selectedField]) return;
-    fetchFieldOptions(selectedField).then((options) =>
-      setOptionsByField((prev) => ({ ...prev, [selectedField]: options }))
+    if (!AUTOCOMPLETE_FIELDS.includes(selectedField) || optionsByKey[key]) return;
+    fetchFieldOptions(selectedField, brand).then((options) =>
+      setOptionsByKey((prev) => ({ ...prev, [key]: options }))
     );
-  }, [selectedField, optionsByField]);
+  }, [selectedField, brand, key, optionsByKey]);
 
-  return optionsByField[selectedField];
+  return optionsByKey[key];
 }

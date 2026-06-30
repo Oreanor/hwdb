@@ -9,6 +9,13 @@ export const fetchTagsIndex = async (): Promise<TagsIndex | null> => {
   return response.json();
 };
 
+// Per-brand catalog sizes (castings + variants) for the welcome screen.
+export const fetchStats = async (): Promise<Record<string, { castings: number; variants: number }> | null> => {
+  const response = await fetch('/api/stats', { cache: 'no-store' });
+  if (!response.ok) return null;
+  return response.json();
+};
+
 export const fetchCars = async (field?: string, value?: string, year?: string): Promise<CarData[]> => {
   const params = new URLSearchParams();
   if (field && value) {
@@ -18,7 +25,7 @@ export const fetchCars = async (field?: string, value?: string, year?: string): 
   if (year) {
     params.append('year', year);
   }
-  
+
   const response = await fetch(`/api/search?${params.toString()}`);
   if (!response.ok) {
     throw new Error('Failed to fetch data');
@@ -60,9 +67,12 @@ export const fetchYearCars = async (year: string): Promise<CarData[]> => {
   return response.json();
 };
 
-// Distinct values for an autocomplete field (designer / wheels / series).
-export const fetchFieldOptions = async (field: string): Promise<string[]> => {
-  const response = await fetch(`/api/options?field=${encodeURIComponent(field)}`);
+// Distinct values for an autocomplete field (name / designer / wheels / series),
+// scoped to the selected base.
+export const fetchFieldOptions = async (field: string, brand?: string): Promise<string[]> => {
+  const params = new URLSearchParams({ field });
+  if (brand && brand !== 'all') params.append('brand', brand);
+  const response = await fetch(`/api/options?${params.toString()}`);
   if (!response.ok) return [];
   return response.json();
 };
