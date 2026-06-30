@@ -25,8 +25,6 @@ const QUALITY = 80;
 const THUMB = 256;
 const MIN_DIMENSION = 250;
 
-const WEBP_DIR = path.join('images', 'webp2');
-const PREV_DIR = path.join('images', 'webp2', 'preview');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const isPlaceholder = (f) => /image[\s_]*not[\s_]*available|no[\s_]*image|placeholder/i.test(f);
 
@@ -56,6 +54,10 @@ async function resolveUrls(api, files) {
 async function main() {
   const brand = getBrand(process.argv[2]);
   const limit = process.argv[3] ? Number(process.argv[3]) : Infinity;
+  // Hot Wheels in webp2/ (root), other brands in webp2/<brand>/ — no mixing.
+  const sub = brand.key === 'hw' ? '' : brand.key;
+  const WEBP_DIR = path.join('images', 'webp2', sub);
+  const PREV_DIR = path.join('images', 'webp2', 'preview', sub);
   for (const d of [WEBP_DIR, PREV_DIR]) fs.mkdirSync(d, { recursive: true });
   const localIds = new Set(fs.readdirSync(WEBP_DIR).filter((f) => f.endsWith('.webp')).map((f) => f.replace(/\.webp$/, '')));
 

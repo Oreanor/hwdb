@@ -16,6 +16,7 @@ export type CarDataItem = {
   p?: string;
   id?: string;
   m?: number; // 1 = mainline (toy# is in a "List of YYYY Hot Wheels" page)
+  brand?: 'hw' | 'mb' | 'mj'; // stamped on load; picks the image subfolder
 };
 
 export type CastingTags = {

@@ -11,7 +11,7 @@ import { STATIC_CACHE_HEADERS } from '../../lib/http';
 // Casting results only need year/image flag/id per variant (for the card preview).
 const trimVariants = (car: CarData): CarData => ({
   ...car,
-  d: car.d.map(item => ({ y: item.y, p: item.p, id: item.id })),
+  d: car.d.map(item => ({ y: item.y, p: item.p, id: item.id, brand: item.brand })),
 });
 
 export async function GET(request: Request) {

@@ -1,11 +1,15 @@
 import { CarDataItem } from './types';
 import { supabase } from './lib/supabase';
 
+// Images live in webp2/{id}.webp for Hot Wheels (the original base) and in a
+// per-brand subfolder for the others (webp2/mb/{id}.webp, webp2/mj/{id}.webp).
+const brandSub = (brand?: string) => (brand && brand !== 'hw' ? `${brand}/` : '');
+
 export const getImageUrl = (item: CarDataItem): string | undefined => {
     if (item.id) {
         return supabase.storage
             .from('images')
-            .getPublicUrl(`webp2/${item.id}.webp`).data.publicUrl;
+            .getPublicUrl(`webp2/${brandSub(item.brand)}${item.id}.webp`).data.publicUrl;
     }
     return undefined;
 };
@@ -16,7 +20,7 @@ export const getPreviewUrl = (item: CarDataItem): string | undefined => {
     if (item.id) {
         return supabase.storage
             .from('images')
-            .getPublicUrl(`webp2/preview/${item.id}.webp`).data.publicUrl;
+            .getPublicUrl(`webp2/preview/${brandSub(item.brand)}${item.id}.webp`).data.publicUrl;
     }
     return undefined;
 };

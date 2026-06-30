@@ -25,7 +25,13 @@ export async function loadCarsData(): Promise<CarData[]> {
       BRANDS.map(async (b) => {
         try {
           const raw = await fs.readFile(dataFile(b.file), 'utf-8');
-          return (JSON.parse(raw) as CarData[]).map((c) => ({ ...c, brand: b.key }));
+          // Stamp brand on the casting and on every variant (the latter picks
+          // the image subfolder in getImageUrl).
+          return (JSON.parse(raw) as CarData[]).map((c) => ({
+            ...c,
+            brand: b.key,
+            d: c.d.map((v) => ({ ...v, brand: b.key })),
+          }));
         } catch (err) {
           if ((err as NodeJS.ErrnoException).code === 'ENOENT') return [];
           throw err;
