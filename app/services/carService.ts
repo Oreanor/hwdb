@@ -60,9 +60,11 @@ export const fetchSeriesCars = async (series: string): Promise<CarData[]> => {
   return response.json();
 };
 
-// Full cars (with variants) released in a given year.
-export const fetchYearCars = async (year: string): Promise<CarData[]> => {
-  const response = await fetch(`/api/year-cars?year=${encodeURIComponent(year)}`);
+// Full cars (with variants) released in a given year, scoped to the selected base.
+export const fetchYearCars = async (year: string, brand?: string): Promise<CarData[]> => {
+  const params = new URLSearchParams({ year });
+  if (brand && brand !== 'all') params.append('brand', brand);
+  const response = await fetch(`/api/year-cars?${params.toString()}`);
   if (!response.ok) return [];
   return response.json();
 };

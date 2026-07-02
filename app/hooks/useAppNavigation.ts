@@ -120,7 +120,7 @@ export function useAppNavigation() {
       setLoading(true);
       setError(null);
       setCars([]);
-      const data = await fetchYearCars(year);
+      const data = await fetchYearCars(year, selectedBrand);
       setTableView({ kind: 'year', value: year, cars: data });
       pushUrl({ view: 'year', year });
     } catch (err) {
@@ -128,7 +128,7 @@ export function useAppNavigation() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [selectedBrand]);
 
   // Clicking a designer lists all of their castings (across all years).
   const handleDesignerClick = useCallback(async (designer: string) => {
@@ -193,7 +193,7 @@ export function useAppNavigation() {
           setError(null);
           setSelectedModel(null);
           setCars([]);
-          const data = await fetchYearCars(searchYear);
+          const data = await fetchYearCars(searchYear, selectedBrand);
           setTableView({ kind: 'year', value: searchYear, cars: data });
           pushState({ view: 'year', year: searchYear });
         } catch (err) {
@@ -249,7 +249,7 @@ export function useAppNavigation() {
         setLoading(false);
       }
     },
-    [selectedField, searchQuery, selectedYear, showCollection, cars]
+    [selectedField, searchQuery, selectedYear, showCollection, cars, selectedBrand]
   );
 
   // Restore the whole app view from the URL. Used on first load AND on browser
