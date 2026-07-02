@@ -41,10 +41,12 @@ interface Props {
 
 const Row = memo(function Row({
   car,
+  years,
   onModelClick,
   onHover,
 }: {
   car: CarData;
+  years: string[];
   onModelClick: (car: CarData) => void;
   onHover: (h: HoverState | null) => void;
 }) {
@@ -72,7 +74,7 @@ const Row = memo(function Row({
       >
         {name}
       </th>
-      {YEAR_LIST.map((y) => {
+      {years.map((y) => {
         const items = byYear.get(y);
         const count = items?.length ?? 0;
         return (
@@ -134,12 +136,31 @@ function HoverPreview({ hover }: { hover: HoverState }) {
 export default function CastingsYearMatrix({ cars, onModelClick, stickyTop = 0 }: Props) {
   const [hover, setHover] = useState<HoverState | null>(null);
 
+  // Columns span the actual years present in the shown castings (already scoped
+  // by brand/scale), min..max contiguous — so each base gets its own range
+  // instead of Hot Wheels' fixed 1968–now.
+  const years = useMemo(() => {
+    let min = Infinity;
+    let max = -Infinity;
+    for (const car of cars) {
+      for (const v of car.d) {
+        for (const y of variantYears(v.y)) {
+          const n = +y;
+          if (n < min) min = n;
+          if (n > max) max = n;
+        }
+      }
+    }
+    if (!isFinite(min)) return YEAR_LIST;
+    return Array.from({ length: max - min + 1 }, (_, i) => String(min + i));
+  }, [cars]);
+
   return (
     <div className="-mt-4" onMouseLeave={() => setHover(null)}>
-      <table className="table-fixed border-separate border-spacing-0 text-xs" style={{ width: NAME_COL_W + YEAR_LIST.length * YEAR_COL_W }}>
+      <table className="table-fixed border-separate border-spacing-0 text-xs" style={{ width: NAME_COL_W + years.length * YEAR_COL_W }}>
         <colgroup>
           <col style={{ width: NAME_COL_W }} />
-          {YEAR_LIST.map((y) => (
+          {years.map((y) => (
             <col key={y} style={{ width: YEAR_COL_W }} />
           ))}
         </colgroup>
@@ -148,7 +169,7 @@ export default function CastingsYearMatrix({ cars, onModelClick, stickyTop = 0 }
             <th className="sticky left-0 z-30 bg-white dark:bg-gray-900 px-2 py-1 text-left font-medium text-gray-500 dark:text-gray-400 border-b border-r border-gray-200 dark:border-gray-700">
               {t('table.casting')}
             </th>
-            {YEAR_LIST.map((y) => (
+            {years.map((y) => (
               <th
                 key={y}
                 className="bg-white dark:bg-gray-900 overflow-hidden px-0 pt-1 pb-2 align-top text-[10px] font-normal text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700"
@@ -160,7 +181,7 @@ export default function CastingsYearMatrix({ cars, onModelClick, stickyTop = 0 }
         </thead>
         <tbody>
           {cars.map((car, i) => (
-            <Row key={`${car.lnk}-${i}`} car={car} onModelClick={onModelClick} onHover={setHover} />
+            <Row key={`${car.lnk}-${i}`} car={car} years={years} onModelClick={onModelClick} onHover={setHover} />
           ))}
         </tbody>
       </table>

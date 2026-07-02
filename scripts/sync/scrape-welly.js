@@ -81,8 +81,15 @@ async function main() {
   let castings = 0, variants = 0;
   for (const [name, its] of byName) {
     const lnk = name.replace(/\s+/g, '_').replace(/[^A-Za-z0-9_().,'%-]/g, '');
-    const year = (name.match(/\b(?:19|20)\d\d\b/) || [''])[0];
-    const d = its.map((it) => ({ y: year, Sr: it.scale, Tn: it.itemNo, _img: it.img }));
+    // `y` is the release/catalog year from the photo upload date in the path
+    // (upload/product/.../YYYY-MM-DD/...). The year in the name is the car's
+    // model year (not when Welly made the toy) — it stays in the name for tags.
+    const d = its.map((it) => ({
+      y: (it.img.match(/\/(\d{4})-\d\d-\d\d\//) || ['', ''])[1],
+      Sr: it.scale,
+      Tn: it.itemNo,
+      _img: it.img,
+    }));
     fs.writeFileSync(path.join(outDir, `${lnk.replace(/[^A-Za-z0-9_-]/g, '_')}.json`),
       JSON.stringify({ brand: 'we', lnk, d }, null, 2));
     castings++; variants += d.length;
