@@ -92,12 +92,12 @@ export default function WelcomeMessage({ brandScope = 'all', onTagClick }: Welco
   return (
     <div className="w-full max-w-5xl mx-auto py-5 flex flex-col gap-7">
       {statBrands.length > 0 && (
-        <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex flex-col gap-1 text-sm text-gray-500 dark:text-gray-400">
           {statBrands.map((b) => (
-            <span key={b.key}>
+            <div key={b.key}>
               <span className="font-semibold text-gray-700 dark:text-gray-200">{b.name}:</span>{' '}
               {stats![b.key].castings.toLocaleString()} {t('welcome.castings')} · {stats![b.key].variants.toLocaleString()} {t('table.variants')}
-            </span>
+            </div>
           ))}
         </div>
       )}

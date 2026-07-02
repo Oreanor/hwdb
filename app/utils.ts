@@ -1,28 +1,32 @@
 import { CarDataItem } from './types';
 import { supabase } from './lib/supabase';
 
-// Images live in webp2/{id}.webp for Hot Wheels (the original base) and in a
-// per-brand subfolder for the others (webp2/mb/{id}.webp, webp2/mj/{id}.webp).
-const brandSub = (brand?: string) => (brand && brand !== 'hw' ? `${brand}/` : '');
+const brandDir = (brand?: string) => brand || 'hw';
+
+// Two image hosts in production (Cloudinary's free tier can't fit everything):
+//   Hot Wheels  -> Supabase storage, legacy flat layout webp2/{id}.webp
+//   MB/MJ/Welly -> Cloudinary,        {brand}/{id}.webp (+ on-the-fly preview)
+// In dev, NEXT_PUBLIC_IMG_BASE ("/localimg") serves every brand from images/.
+const IMG_BASE = process.env.NEXT_PUBLIC_IMG_BASE;
+const CLD_BASE = process.env.NEXT_PUBLIC_CLOUDINARY_BASE;
+const supaUrl = (relPath: string) => supabase.storage.from('images').getPublicUrl(relPath).data.publicUrl;
 
 export const getImageUrl = (item: CarDataItem): string | undefined => {
-    if (item.id) {
-        return supabase.storage
-            .from('images')
-            .getPublicUrl(`webp2/${brandSub(item.brand)}${item.id}.webp`).data.publicUrl;
-    }
-    return undefined;
+    if (!item.id) return undefined;
+    const b = brandDir(item.brand);
+    if (IMG_BASE) return `${IMG_BASE}/${b}/${item.id}.webp`;
+    if (b === 'hw') return supaUrl(`webp2/${item.id}.webp`);
+    return `${CLD_BASE}/${b}/${item.id}.webp`;
 };
 
-// Small JPEG/WebP preview (~256px) for list/grid thumbnails; falls back to the
-// full image if a preview hasn't been generated/uploaded yet (see Thumbnail).
+// Small preview (~320px) for list/grid thumbnails. Cloudinary generates it as a
+// width transform of the full image; local/Supabase use the pre-made webp.
 export const getPreviewUrl = (item: CarDataItem): string | undefined => {
-    if (item.id) {
-        return supabase.storage
-            .from('images')
-            .getPublicUrl(`webp2/preview/${brandSub(item.brand)}${item.id}.webp`).data.publicUrl;
-    }
-    return undefined;
+    if (!item.id) return undefined;
+    const b = brandDir(item.brand);
+    if (IMG_BASE) return `${IMG_BASE}/${b}/preview/${item.id}.webp`;
+    if (b === 'hw') return supaUrl(`webp2/preview/${item.id}.webp`);
+    return `${CLD_BASE}/c_limit,w_320,q_auto,f_auto/${b}/${item.id}.webp`;
 };
 
 export const formatCarName = (name: string) => {

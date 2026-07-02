@@ -1,5 +1,5 @@
 import { CarDataItem } from '../types';
-import { LARGE_SCALE_SERIES } from '../consts';
+import { LARGE_SCALE_SERIES, LARGE_SCALE_PATTERNS } from '../consts';
 
 export type SeriesFilter = 'all' | 'mainline' | 'premium';
 export type ScaleFilter = 'only164' | 'other' | 'all';
@@ -12,6 +12,7 @@ export type ScaleFilter = 'only164' | 'other' | 'all';
 export const isStandardScale = (v: CarDataItem): boolean => {
   const sr = (v.Sr || '').trim();
   if (LARGE_SCALE_SERIES.has(sr)) return false;
+  if (LARGE_SCALE_PATTERNS.some((re) => re.test(sr))) return false;
   return !/1\s*:\s*(?!6[04]\b)\d{2,3}\b/.test(sr);
 };
 

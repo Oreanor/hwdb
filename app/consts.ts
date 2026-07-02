@@ -82,6 +82,16 @@ export const AUTOCOMPLETE_FIELDS: string[] = ['name', 'designer', 'wheels', 'ser
 // so the "1:NN" detector can't catch them. Hot Wheels XL is 1:43.
 export const LARGE_SCALE_SERIES = new Set<string>(['Hot Wheels XL']);
 
+// Matchbox lines that are a larger scale than 1:64 (their series names never
+// carry the scale): Models of Yesteryear (~1:40), the "Kings" lines and King
+// Size (large), Matchbox Dinky (~1:43).
+export const LARGE_SCALE_PATTERNS: RegExp[] = [
+  /models of yesteryear/i,
+  /\b(super|battle|sea)\s*kings\b/i,
+  /\bking[\s-]*size\b/i,
+  /\bdinky\b/i,
+];
+
 // Max autocomplete suggestions shown at once (the list scrolls).
 export const MAX_SUGGESTIONS = 50;
 
