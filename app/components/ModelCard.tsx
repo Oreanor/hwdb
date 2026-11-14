@@ -3,6 +3,7 @@ import { getImageUrl, getPreviewUrl, formatCarName } from '../utils';
 import { memo, useMemo } from 'react';
 import { t } from '../i18n';
 import Thumbnail from './Thumbnail';
+import BrandBadge from './BrandBadge';
 
 interface ModelCardProps {
   car: CarData;
@@ -47,11 +48,7 @@ const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear, sho
       className="relative flex flex-col items-center p-2 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer"
       onClick={() => onModelClick(car)}
     >
-      {showBrand && car.brand && (
-        <span className="absolute top-1 left-1 z-10 rounded bg-gray-900/70 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-white">
-          {car.brand}
-        </span>
-      )}
+      {showBrand && <BrandBadge brand={car.brand} className="absolute top-1 left-1 z-10" />}
       <Thumbnail url={previewUrl} fallbackUrl={imageUrl} alt={formattedName} className="w-full h-48" />
       <p className="text-sm text-center font-bold text-gray-900 dark:text-gray-100 line-clamp-1">
         {formattedName} <span className="text-gray-500 dark:text-gray-400 font-medium text-xs">({variantCount})</span>

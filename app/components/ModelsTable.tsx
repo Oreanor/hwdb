@@ -10,6 +10,8 @@ import CarouselModal from './CarouselModal';
 import Thumbnail from './Thumbnail';
 import LinkButton from './LinkButton';
 import ClampCell from './ClampCell';
+import BrandBadge from './BrandBadge';
+import { BRANDS, byBrand } from '../lib/brands';
 
 
 interface ModelsTableProps {
@@ -23,6 +25,7 @@ interface ModelsTableProps {
   onModelClick?: (car: CarData) => void;
   onYearClick?: (year: string) => void;
   showCastingName?: boolean;
+  showBrand?: boolean; // brand column (only when the results span >1 brand)
   stickyTop?: number; // px offset so the header pins below the ResultsHeader bar
 }
 
@@ -37,9 +40,10 @@ interface TableRowProps {
   onModelClick?: (car: CarData) => void;
   onYearClick?: (year: string) => void;
   showCastingName?: boolean;
+  showBrand?: boolean;
 }
 
-const TableRow = memo(({ car, item, collapsedColumns, onImageClick, isCollected, onAddToCollection, onSeriesClick, onModelClick, onYearClick, showCastingName }: TableRowProps) => {
+const TableRow = memo(({ car, item, collapsedColumns, onImageClick, isCollected, onAddToCollection, onSeriesClick, onModelClick, onYearClick, showCastingName, showBrand }: TableRowProps) => {
   const { data: session } = useSession();
   const imageUrl = item.p === 't' ? getImageUrl(item) : undefined;
   const previewUrl = item.p === 't' ? getPreviewUrl(item) : undefined;
@@ -77,6 +81,11 @@ const TableRow = memo(({ car, item, collapsedColumns, onImageClick, isCollected,
           className="w-16 h-16"
         />
       </td>
+      {showBrand && (
+        <td className="p-2 whitespace-nowrap">
+          <BrandBadge brand={car.brand} />
+        </td>
+      )}
       {showCastingName && (
         <td className="p-2 text-sm font-medium break-words min-w-[120px]">
           {onModelClick ? (
@@ -177,6 +186,7 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
   onModelClick,
   onYearClick,
   showCastingName,
+  showBrand,
   stickyTop = 0
 }) => {
   const { data: session } = useSession();
@@ -236,7 +246,7 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
   };
 
   const allRows = useMemo(() => {
-    const rows = cars.flatMap(car =>
+    const rows = [...cars].sort(byBrand).flatMap(car =>
       car.d
         .filter(item => !selectedYear || item.y === selectedYear)
         .map((item, index) => ({
@@ -248,6 +258,10 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
 
     if (sortConfig) {
       rows.sort((a, b) => {
+        // Brand groups first; the column sort only orders rows within a brand.
+        const brandCmp = byBrand(a.car, b.car);
+        if (brandCmp !== 0) return brandCmp;
+
         let aValue: string;
         let bValue: string;
 
@@ -285,6 +299,11 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
             <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 w-[100px] border-r border-gray-200 dark:border-gray-600">
               {t('table.image')}
             </th>
+            {showBrand && (
+              <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 w-[60px] border-r border-gray-200 dark:border-gray-600">
+                {t('table.brand')}
+              </th>
+            )}
             {showCastingName && (
               <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 border-r border-gray-200 dark:border-gray-600">
                 {t('table.casting')}
@@ -305,7 +324,8 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
         <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
           {allRows.map(({ car, item, index }) => (
             <TableRow
-              key={`${car.lnk}-${index}`}
+              // Slugs repeat across brands, so the brand has to be in the key.
+              key={`${car.brand ?? BRANDS[0].key}:${car.lnk}-${index}`}
               car={car}
               item={item}
               collapsedColumns={collapsedColumns}
@@ -316,6 +336,7 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
               onModelClick={onModelClick}
               onYearClick={onYearClick}
               showCastingName={showCastingName}
+              showBrand={showBrand}
             />
           ))}
         </tbody>

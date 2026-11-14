@@ -8,7 +8,9 @@
  * Previews are NOT uploaded — Cloudinary generates them on the fly as a width
  * transform of the full image (see getPreviewUrl).
  *
- * Then set NEXT_PUBLIC_IMG_BASE=https://res.cloudinary.com/<cloud>/image/upload
+ * To check the uploaded layout from localhost, set
+ * NEXT_PUBLIC_IMG_BASE=https://res.cloudinary.com/<cloud>/image/upload — it
+ * overrides the local /localimg base.
  *
  * Reads CLOUDINARY_CLOUD_NAME / _API_KEY / _API_SECRET from .env.local.
  * Resumable: uploaded public ids are recorded in scripts/output/.
@@ -19,6 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const { v2: cloudinary } = require('cloudinary');
+const { imageDirs } = require('../lib/brands');
 
 // Standalone node doesn't auto-load .env.local.
 for (const line of fs.readFileSync('.env.local', 'utf8').split('\n')) {
@@ -38,7 +41,7 @@ const DONE_FILE = path.join('scripts', 'output', 'cloudinary-uploaded.json');
 function collect(brands) {
   const jobs = [];
   for (const b of brands) {
-    const dir = path.join('images', b); // full images only; previews are transforms
+    const dir = imageDirs(b).full; // full images only; previews are transforms
     if (!fs.existsSync(dir)) continue;
     for (const f of fs.readdirSync(dir)) {
       if (!f.endsWith('.webp')) continue;

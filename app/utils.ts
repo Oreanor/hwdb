@@ -1,15 +1,18 @@
 import { CarDataItem } from './types';
-import { supabase } from './lib/supabase';
+import { getSupabase } from './lib/supabase';
+import { LOCAL_BACKEND, LOCAL_IMG_BASE } from './consts';
 
 const brandDir = (brand?: string) => brand || 'hw';
 
 // Two image hosts in production (Cloudinary's free tier can't fit everything):
 //   Hot Wheels  -> Supabase storage, legacy flat layout webp2/{id}.webp
 //   MB/MJ/Welly -> Cloudinary,        {brand}/{id}.webp (+ on-the-fly preview)
-// In dev, NEXT_PUBLIC_IMG_BASE ("/localimg") serves every brand from images/.
-const IMG_BASE = process.env.NEXT_PUBLIC_IMG_BASE;
+// Locally there is no cloud at all: every brand is served from images/ through
+// the /localimg route. NEXT_PUBLIC_IMG_BASE overrides the base (the Cloudinary
+// upload script points it at a cloud prefix to test that layout).
+const IMG_BASE = process.env.NEXT_PUBLIC_IMG_BASE || (LOCAL_BACKEND ? LOCAL_IMG_BASE : undefined);
 const CLD_BASE = process.env.NEXT_PUBLIC_CLOUDINARY_BASE;
-const supaUrl = (relPath: string) => supabase.storage.from('images').getPublicUrl(relPath).data.publicUrl;
+const supaUrl = (relPath: string) => getSupabase().storage.from('images').getPublicUrl(relPath).data.publicUrl;
 
 export const getImageUrl = (item: CarDataItem): string | undefined => {
     if (!item.id) return undefined;

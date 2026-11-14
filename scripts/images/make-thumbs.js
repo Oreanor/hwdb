@@ -7,23 +7,26 @@
  * Source images are ~800px; a 256px WebP is several times smaller, which is the
  * single biggest win for list/grid load time (see review item #1).
  *
- *   in : <input dir>/{id}.webp   (default images/webp2)
- *   out: <output dir>/{id}.webp  (default images/webp2/preview)
+ *   in : images/<brand>/{id}.webp
+ *   out: images/<brand>/preview/{id}.webp
  *
- * Keeps the same id as the full image, so upload the result to Supabase as
- * webp2/preview/{id}.webp and point the app's thumbnail URL at that prefix.
+ * Keeps the same id as the full image — that is the path the app requests for
+ * thumbnails (see getPreviewUrl). Explicit directories still work for one-off
+ * runs over a folder that isn't a brand catalog.
  *
  * Resumable: existing thumbnails are skipped (pass --force to rebuild).
  * Runs one sharp job per CPU core.
  *
  * Usage:
- *   node scripts/make-thumbs.js [inputDir] [outputDir] [--force]
+ *   node scripts/images/make-thumbs.js <hw|mb|mj|we> [--force]
+ *   node scripts/images/make-thumbs.js <inputDir> <outputDir> [--force]
  */
 
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const sharp = require('sharp');
+const { BRANDS, imageDirs } = require('../lib/brands');
 
 const THUMB_SIZE = 256; // longest side, covers the 192px card with retina headroom
 const QUALITY = 72;
@@ -31,9 +34,17 @@ const SRC_EXT = /\.(webp|jpe?g|png)$/i;
 
 const args = process.argv.slice(2).filter((a) => a !== '--force');
 const FORCE = process.argv.includes('--force');
-const INPUT_DIR = args[0] || path.join('images', 'webp2');
-const OUTPUT_DIR = args[1] || path.join('images', 'webp2', 'preview');
+// A bare brand key expands to that brand's catalog; anything else is a path pair.
+const brandDirs = args[0] && args[0] in BRANDS ? imageDirs(args[0]) : null;
+const INPUT_DIR = brandDirs ? brandDirs.full : args[0];
+const OUTPUT_DIR = brandDirs ? brandDirs.preview : args[1];
 const CONCURRENCY = Math.max(1, os.cpus().length - 1);
+
+if (!INPUT_DIR || !OUTPUT_DIR) {
+  console.error(`Usage: node scripts/images/make-thumbs.js <${Object.keys(BRANDS).join('|')}> [--force]`);
+  console.error('   or: node scripts/images/make-thumbs.js <inputDir> <outputDir> [--force]');
+  process.exit(1);
+}
 
 async function main() {
   if (!fs.existsSync(INPUT_DIR)) {
@@ -89,7 +100,7 @@ async function main() {
     console.log(`[+] size of built set: ${mb(inBytes)}MB -> ${mb(outBytes)}MB webp (${(outBytes / inBytes * 100).toFixed(0)}%)`);
     console.log(`[+] avg thumbnail: ${(outBytes / done / 1024).toFixed(1)} KB`);
   }
-  console.log(`[+] thumbnails -> ${OUTPUT_DIR}  (upload to Supabase webp2/preview/)`);
+  console.log(`[+] thumbnails -> ${OUTPUT_DIR}`);
 }
 
 main().catch((e) => {

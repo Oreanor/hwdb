@@ -6,6 +6,7 @@ import { ScaleFilter } from '../lib/seriesCategory';
 import { t } from '../i18n';
 import { VIEW_MODE_KEYS, FILTER_STORAGE_KEYS } from '../consts';
 import { formatCarName } from '../utils';
+import { BRANDS, byBrand } from '../lib/brands';
 import { useVariantFilter, isScaleFilter } from '../hooks/useVariantFilter';
 import { usePersistedState } from '../hooks/usePersistedState';
 import { usePersistedView } from '../hooks/usePersistedView';
@@ -83,11 +84,10 @@ export default function ResultsView({
   }, [cars, castScale, mode]);
 
   // Brand scope comes from the top-panel base switcher. When viewing all brands
-  // and the results span more than one, cards get a brand badge to tell them apart.
-  const multiBrand = useMemo(
-    () => mode === 'castings' && new Set(cars.map((c) => c.brand ?? 'hw')).size > 1,
-    [cars, mode]
-  );
+  // and the results span more than one, every view marks each row/card with its
+  // brand — otherwise a mixed result set gives no way to tell them apart. The
+  // lists are also grouped by brand (see byBrand), so the markers come in blocks.
+  const multiBrand = useMemo(() => new Set(cars.map((c) => c.brand ?? BRANDS[0].key)).size > 1, [cars]);
   const showBrandBadge = brandScope === 'all' && multiBrand;
   const castingsByBrand = useMemo(() => {
     if (mode !== 'castings' || brandScope === 'all') return castingsByScale;
@@ -117,6 +117,10 @@ export default function ResultsView({
     if (mode !== 'castings') return cardsForBody;
     const dir = castSort.dir === 'asc' ? 1 : -1;
     return [...cardsForBody].sort((a, b) => {
+      // Brand is the primary key and keeps its fixed order in both directions,
+      // so make/model-year sorting happens inside each brand's block.
+      const brandCmp = byBrand(a, b);
+      if (brandCmp !== 0) return brandCmp;
       const byName = formatCarName(a.lnk).localeCompare(formatCarName(b.lnk)); // stable tiebreak
       if (activeKey === 'model') {
         // Castings with no known model year always sort last, regardless of direction.
@@ -198,15 +202,16 @@ export default function ResultsView({
             // year, series, search), so it shows the casting-name column. Only the
             // single-casting page (ModelDescription) omits it.
             showCastingName
+            showBrand={showBrandBadge}
             stickyTop={headerH}
           />
         ) : (
-          <VariantsGallery cars={cardsForBody} selectedYear={selectedYear} showName />
+          <VariantsGallery cars={cardsForBody} selectedYear={selectedYear} showName showBrand={showBrandBadge} />
         )
       ) : view === 'table' ? (
-        <CastingsTable cars={cardsForBody} onModelClick={onModelClick!} selectedYear={selectedYear} stickyTop={headerH} />
+        <CastingsTable cars={cardsForBody} onModelClick={onModelClick!} selectedYear={selectedYear} showBrand={showBrandBadge} stickyTop={headerH} />
       ) : view === 'stats' ? (
-        <CastingsYearMatrix cars={galleryCastings} onModelClick={onModelClick!} stickyTop={headerH} />
+        <CastingsYearMatrix cars={galleryCastings} onModelClick={onModelClick!} showBrand={showBrandBadge} stickyTop={headerH} />
       ) : (
         <ModelsGrid cars={galleryCastings} onModelClick={onModelClick!} selectedYear={selectedYear} showBrand={showBrandBadge} />
       )}

@@ -1,8 +1,32 @@
-import { supabase } from '../lib/supabase';
+import { getSupabase } from '../lib/supabase';
+import { LOCAL_BACKEND, LOCAL_COLLECTION_KEY } from '../consts';
+
+// --- local backend ----------------------------------------------------------
+// Dev has no Supabase, so the collection lives in localStorage, keyed by the
+// signed-in user id (same shape as the `collections` table: id -> string[]).
+
+const readLocal = (): Record<string, string[]> => {
+  if (typeof window === 'undefined') return {};
+  try {
+    return JSON.parse(localStorage.getItem(LOCAL_COLLECTION_KEY) ?? '{}');
+  } catch {
+    return {};
+  }
+};
+
+const writeLocal = (userId: string, ids: string[]): string[] => {
+  if (typeof window === 'undefined') return ids;
+  localStorage.setItem(LOCAL_COLLECTION_KEY, JSON.stringify({ ...readLocal(), [userId]: ids }));
+  return ids;
+};
+
+// --- public API -------------------------------------------------------------
 
 // Returns the user's collection as an array of variant ids.
 export const getCollection = async (userId: string): Promise<string[]> => {
-  const { data, error } = await supabase
+  if (LOCAL_BACKEND) return readLocal()[userId] ?? [];
+
+  const { data, error } = await getSupabase()
     .from('collections')
     .select('car_data')
     .eq('user_id', userId);
@@ -26,6 +50,9 @@ export const addToCollection = async (userId: string, id: string): Promise<strin
   if (current.includes(id)) return current;
   const newCollection = [...current, id];
 
+  if (LOCAL_BACKEND) return writeLocal(userId, newCollection);
+
+  const supabase = getSupabase();
   // Upsert: update the existing row if the user already has one, otherwise insert.
   const { data: existing } = await supabase
     .from('collections')
@@ -55,7 +82,9 @@ export const removeFromCollection = async (userId: string, id: string): Promise<
 
   const newCollection = current.filter(x => x !== id);
 
-  const obj = await supabase
+  if (LOCAL_BACKEND) return writeLocal(userId, newCollection);
+
+  const obj = await getSupabase()
     .from('collections')
     .update({ car_data: newCollection })
     .eq('user_id', userId);

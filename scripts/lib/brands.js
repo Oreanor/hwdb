@@ -18,6 +18,8 @@
  *            tables don't, so its table detection must not require the class.
  */
 
+const path = require('path');
+
 const BRANDS = {
   hw: {
     key: 'hw',
@@ -59,4 +61,19 @@ function getBrand(key) {
   return b;
 }
 
-module.exports = { BRANDS, getBrand };
+/**
+ * Where a brand's images live on disk. One layout for every brand:
+ *
+ *   images/<brand>/{id}.webp          full size (~800px), used in the lightbox
+ *   images/<brand>/preview/{id}.webp  256px thumbnail for lists and grids
+ *
+ * This is exactly what the app asks for through /localimg and what
+ * upload-cloudinary.js publishes, so the scripts, the local dev server and the
+ * cloud bucket all agree on one set of paths.
+ */
+function imageDirs(key) {
+  const base = path.join('images', getBrand(key).key);
+  return { full: base, preview: path.join(base, 'preview') };
+}
+
+module.exports = { BRANDS, getBrand, imageDirs };

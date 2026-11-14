@@ -94,6 +94,7 @@
     "table": {
       "add": "Добавить",
       "image": "Фото",
+      "brand": "Бренд",
       "casting": "Кастинг",
       "variants": "Варианты",
       "noImage": "Нет фото",
@@ -211,6 +212,7 @@
     "table": {
       "add": "Add",
       "image": "Image",
+      "brand": "Brand",
       "casting": "Casting",
       "variants": "Variants",
       "noImage": "No image",
@@ -328,6 +330,7 @@
     "table": {
       "add": "Hinzufügen",
       "image": "Bild",
+      "brand": "Marke",
       "casting": "Casting",
       "variants": "Varianten",
       "noImage": "Kein Bild",
@@ -445,6 +448,7 @@
     "table": {
       "add": "Añadir",
       "image": "Imagen",
+      "brand": "Marca",
       "casting": "Casting",
       "variants": "Variantes",
       "noImage": "Sin imagen",
@@ -562,6 +566,7 @@
     "table": {
       "add": "Ajouter",
       "image": "Image",
+      "brand": "Marque",
       "casting": "Casting",
       "variants": "Variantes",
       "noImage": "Pas d image",
@@ -679,6 +684,7 @@
     "table": {
       "add": "Adicionar",
       "image": "Imagem",
+      "brand": "Marca",
       "casting": "Casting",
       "variants": "Variantes",
       "noImage": "Sem imagem",
@@ -796,6 +802,7 @@
     "table": {
       "add": "Toevoegen",
       "image": "Afbeelding",
+      "brand": "Merk",
       "casting": "Casting",
       "variants": "Varianten",
       "noImage": "Geen afbeelding",
@@ -913,6 +920,7 @@
     "table": {
       "add": "Додати",
       "image": "Фото",
+      "brand": "Бренд",
       "casting": "Кастинг",
       "variants": "Варіанти",
       "noImage": "Немає фото",

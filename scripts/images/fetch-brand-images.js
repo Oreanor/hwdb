@@ -5,18 +5,18 @@
  * Downloads a brand's variant images from its wiki and encodes them to webp.
  * Unlike the Hot Wheels fetcher, MB/MJ variants already carry `_img` (the wiki
  * File: name) from the scrape, so no page re-parsing is needed — we resolve the
- * File: to a URL, download, and write images/webp2/{id}.webp + a 256px preview.
+ * File: to a URL, download, and write images/<brand>/{id}.webp plus a 256px
+ * preview in images/<brand>/preview/ (see imageDirs in scripts/lib/brands.js).
  *
- * Globally-unique ids mean these sit alongside the Hot Wheels images.
  * Resumable: a variant whose webp already exists is skipped.
  *
- * Usage: node scripts/images/fetch-brand-images.js <hw|mb|mj> [maxImages]
+ * Usage: node scripts/images/fetch-brand-images.js <hw|mb|mj|we> [maxImages]
  */
 
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
-const { getBrand } = require('../lib/brands');
+const { getBrand, imageDirs } = require('../lib/brands');
 
 const HEADERS = { 'User-Agent': 'HWDB-research/1.0 (personal research; oreanor@gmail.com)' };
 const SLEEP_MS = 400;
@@ -54,10 +54,7 @@ async function resolveUrls(api, files) {
 async function main() {
   const brand = getBrand(process.argv[2]);
   const limit = process.argv[3] ? Number(process.argv[3]) : Infinity;
-  // Hot Wheels in webp2/ (root), other brands in webp2/<brand>/ — no mixing.
-  const sub = brand.key === 'hw' ? '' : brand.key;
-  const WEBP_DIR = path.join('images', 'webp2', sub);
-  const PREV_DIR = path.join('images', 'webp2', 'preview', sub);
+  const { full: WEBP_DIR, preview: PREV_DIR } = imageDirs(brand.key);
   for (const d of [WEBP_DIR, PREV_DIR]) fs.mkdirSync(d, { recursive: true });
   const localIds = new Set(fs.readdirSync(WEBP_DIR).filter((f) => f.endsWith('.webp')).map((f) => f.replace(/\.webp$/, '')));
 

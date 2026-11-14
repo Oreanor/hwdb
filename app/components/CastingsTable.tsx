@@ -6,11 +6,14 @@ import { formatCarName, getImageUrl, getPreviewUrl } from '../utils';
 import { t } from '../i18n';
 import Thumbnail from './Thumbnail';
 import LinkButton from './LinkButton';
+import BrandBadge from './BrandBadge';
+import { BRANDS, byBrand } from '../lib/brands';
 
 interface CastingsTableProps {
   cars: CarData[];
   onModelClick: (car: CarData) => void;
   selectedYear?: string;
+  showBrand?: boolean; // brand column (only when the results span >1 brand)
   stickyTop?: number; // px offset so the header pins below the ResultsHeader bar
 }
 
@@ -45,21 +48,24 @@ const buildRow = (car: CarData, selectedYear?: string): Row => {
   };
 };
 
-const CastingsTable = memo(function CastingsTable({ cars, onModelClick, selectedYear, stickyTop = 0 }: CastingsTableProps) {
+const CastingsTable = memo(function CastingsTable({ cars, onModelClick, selectedYear, showBrand, stickyTop = 0 }: CastingsTableProps) {
   const [sort, setSort] = useState<SortState>(null);
 
   const rows = useMemo(() => {
     const built = cars.map((car) => buildRow(car, selectedYear));
-    if (sort) {
-      const dir = sort.direction === 'asc' ? 1 : -1;
-      built.sort((a, b) => {
-        let cmp: number;
-        if (sort.field === 'count') cmp = a.count - b.count;
-        else if (sort.field === 'years') cmp = a.firstYear.localeCompare(b.firstYear);
-        else cmp = a[sort.field].localeCompare(b[sort.field]);
-        return cmp * dir;
-      });
-    }
+    // Brand always groups first — a column sort orders rows inside each brand's
+    // block, so mixed-brand results never interleave.
+    const dir = sort?.direction === 'desc' ? -1 : 1;
+    built.sort((a, b) => {
+      const brandCmp = byBrand(a.car, b.car);
+      if (brandCmp !== 0) return brandCmp;
+      if (!sort) return 0;
+      let cmp: number;
+      if (sort.field === 'count') cmp = a.count - b.count;
+      else if (sort.field === 'years') cmp = a.firstYear.localeCompare(b.firstYear);
+      else cmp = a[sort.field].localeCompare(b[sort.field]);
+      return cmp * dir;
+    });
     return built;
   }, [cars, selectedYear, sort]);
 
@@ -96,6 +102,11 @@ const CastingsTable = memo(function CastingsTable({ cars, onModelClick, selected
             <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 w-[100px] border-r border-gray-200 dark:border-gray-600">
               {t('table.image')}
             </th>
+            {showBrand && (
+              <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 w-[60px] border-r border-gray-200 dark:border-gray-600">
+                {t('table.brand')}
+              </th>
+            )}
             {header('name', t('search.fields.name'))}
             {showDesigner && header('designer', t('search.fields.designer'))}
             {header('years', t('model.years'))}
@@ -105,17 +116,25 @@ const CastingsTable = memo(function CastingsTable({ cars, onModelClick, selected
         <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
           {rows.map((row) => (
             <tr
-              key={row.car.lnk}
+              // Brands share slugs ("Ford_GT" exists in both HW and MB), so the
+              // key needs the brand or React drops one of the rows.
+              key={`${row.car.brand ?? BRANDS[0].key}:${row.car.lnk}`}
               className="hover:bg-gray-50 dark:hover:bg-gray-700 [content-visibility:auto] [contain-intrinsic-size:auto_84px]"
             >
               <td className="p-2 whitespace-nowrap">
                 <Thumbnail
-                  url={row.imageUrl}
+                  url={row.previewUrl}
+                  fallbackUrl={row.imageUrl}
                   alt={row.name}
                   onClick={() => onModelClick(row.car)}
                   className="w-16 h-16"
                 />
               </td>
+              {showBrand && (
+                <td className="p-2 whitespace-nowrap">
+                  <BrandBadge brand={row.car.brand} />
+                </td>
+              )}
               <td className="p-2 text-sm font-medium break-words min-w-[120px]">
                 <LinkButton onClick={() => onModelClick(row.car)}>{row.name}</LinkButton>
               </td>

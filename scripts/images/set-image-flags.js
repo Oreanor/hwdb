@@ -3,9 +3,9 @@
  * set-image-flags.js
  * ------------------
  * Sets `p: 't'` (has-image) on every variant of a brand whose `{id}.webp` exists
- * in the local image catalog. Run this AFTER uploading the webp files to Supabase
- * `webp2/`, so the app only flags variants whose image is live. Hot Wheels images
- * live in webp2/ (root), the other brands in webp2/<brand>/.
+ * in the local image catalog (images/<brand>/). In cloud mode the flag means
+ * "the image is live", so for a production deploy run this only after the files
+ * are uploaded (upload-cloudinary.js for MB/MJ/Welly, Supabase for Hot Wheels).
  *
  * Writes data/<brand>.json in place (backup to scripts/output/).
  *
@@ -14,11 +14,11 @@
 
 const fs = require('fs');
 const path = require('path');
-const { getBrand } = require('../lib/brands');
+const { getBrand, imageDirs } = require('../lib/brands');
 
 const brand = getBrand(process.argv[2] || 'hw');
 const DB = brand.dataFile;
-const WEBP = path.join('images', 'webp2', brand.key === 'hw' ? '' : brand.key);
+const WEBP = imageDirs(brand.key).full;
 const BACKUP = path.join('scripts', 'output', `${brand.key}.pre-imageflags.json`);
 
 if (!fs.existsSync(WEBP)) {

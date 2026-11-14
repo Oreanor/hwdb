@@ -6,6 +6,7 @@ import { YEARS } from '../consts';
 import { formatCarName, getPreviewUrl, getImageUrl } from '../utils';
 import { variantYears } from '../lib/years';
 import Thumbnail from './Thumbnail';
+import BrandBadge from './BrandBadge';
 import { t } from '../i18n';
 
 // All real years (drop the leading "All Years" sentinel), 1968 -> current.
@@ -36,6 +37,7 @@ interface HoverState {
 interface Props {
   cars: CarData[];
   onModelClick: (car: CarData) => void;
+  showBrand?: boolean; // brand badge on the row header (results span >1 brand)
   stickyTop?: number;
 }
 
@@ -44,11 +46,13 @@ const Row = memo(function Row({
   years,
   onModelClick,
   onHover,
+  showBrand,
 }: {
   car: CarData;
   years: string[];
   onModelClick: (car: CarData) => void;
   onHover: (h: HoverState | null) => void;
+  showBrand?: boolean;
 }) {
   const byYear = useMemo(() => {
     const m = new Map<string, CarDataItem[]>();
@@ -72,6 +76,7 @@ const Row = memo(function Row({
         title={name}
         className="sticky left-0 z-10 bg-white dark:bg-gray-900 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/30 px-2 py-1 text-left text-xs font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 border-r border-gray-200 dark:border-gray-700 max-w-[220px] truncate"
       >
+        {showBrand && <BrandBadge brand={car.brand} className="mr-1 align-middle" />}
         {name}
       </th>
       {years.map((y) => {
@@ -133,7 +138,7 @@ function HoverPreview({ hover }: { hover: HoverState }) {
 // "Stats" view of casting results: one row per casting, one column per year
 // (1968 -> now); a cell is shaded when the casting was released that year, and
 // hovering a shaded cell previews that year's variants.
-export default function CastingsYearMatrix({ cars, onModelClick, stickyTop = 0 }: Props) {
+export default function CastingsYearMatrix({ cars, onModelClick, showBrand, stickyTop = 0 }: Props) {
   const [hover, setHover] = useState<HoverState | null>(null);
 
   // Columns span the actual years present in the shown castings (already scoped
@@ -181,7 +186,7 @@ export default function CastingsYearMatrix({ cars, onModelClick, stickyTop = 0 }
         </thead>
         <tbody>
           {cars.map((car, i) => (
-            <Row key={`${car.lnk}-${i}`} car={car} years={years} onModelClick={onModelClick} onHover={setHover} />
+            <Row key={`${car.lnk}-${i}`} car={car} years={years} onModelClick={onModelClick} onHover={setHover} showBrand={showBrand} />
           ))}
         </tbody>
       </table>

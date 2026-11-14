@@ -51,11 +51,25 @@ export const VARIANT_FIELDS: Record<string, keyof CarDataItem> = {
   'year': 'y'
 };
 
+// Local (offline) backend. The cloud services are production-only: images live
+// on Supabase storage / Cloudinary and the collection in a Supabase table. In
+// dev the app runs without either — images come from the local images/ folder
+// through the /localimg route, the collection from localStorage. Set
+// NEXT_PUBLIC_LOCAL_BACKEND=false to exercise the cloud path on localhost.
+const localBackendEnv = process.env.NEXT_PUBLIC_LOCAL_BACKEND;
+export const LOCAL_BACKEND =
+  localBackendEnv === undefined ? process.env.NODE_ENV !== 'production' : localBackendEnv === 'true';
+
+// Route that serves images/<brand>/{id}.webp in local mode (app/localimg).
+export const LOCAL_IMG_BASE = '/localimg';
+
 export const COLLAPSED_COLUMNS_COOKIE = 'hwdb_collapsed_columns';
 
 // localStorage keys.
 export const THEME_STORAGE_KEY = 'hwdb_theme';
 export const LANGUAGE_STORAGE_KEY = 'hwdb_language';
+// Collection storage in local mode, one entry per signed-in user id.
+export const LOCAL_COLLECTION_KEY = 'hwdb_collection';
 
 // Remembered table/gallery choice per kind of results page.
 export const VIEW_MODE_KEYS = {

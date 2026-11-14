@@ -8,6 +8,10 @@ const nextConfig = {
         hostname: process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('https://', '') || 'hwdb.supabase.co',
       },
       {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
+      {
         protocol: 'http',
         hostname: 'localhost',
       },

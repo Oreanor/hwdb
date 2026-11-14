@@ -7,20 +7,25 @@ import { t } from '../i18n';
 import { useImageCarousel } from '../hooks/useImageCarousel';
 import CarouselModal from './CarouselModal';
 import Thumbnail from './Thumbnail';
+import BrandBadge from './BrandBadge';
+import { byBrand } from '../lib/brands';
 
 interface VariantsGalleryProps {
   cars: CarData[];
   selectedYear?: string;
   // Show the casting name on each card (the collection mixes many castings).
   showName?: boolean;
+  showBrand?: boolean; // brand badge (only when the results span >1 brand)
 }
 
-export default function VariantsGallery({ cars, selectedYear, showName }: VariantsGalleryProps) {
+export default function VariantsGallery({ cars, selectedYear, showName, showBrand }: VariantsGalleryProps) {
+  // Brand is the primary grouping: a mixed-brand result set (collection, year,
+  // series) shows one brand's cards after another instead of interleaving them.
   const items = useMemo(
     () =>
-      cars.flatMap((car) =>
-        car.d.filter((v) => !selectedYear || v.y === selectedYear).map((v) => ({ car, v }))
-      ),
+      [...cars]
+        .sort(byBrand)
+        .flatMap((car) => car.d.filter((v) => !selectedYear || v.y === selectedYear).map((v) => ({ car, v }))),
     [cars, selectedYear]
   );
 
@@ -47,8 +52,9 @@ export default function VariantsGallery({ cars, selectedYear, showName }: Varian
             <div
               key={v.id ?? `${car.lnk}-${i}`}
               // Skip layout/paint for off-screen cards (large collections/years).
-              className="flex flex-col items-center p-2 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow [content-visibility:auto] [contain-intrinsic-size:auto_260px]"
+              className="relative flex flex-col items-center p-2 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow [content-visibility:auto] [contain-intrinsic-size:auto_260px]"
             >
+              {showBrand && <BrandBadge brand={car.brand} className="absolute top-1 left-1 z-10" />}
               <Thumbnail
                 url={v.p === 't' ? getPreviewUrl(v) : undefined}
                 fallbackUrl={imageUrl}

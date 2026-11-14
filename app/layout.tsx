@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
+import { Fragment } from 'react';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from './providers';
-import { THEME_STORAGE_KEY } from './consts';
+import { LOCAL_BACKEND, THEME_STORAGE_KEY } from './consts';
+
+// Hosts that serve variant images in cloud mode: Supabase (Hot Wheels) and
+// Cloudinary (the other brands) — see getImageUrl in utils.ts.
+const IMAGE_HOSTS = [
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_CLOUDINARY_BASE && new URL(process.env.NEXT_PUBLIC_CLOUDINARY_BASE).origin,
+].filter((host): host is string => Boolean(host));
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,13 +35,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Warm up the connection to the image host so the first thumbnail loads faster. */}
-        {process.env.NEXT_PUBLIC_SUPABASE_URL && (
-          <>
-            <link rel="preconnect" href={process.env.NEXT_PUBLIC_SUPABASE_URL} crossOrigin="anonymous" />
-            <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_SUPABASE_URL} />
-          </>
-        )}
+        {/* Warm up the connections to the image hosts so the first thumbnail loads
+            faster. Skipped in local mode, where images are served by this origin. */}
+        {!LOCAL_BACKEND &&
+          IMAGE_HOSTS.map((host) => (
+            <Fragment key={host}>
+              <link rel="preconnect" href={host} crossOrigin="anonymous" />
+              <link rel="dns-prefetch" href={host} />
+            </Fragment>
+          ))}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`,

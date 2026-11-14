@@ -21,6 +21,21 @@ export const BRANDS: BrandInfo[] = [
 
 const brandInfo = (brand: Brand | undefined): BrandInfo => BRANDS.find((b) => b.key === brand) ?? BRANDS[0];
 
+// Human label for a brand ("Hot Wheels"), used by the mixed-brand markers.
+export const brandLabel = (brand: Brand | undefined): string => brandInfo(brand).name;
+
+// Position in BRANDS — the display order of a mixed-brand result set. Results
+// are grouped by brand before any other sort key, and the grouping never flips
+// with the sort direction, so a brand's block always stays in one place.
+export const brandRank = (brand: Brand | undefined): number => {
+  const i = BRANDS.findIndex((b) => b.key === (brand ?? BRANDS[0].key));
+  return i === -1 ? BRANDS.length : i;
+};
+
+// Primary comparator for every result list that can span brands.
+export const byBrand = (a: { brand?: Brand }, b: { brand?: Brand }): number =>
+  brandRank(a.brand) - brandRank(b.brand);
+
 // The "view source" link for a casting. Fandom brands link to the wiki page by
 // its slug; Welly (a catalog, not a wiki) has no name pages, so it links to a
 // keyword search on the item number.

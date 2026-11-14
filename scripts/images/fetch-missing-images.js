@@ -5,20 +5,21 @@
  * Image-only top-up: for every casting that currently has NO image at all
  * (no variant flagged `p:'t'` and no local webp), re-parse its wiki page, map
  * the Photo column (File:) to our variant ids by position, download + encode
- * webp (<=800px) into images/webp2 and a 256px preview into images/webp2/preview.
+ * webp (<=800px) into images/hw and a 256px preview into images/hw/preview.
  *
- * Does NOT touch data/hw.json. After uploading the new files to Supabase,
- * run set-image-flags.js to flip `p:'t'`.
+ * Does NOT touch data/hw.json — run set-image-flags.js afterwards to flip
+ * `p:'t'` for the newly downloaded ids.
  *
  * Resumable: variants whose webp already exists are skipped.
  *
- * Usage: node scripts/fetch-missing-images.js [maxCastings]
+ * Usage: node scripts/images/fetch-missing-images.js [maxCastings]
  */
 
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 const { fetchWikitext, parseCasting } = require('../lib/parse-casting');
+const { getBrand, imageDirs } = require('../lib/brands');
 
 const API = 'https://hotwheels.fandom.com/api.php';
 const HEADERS = { 'User-Agent': 'HWDB-collection-sync/1.0 (personal research; oreanor@gmail.com)' };
@@ -28,9 +29,8 @@ const QUALITY = 80;
 const THUMB = 256;
 const MIN_DIMENSION = 250;
 
-const DB = path.join('data', 'hw.json');
-const WEBP_DIR = path.join('images', 'webp2');
-const PREV_DIR = path.join('images', 'webp2', 'preview');
+const DB = getBrand('hw').dataFile;
+const { full: WEBP_DIR, preview: PREV_DIR } = imageDirs('hw');
 const ORIG_DIR = path.join('scripts', 'output', 'images', 'originals');
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -126,7 +126,7 @@ async function main() {
   }
   process.stdout.write('\n');
   console.log(`[+] done. downloaded ${done} (webp + preview), placeholder ${small}, skipped ${skip}`);
-  console.log('[+] upload images/webp2 + images/webp2/preview to Supabase, then run set-image-flags.js');
+  console.log(`[+] new files in ${WEBP_DIR} + ${PREV_DIR}; run set-image-flags.js hw to flag them`);
 }
 
 main().catch((e) => { console.error('Fatal:', e); process.exit(1); });
