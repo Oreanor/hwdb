@@ -1,32 +1,29 @@
 import translations from './translations.json';
 import { LANGUAGE_STORAGE_KEY } from '../consts';
+import { writeStorage } from '../lib/storage';
 
 export type Language = 'ru' | 'en' | 'de' | 'es' | 'fr' | 'pt' | 'nl' | 'uk';
-export type TranslationKey = string;
 
-export type TranslationValue = string | { [key: string]: TranslationValue };
+type TranslationValue = string | { [key: string]: TranslationValue };
 
-// Default language. Must match the initial `currentLang` state in page.tsx so
-// the settings selection and the rendered text agree before a saved language is
-// read. The client switches to the saved language after hydration.
-let currentLanguage: Language = 'en';
+// The language rendered before a saved choice is read (see useLanguage).
+export const DEFAULT_LANGUAGE: Language = 'en';
+
+export const isLanguage = (v: unknown): v is Language => typeof v === 'string' && v in translations;
+
+// Module-level so plain functions (not only components) can call t(). The page
+// remounts its tree on a language change so memoized children re-render.
+let currentLanguage: Language = DEFAULT_LANGUAGE;
 
 export const setLanguage = (lang: Language) => {
   currentLanguage = lang;
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
-  }
+  writeStorage(LANGUAGE_STORAGE_KEY, lang);
 };
 
-export const getLanguage = (): Language => {
-  return currentLanguage;
-};
-
-export const t = (key: TranslationKey): string => {
-  const keys = key.split('.');
+// Dotted-key lookup ("search.fields.name"); a missing key renders as itself.
+export const t = (key: string): string => {
   let value: TranslationValue = translations[currentLanguage];
-
-  for (const k of keys) {
+  for (const k of key.split('.')) {
     if (value && typeof value === 'object' && k in value) {
       value = value[k];
     } else {
@@ -34,6 +31,5 @@ export const t = (key: TranslationKey): string => {
       return key;
     }
   }
-
   return typeof value === 'string' ? value : key;
-}; 
+};

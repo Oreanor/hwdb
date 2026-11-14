@@ -27,11 +27,13 @@ export default function SeriesAdminPage() {
   const load = () => {
     setLoading(true);
     fetch('/api/series')
-      .then((r) => r.json())
-      .then((d: Series[]) => {
-        setSeries(d);
-        setLoading(false);
-      });
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then((d: Series[]) => setSeries(d))
+      .catch((e) => setMessage(`Error loading series: ${e instanceof Error ? e.message : 'failed'}`))
+      .finally(() => setLoading(false));
   };
   useEffect(load, []);
 
@@ -98,7 +100,7 @@ export default function SeriesAdminPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'failed');
       setMessage(
-        `Applied: ${data.removedSeries} series cleared (${data.removedVariants} variants), ${data.renamedSeries} renamed (${data.renamedVariants} variants). Backup in scripts/output/.`
+        `Applied: ${data.removedSeries} series cleared (${data.removedVariants} variants), ${data.renamedSeries} renamed (${data.renamedVariants} variants). Backups in scripts/output/.`
       );
       setEdits({});
       load();

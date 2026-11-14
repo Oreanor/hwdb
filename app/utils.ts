@@ -1,8 +1,7 @@
 import { CarDataItem } from './types';
 import { getSupabase } from './lib/supabase';
+import { brandOf } from './lib/brands';
 import { LOCAL_BACKEND, LOCAL_IMG_BASE } from './consts';
-
-const brandDir = (brand?: string) => brand || 'hw';
 
 // Two image hosts in production (Cloudinary's free tier can't fit everything):
 //   Hot Wheels  -> Supabase storage, legacy flat layout webp2/{id}.webp
@@ -16,7 +15,7 @@ const supaUrl = (relPath: string) => getSupabase().storage.from('images').getPub
 
 export const getImageUrl = (item: CarDataItem): string | undefined => {
     if (!item.id) return undefined;
-    const b = brandDir(item.brand);
+    const b = brandOf(item);
     if (IMG_BASE) return `${IMG_BASE}/${b}/${item.id}.webp`;
     if (b === 'hw') return supaUrl(`webp2/${item.id}.webp`);
     return `${CLD_BASE}/${b}/${item.id}.webp`;
@@ -26,11 +25,18 @@ export const getImageUrl = (item: CarDataItem): string | undefined => {
 // width transform of the full image; local/Supabase use the pre-made webp.
 export const getPreviewUrl = (item: CarDataItem): string | undefined => {
     if (!item.id) return undefined;
-    const b = brandDir(item.brand);
+    const b = brandOf(item);
     if (IMG_BASE) return `${IMG_BASE}/${b}/preview/${item.id}.webp`;
     if (b === 'hw') return supaUrl(`webp2/preview/${item.id}.webp`);
     return `${CLD_BASE}/c_limit,w_320,q_auto,f_auto/${b}/${item.id}.webp`;
 };
+
+// `p: 't'` marks a variant that has a photo.
+export const hasImage = (item: CarDataItem): boolean => item.p === 't';
+
+// Full-size + preview URLs of a variant's photo (both undefined without one).
+export const getVariantImages = (item?: CarDataItem): { full?: string; preview?: string } =>
+    item && hasImage(item) ? { full: getImageUrl(item), preview: getPreviewUrl(item) } : {};
 
 export const formatCarName = (name: string) => {
     const spaced = name.replace(/_/g, ' ');
@@ -44,7 +50,7 @@ export const formatCarName = (name: string) => {
 };
 
 export const decodeHtmlEntities = (text: string) => {
-    if (!text) return '-';
+    if (!text) return '';
     return text
         .replace(/&amp;/g, '&')
         .replace(/&lt;/g, '<')
@@ -53,19 +59,13 @@ export const decodeHtmlEntities = (text: string) => {
         .replace(/&#039;/g, "'");
 };
 
-export const convertKeyboardLayout = (text: string) => {
-    const en = 'qwertyuiop[]asdfghjkl;\'zxcvbnm,./QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?';
-    const ru = 'йцукенгшщзхъфывапролджэячсмитьбю.ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,';
-    
-    let result = '';
-    for (let i = 0; i < text.length; i++) {
-        const char = text[i];
-        const ruIndex = ru.indexOf(char);
-        if (ruIndex !== -1) {
-            result += en[ruIndex];
-        } else {
-            result += char;
-        }
-    }
-    return result;
-};
+// A query typed with a Russian keyboard layout active ("ьгыефтп" for
+// "mustang") is remapped key-for-key to the Latin layout. Only text containing
+// Cyrillic is touched, and only letters are mapped, so punctuation in a normal
+// query ("St. Louis") is never rewritten.
+const RU_KEYS = 'йцукенгшщзхъфывапролджэячсмитьбюёЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮЁ';
+const EN_KEYS = "qwertyuiop[]asdfghjkl;'zxcvbnm,.`QWERTYUIOP{}ASDFGHJKL:\"ZXCVBNM<>~";
+const RU_TO_EN = new Map([...RU_KEYS].map((ch, i) => [ch, EN_KEYS[i]]));
+
+export const convertKeyboardLayout = (text: string): string =>
+    /[а-яё]/i.test(text) ? [...text].map((ch) => RU_TO_EN.get(ch) ?? ch).join('') : text;

@@ -1,9 +1,11 @@
 import { getSupabase } from '../lib/supabase';
 import { LOCAL_BACKEND, LOCAL_COLLECTION_KEY } from '../consts';
 
+// A user's collection is a list of variant ids. Production keeps it in the
+// Supabase `collections` table (one row per user: user_id, car_data[]); local
+// mode keeps the same shape in localStorage, keyed by user id.
+
 // --- local backend ----------------------------------------------------------
-// Dev has no Supabase, so the collection lives in localStorage, keyed by the
-// signed-in user id (same shape as the `collections` table: id -> string[]).
 
 const readLocal = (): Record<string, string[]> => {
   if (typeof window === 'undefined') return {};
@@ -14,83 +16,49 @@ const readLocal = (): Record<string, string[]> => {
   }
 };
 
-const writeLocal = (userId: string, ids: string[]): string[] => {
-  if (typeof window === 'undefined') return ids;
+const writeLocal = (userId: string, ids: string[]) => {
   localStorage.setItem(LOCAL_COLLECTION_KEY, JSON.stringify({ ...readLocal(), [userId]: ids }));
-  return ids;
+};
+
+// --- cloud backend ----------------------------------------------------------
+
+const TABLE = 'collections';
+
+const readRemote = async (userId: string): Promise<string[]> => {
+  const { data, error } = await getSupabase().from(TABLE).select('car_data').eq('user_id', userId).limit(1);
+  if (error) throw error;
+  return data?.[0]?.car_data ?? [];
+};
+
+// Update the user's row, or insert it when there is none yet.
+const writeRemote = async (userId: string, ids: string[]) => {
+  const supabase = getSupabase();
+  const { data, error } = await supabase.from(TABLE).update({ car_data: ids }).eq('user_id', userId).select('user_id');
+  if (error) throw error;
+  if (data && data.length > 0) return;
+  const { error: insertError } = await supabase.from(TABLE).insert([{ user_id: userId, car_data: ids }]);
+  if (insertError) throw insertError;
 };
 
 // --- public API -------------------------------------------------------------
 
-// Returns the user's collection as an array of variant ids.
-export const getCollection = async (userId: string): Promise<string[]> => {
-  if (LOCAL_BACKEND) return readLocal()[userId] ?? [];
+export const getCollection = async (userId: string): Promise<string[]> =>
+  LOCAL_BACKEND ? readLocal()[userId] ?? [] : readRemote(userId);
 
-  const { data, error } = await getSupabase()
-    .from('collections')
-    .select('car_data')
-    .eq('user_id', userId);
-
-  if (error) {
-    console.error('Error fetching collection:', error);
-    throw error;
-  }
-
-  // Each user has at most one row; an empty result means an empty collection.
-  if (!data || data.length === 0) {
-    return [];
-  }
-
-  return data[0].car_data || [];
+const save = async (userId: string, ids: string[]): Promise<string[]> => {
+  if (LOCAL_BACKEND) writeLocal(userId, ids);
+  else await writeRemote(userId, ids);
+  return ids;
 };
 
 // Adds a variant to the user's collection and returns the updated id list.
 export const addToCollection = async (userId: string, id: string): Promise<string[]> => {
   const current = await getCollection(userId);
-  if (current.includes(id)) return current;
-  const newCollection = [...current, id];
-
-  if (LOCAL_BACKEND) return writeLocal(userId, newCollection);
-
-  const supabase = getSupabase();
-  // Upsert: update the existing row if the user already has one, otherwise insert.
-  const { data: existing } = await supabase
-    .from('collections')
-    .select('user_id')
-    .eq('user_id', userId);
-
-  if (existing && existing.length > 0) {
-    const { error } = await supabase
-      .from('collections')
-      .update({ car_data: newCollection })
-      .eq('user_id', userId);
-    if (error) throw error;
-  } else {
-    const { error } = await supabase
-      .from('collections')
-      .insert([{ user_id: userId, car_data: newCollection }]);
-    if (error) throw error;
-  }
-
-  return newCollection;
+  return current.includes(id) ? current : save(userId, [...current, id]);
 };
 
 // Removes a variant from the user's collection and returns the updated id list.
 export const removeFromCollection = async (userId: string, id: string): Promise<string[]> => {
   const current = await getCollection(userId);
-  if (current.length === 0) return [];
-
-  const newCollection = current.filter(x => x !== id);
-
-  if (LOCAL_BACKEND) return writeLocal(userId, newCollection);
-
-  const obj = await getSupabase()
-    .from('collections')
-    .update({ car_data: newCollection })
-    .eq('user_id', userId);
-
-  if (obj.error) throw obj.error;
-
-  // On a successful update (status 204) return the new list; otherwise keep the old one.
-  return obj.status === 204 ? newCollection : current;
+  return current.includes(id) ? save(userId, current.filter((x) => x !== id)) : current;
 };

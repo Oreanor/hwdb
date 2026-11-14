@@ -4,6 +4,9 @@ import { LARGE_SCALE_SERIES, LARGE_SCALE_PATTERNS } from '../consts';
 export type SeriesFilter = 'all' | 'mainline' | 'premium';
 export type ScaleFilter = 'only164' | 'other' | 'all';
 
+export const isSeriesFilter = (v: string): v is SeriesFilter => v === 'all' || v === 'mainline' || v === 'premium';
+export const isScaleFilter = (v: string): v is ScaleFilter => v === 'only164' || v === 'other' || v === 'all';
+
 // A larger scale is named in the series with a colon ("1:50 Scale", "McLaren
 // 1:43 Dual Scale Pack"). The colon distinguishes a scale from a set position
 // ("/ 1/10"). 1:64 and 1:60 (Welly's small line) count as the standard small
@@ -22,7 +25,7 @@ export function matchesScaleFilter(v: CarDataItem, filter: ScaleFilter): boolean
 }
 
 // Mainline membership is authoritative: the `m` flag is set from the
-// "List of YYYY Hot Wheels" wiki pages (see scripts/build-mainline-flags.js).
+// "List of YYYY Hot Wheels" wiki pages (see scripts/tags/build-mainline-flags.js).
 // Everything else counts as premium / special.
 export const isMainline = (v: CarDataItem): boolean => v.m === 1;
 

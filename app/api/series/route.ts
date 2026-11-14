@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import { loadCarsData } from '../../lib/carsData';
+import { withErrors } from '../../lib/http';
 
 // Distinct series values with how many variants use each (most-used first).
-// Not cached so it reflects the file after the cleanup tool rewrites it.
-export async function GET() {
-  const cars = await loadCarsData();
+// Not cached so it reflects the files after the cleanup tool rewrites them.
+export const GET = withErrors('series', async () => {
   const counts = new Map<string, number>();
-  for (const c of cars) {
-    for (const v of c.d ?? []) {
+  for (const c of await loadCarsData()) {
+    for (const v of c.d) {
       const s = v.Sr?.trim();
       if (s) counts.set(s, (counts.get(s) ?? 0) + 1);
     }
@@ -17,4 +17,4 @@ export async function GET() {
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 
   return NextResponse.json(series);
-}
+});

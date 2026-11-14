@@ -24,7 +24,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Hot Wheels DataBase",
-  description: "Explore the complete collection of Hot Wheels cars from different years",
+  description: "Browse and search Hot Wheels, Matchbox, Majorette and Welly die-cast cars and their variants",
 };
 
 export default function RootLayout({

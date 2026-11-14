@@ -20,16 +20,17 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  // carsdata.json lives outside public/, so it isn't auto-served or auto-traced.
-  // Tell Next to bundle it into the API route functions for deployment (Vercel).
+  // The per-brand data files (data/hw.json, mb.json, ... — see app/lib/brands.ts)
+  // live outside public/ and are read by a computed path, so they're neither
+  // auto-served nor auto-traced. Bundle them into the API route functions for
+  // deployment (Vercel). data/backup is excluded by the pattern.
   outputFileTracingIncludes: {
-    '/api/search': ['./data/carsdata.json', './data/casting-tags.json'],
-    '/api/car': ['./data/carsdata.json', './data/casting-tags.json'],
-    '/api/variants': ['./data/carsdata.json'],
-    '/api/options': ['./data/carsdata.json'],
-    '/api/series': ['./data/carsdata.json'],
-    '/api/series-cars': ['./data/carsdata.json'],
-    '/api/year-cars': ['./data/carsdata.json'],
+    ...Object.fromEntries(
+      ['search', 'car', 'variants', 'options', 'series', 'series-cars', 'year-cars', 'stats'].map((route) => [
+        `/api/${route}`,
+        ['./data/*.json'],
+      ])
+    ),
     '/api/tags': ['./data/tags-index.json'],
   },
 };

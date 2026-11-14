@@ -5,14 +5,12 @@ import { t } from '../i18n';
 import { BrandTagsIndex, TagBucket } from '../lib/tags';
 import { BRANDS } from '../lib/brands';
 import { fetchTagsIndex, fetchStats } from '../services/carService';
+import { BrandStats } from '../types';
 
 interface WelcomeMessageProps {
-  isLoggedIn?: boolean;
   brandScope?: string;
   onTagClick: (value: string) => void;
 }
-
-type Stats = Record<string, { castings: number; variants: number }>;
 
 const THEME_ORDER = ['Muscle', 'JDM', 'Supercar', 'Fantasy'];
 const REGION_ORDER = ['American', 'Japanese', 'European', 'Australian', 'Korean'];
@@ -26,21 +24,26 @@ const topMakes = (bucket: TagBucket, n = 18) =>
 
 export default function WelcomeMessage({ brandScope = 'all', onTagClick }: WelcomeMessageProps) {
   const [index, setIndex] = useState<BrandTagsIndex | null>(null);
-  const [stats, setStats] = useState<Stats | null>(null);
+  const [stats, setStats] = useState<BrandStats | null>(null);
 
   useEffect(() => {
-    fetchTagsIndex().then(setIndex);
-    fetchStats().then(setStats);
+    // Both are optional decoration: a failed load just leaves its block out.
+    fetchTagsIndex().then(setIndex, () => setIndex(null));
+    fetchStats().then(setStats, () => setStats(null));
   }, []);
 
   // Catalog sizes for the current base: all brands, or just the selected one.
-  const statBrands = stats
-    ? BRANDS.filter((b) => (brandScope === 'all' ? stats[b.key]?.castings : b.key === brandScope))
-    : [];
-  // Browse blocks: one per brand when viewing all, else just the selected base.
-  const browseBrands = index
-    ? BRANDS.filter((b) => (brandScope === 'all' ? index[b.key] : b.key === brandScope))
-    : [];
+  const inScope = (key: string) => brandScope === 'all' || key === brandScope;
+  const statBrands = BRANDS.flatMap((b) => {
+    const s = stats?.[b.key];
+    return s?.castings && inScope(b.key) ? [{ ...b, ...s }] : [];
+  });
+  // Browse blocks: one per brand when viewing all, else just the selected base
+  // (a brand without tags yet, e.g. a fresh sync, has no block).
+  const browseBrands = BRANDS.flatMap((b) => {
+    const idx = index?.[b.key];
+    return idx && inScope(b.key) ? [{ ...b, idx }] : [];
+  });
 
   // One category as a column: clickable heading + its makes listed vertically.
   const column = (
@@ -96,13 +99,12 @@ export default function WelcomeMessage({ brandScope = 'all', onTagClick }: Welco
           {statBrands.map((b) => (
             <div key={b.key}>
               <span className="font-semibold text-gray-700 dark:text-gray-200">{b.name}:</span>{' '}
-              {stats![b.key].castings.toLocaleString()} {t('welcome.castings')} · {stats![b.key].variants.toLocaleString()} {t('table.variants')}
+              {b.castings.toLocaleString()} {t('welcome.castings')} · {b.variants.toLocaleString()} {t('table.variants')}
             </div>
           ))}
         </div>
       )}
-      {browseBrands.map((b) => {
-        const idx = index![b.key];
+      {browseBrands.map(({ idx, ...b }) => {
         return (
           <div key={b.key} className="flex flex-col gap-5">
             {brandScope === 'all' && browseBrands.length > 1 && (

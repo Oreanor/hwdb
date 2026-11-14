@@ -2,15 +2,13 @@
 
 import { memo, useMemo, useState } from 'react';
 import { CarData, CarDataItem } from '../types';
-import { YEARS } from '../consts';
-import { formatCarName, getPreviewUrl, getImageUrl } from '../utils';
-import { variantYears } from '../lib/years';
+import { ALL_YEARS } from '../consts';
+import { formatCarName, getVariantImages, hasImage } from '../utils';
+import { variantYears, yearSpan } from '../lib/years';
+import { castingKey } from '../lib/brands';
 import Thumbnail from './Thumbnail';
 import BrandBadge from './BrandBadge';
 import { t } from '../i18n';
-
-// All real years (drop the leading "All Years" sentinel), 1968 -> current.
-const YEAR_LIST = YEARS.filter((y) => y.value).map((y) => y.value);
 
 // Fixed width (px) of each year column.
 const YEAR_COL_W = 20;
@@ -105,7 +103,7 @@ const Row = memo(function Row({
 });
 
 function HoverPreview({ hover }: { hover: HoverState }) {
-  const withImg = hover.items.filter((it) => it.p === 't');
+  const withImg = hover.items.filter(hasImage);
   // Keep the popover on-screen near the cell.
   const left = Math.min(hover.left, (typeof window !== 'undefined' ? window.innerWidth : 1200) - 290);
   return (
@@ -121,8 +119,8 @@ function HoverPreview({ hover }: { hover: HoverState }) {
           {withImg.slice(0, 8).map((it) => (
             <Thumbnail
               key={it.id}
-              url={getPreviewUrl(it)}
-              fallbackUrl={getImageUrl(it)}
+              url={getVariantImages(it).preview}
+              fallbackUrl={getVariantImages(it).full}
               alt={`${hover.name} ${hover.year}`}
               className="h-16 w-20"
             />
@@ -145,19 +143,9 @@ export default function CastingsYearMatrix({ cars, onModelClick, showBrand, stic
   // by brand/scale), min..max contiguous — so each base gets its own range
   // instead of Hot Wheels' fixed 1968–now.
   const years = useMemo(() => {
-    let min = Infinity;
-    let max = -Infinity;
-    for (const car of cars) {
-      for (const v of car.d) {
-        for (const y of variantYears(v.y)) {
-          const n = +y;
-          if (n < min) min = n;
-          if (n > max) max = n;
-        }
-      }
-    }
-    if (!isFinite(min)) return YEAR_LIST;
-    return Array.from({ length: max - min + 1 }, (_, i) => String(min + i));
+    const { first, last } = yearSpan(cars.flatMap((car) => car.d));
+    if (!first) return ALL_YEARS;
+    return Array.from({ length: +last - +first + 1 }, (_, i) => String(+first + i));
   }, [cars]);
 
   return (
@@ -185,8 +173,8 @@ export default function CastingsYearMatrix({ cars, onModelClick, showBrand, stic
           </tr>
         </thead>
         <tbody>
-          {cars.map((car, i) => (
-            <Row key={`${car.lnk}-${i}`} car={car} years={years} onModelClick={onModelClick} onHover={setHover} showBrand={showBrand} />
+          {cars.map((car) => (
+            <Row key={castingKey(car)} car={car} years={years} onModelClick={onModelClick} onHover={setHover} showBrand={showBrand} />
           ))}
         </tbody>
       </table>

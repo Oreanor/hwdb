@@ -1,13 +1,19 @@
 'use client';
 
 import { useMemo } from 'react';
-import { CarData } from '../types';
-import { SeriesFilter, ScaleFilter, matchesVariantFilter, matchesScaleFilter, isMainline, isStandardScale } from '../lib/seriesCategory';
+import { CarData, CarDataItem } from '../types';
+import {
+  SeriesFilter,
+  ScaleFilter,
+  isSeriesFilter,
+  isScaleFilter,
+  matchesVariantFilter,
+  matchesScaleFilter,
+  isMainline,
+  isStandardScale,
+} from '../lib/seriesCategory';
 import { usePersistedState } from './usePersistedState';
 import { FILTER_STORAGE_KEYS } from '../consts';
-
-const isSeriesFilter = (v: string): v is SeriesFilter => v === 'all' || v === 'mainline' || v === 'premium';
-export const isScaleFilter = (v: string): v is ScaleFilter => v === 'only164' || v === 'other' || v === 'all';
 
 export interface VariantFilterState {
   filter: SeriesFilter;
@@ -20,6 +26,23 @@ export interface VariantFilterState {
   shownCount: number;
 }
 
+// Each casting with only the variants passing `keep` (empty castings dropped).
+const keepVariants = (cars: CarData[], keep: (v: CarDataItem) => boolean): CarData[] =>
+  cars.map((c) => ({ ...c, d: c.d.filter(keep) })).filter((c) => c.d.length > 0);
+
+// How many variants (across all castings) pass `test`, out of how many.
+const countVariants = (cars: CarData[], test: (v: CarDataItem) => boolean) => {
+  let all = 0;
+  let hits = 0;
+  for (const c of cars) {
+    for (const v of c.d) {
+      all++;
+      if (test(v)) hits++;
+    }
+  }
+  return { all, hits };
+};
+
 // Shared All / Mainline / Premium + scale (1:64-only / all scales) filtering for
 // any variants view (collection, series, year, single casting). Keeps the
 // filters, per-bucket counts and the filtered list in one place.
@@ -29,45 +52,27 @@ export function useVariantFilter(cars: CarData[]): VariantFilterState {
   const [scale, setScale] = usePersistedState<ScaleFilter>(FILTER_STORAGE_KEYS.scale, 'only164', isScaleFilter);
 
   // Scale is applied first; the mainline filter and its counts work within it.
-  const scaleCars = useMemo(() => {
-    if (scale === 'all') return cars;
-    return cars
-      .map((c) => ({ ...c, d: c.d.filter((v) => matchesScaleFilter(v, scale)) }))
-      .filter((c) => c.d.length > 0);
-  }, [cars, scale]);
+  const scaleCars = useMemo(
+    () => (scale === 'all' ? cars : keepVariants(cars, (v) => matchesScaleFilter(v, scale))),
+    [cars, scale]
+  );
 
-  const filteredCars = useMemo(() => {
-    if (filter === 'all') return scaleCars;
-    return scaleCars
-      .map((c) => ({ ...c, d: c.d.filter((v) => matchesVariantFilter(v, filter)) }))
-      .filter((c) => c.d.length > 0);
-  }, [scaleCars, filter]);
+  const filteredCars = useMemo(
+    () => (filter === 'all' ? scaleCars : keepVariants(scaleCars, (v) => matchesVariantFilter(v, filter))),
+    [scaleCars, filter]
+  );
 
   const counts = useMemo(() => {
-    let all = 0;
-    let mainline = 0;
-    for (const c of scaleCars) {
-      for (const v of c.d) {
-        all++;
-        if (isMainline(v)) mainline++;
-      }
-    }
-    return { all, mainline, premium: all - mainline };
+    const { all, hits } = countVariants(scaleCars, isMainline);
+    return { all, mainline: hits, premium: all - hits };
   }, [scaleCars]);
 
   const scaleCounts = useMemo(() => {
-    let all = 0;
-    let only164 = 0;
-    for (const c of cars) {
-      for (const v of c.d) {
-        all++;
-        if (isStandardScale(v)) only164++;
-      }
-    }
-    return { all, only164, other: all - only164 };
+    const { all, hits } = countVariants(cars, isStandardScale);
+    return { all, only164: hits, other: all - hits };
   }, [cars]);
 
-  const shownCount = filter === 'all' ? counts.all : filter === 'mainline' ? counts.mainline : counts.premium;
+  const shownCount = filter === 'all' ? counts.all : counts[filter];
 
   return { filter, setFilter, scale, setScale, filteredCars, counts, scaleCounts, shownCount };
 }

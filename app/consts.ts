@@ -16,13 +16,12 @@ export const FIELD_ORDER = [
   { key: 'Nt', label: 'Notes' }
 ] as const;
 
-// Build the list of years from 1968 to the current year.
-const currentYear = new Date().getFullYear();
-export const YEARS = Array.from(
-  { length: currentYear - 1968 + 1 }, 
-  (_, i) => ({ value: String(currentYear - i), label: String(currentYear - i) })
-).reverse();
-YEARS.unshift({ value: '', label: 'All Years' });
+// Every catalog year, oldest first: 1968 (the first Hot Wheels) -> this year.
+export const FIRST_YEAR = 1968;
+export const ALL_YEARS: string[] = Array.from(
+  { length: new Date().getFullYear() - FIRST_YEAR + 1 },
+  (_, i) => String(FIRST_YEAR + i)
+);
 
 // Search field keys; their display labels come from i18n (search.fields.*).
 export const SEARCH_FIELDS = ['name', 'designer', 'description', 'series', 'wheels'] as const;
@@ -63,9 +62,8 @@ export const LOCAL_BACKEND =
 // Route that serves images/<brand>/{id}.webp in local mode (app/localimg).
 export const LOCAL_IMG_BASE = '/localimg';
 
-export const COLLAPSED_COLUMNS_COOKIE = 'hwdb_collapsed_columns';
-
 // localStorage keys.
+export const COLLAPSED_COLUMNS_KEY = 'hwdb_collapsed_columns';
 export const THEME_STORAGE_KEY = 'hwdb_theme';
 export const LANGUAGE_STORAGE_KEY = 'hwdb_language';
 // Collection storage in local mode, one entry per signed-in user id.
@@ -85,7 +83,7 @@ export const FILTER_STORAGE_KEYS = {
   scale: 'hwdb_filter_scale', // ScaleFilter: only164 / other / all
   series: 'hwdb_filter_series', // SeriesFilter: all / mainline / premium
   castingSort: 'hwdb_sort_castings', // "make:asc" | "make:desc" | "model:asc" | "model:desc"
-  brand: 'hwdb_brand', // brand scope: all / hw / mb / mj
+  brand: 'hwdb_brand', // brand scope: all / hw / mb / mj / we
 } as const;
 
 // Search fields that get a type-to-filter autocomplete list. 'name' suggests
@@ -108,6 +106,12 @@ export const LARGE_SCALE_PATTERNS: RegExp[] = [
 
 // Max autocomplete suggestions shown at once (the list scrolls).
 export const MAX_SUGGESTIONS = 50;
+
+// A search across all years needs at least this many characters.
+export const MIN_QUERY_LENGTH = 3;
+
+// Casting description shown collapsed to this many characters ("more" expands).
+export const DESCRIPTION_PREVIEW_CHARS = 100;
 
 export const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'ru', label: 'РУ' },

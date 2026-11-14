@@ -1,10 +1,11 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { CarData, SortConfig } from '../types';
+import { CarData, CastingTags, SortConfig } from '../types';
 import { formatCarName, decodeHtmlEntities } from '../utils';
 import { t } from '../i18n';
-import { VIEW_MODE_KEYS } from '../consts';
+import { VIEW_MODE_KEYS, DESCRIPTION_PREVIEW_CHARS } from '../consts';
+import { yearSpan, formatYearSpan } from '../lib/years';
 import { brandSource } from '../lib/brands';
 import { useVariantFilter } from '../hooks/useVariantFilter';
 import { usePersistedView } from '../hooks/usePersistedView';
@@ -18,10 +19,10 @@ import LinkButton from './LinkButton';
 interface ModelDescriptionProps {
   model: CarData;
   sortConfig: SortConfig;
-  onSortChange: (config: SortConfig | ((prev: SortConfig) => SortConfig)) => void;
+  onSortChange: (config: SortConfig) => void;
   selectedYear?: string;
-  onAddToCollection: (id: string) => void;
-  collection: string[];
+  onToggleCollection: (id: string) => void;
+  collection: ReadonlySet<string>;
   backToSearch?: () => void;
   onSeriesClick?: (series: string) => void;
   onDesignerClick?: (designer: string) => void;
@@ -29,12 +30,40 @@ interface ModelDescriptionProps {
   onTagClick?: (value: string) => void;
 }
 
+// Browse chips for a casting's tags: make, model (when it differs), region, themes.
+const tagChips = (tags: CastingTags): { label: string; value: string }[] => [
+  ...(tags.mk ? [{ label: tags.mk, value: `mk:${tags.mk}` }] : []),
+  ...(tags.md && tags.md !== tags.mk ? [{ label: tags.md, value: `md:${tags.md}` }] : []),
+  ...(tags.rg ? [{ label: tags.rg, value: `rg:${tags.rg}` }] : []),
+  ...(tags.th ?? []).map((th) => ({ label: th, value: `th:${th}` })),
+];
+
+// Collapsed to a preview with a more/less toggle when long.
+function Description({ text }: { text: string }) {
+  const [expanded, setExpanded] = useState(false);
+  const long = text.length > DESCRIPTION_PREVIEW_CHARS;
+  return (
+    <div className="text-sm max-w-[1000px] text-gray-800 dark:text-gray-200">
+      <span className="font-bold">{t('model.description')}: </span>
+      {long && !expanded ? `${text.substring(0, DESCRIPTION_PREVIEW_CHARS)}…` : text}
+      {long && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="ml-2 underline hover:text-gray-600 dark:hover:text-gray-400 text-xs cursor-pointer"
+        >
+          {expanded ? t('common.less') : t('common.more')}
+        </button>
+      )}
+    </div>
+  );
+}
+
 export default function ModelDescription({
   model,
   sortConfig,
   onSortChange,
   selectedYear,
-  onAddToCollection,
+  onToggleCollection,
   collection,
   backToSearch,
   onSeriesClick,
@@ -42,7 +71,6 @@ export default function ModelDescription({
   onYearClick,
   onTagClick,
 }: ModelDescriptionProps) {
-  const [expandedDescription, setExpandedDescription] = useState(false);
   const { view, setView, modes: viewModes } = usePersistedView(VIEW_MODE_KEYS.castingPage, 'table');
   const { ref: headerRef, height: headerH } = useStickyOffset<HTMLDivElement>();
 
@@ -51,11 +79,8 @@ export default function ModelDescription({
   const filterState = useVariantFilter(cars);
   const { filteredCars } = filterState;
 
-  const yearsDisplay = useMemo(() => {
-    const ys = [...new Set(model.d.map((v) => v.y).filter((y) => /^\d{4}$/.test(y)))].sort();
-    if (ys.length === 0) return '';
-    return ys[0] === ys[ys.length - 1] ? ys[0] : `${ys[0]}–${ys[ys.length - 1]}`;
-  }, [model.d]);
+  const yearsDisplay = useMemo(() => formatYearSpan(yearSpan(model.d)), [model.d]);
+  const source = brandSource(model.brand, model.lnk, model.d[0]?.Tn);
 
   return (
     <div className="flex flex-col gap-4">
@@ -86,51 +111,26 @@ export default function ModelDescription({
         )}
         {onTagClick && model.tags && (
           <div className="flex flex-wrap gap-1.5 pt-1">
-            {[
-              model.tags.mk && { label: model.tags.mk, value: `mk:${model.tags.mk}` },
-              model.tags.md && model.tags.md !== model.tags.mk && { label: model.tags.md, value: `md:${model.tags.md}` },
-              model.tags.rg && { label: model.tags.rg, value: `rg:${model.tags.rg}` },
-              ...(model.tags.th ?? []).map((th) => ({ label: th, value: `th:${th}` })),
-            ]
-              .filter((c): c is { label: string; value: string } => Boolean(c))
-              .map((c) => (
-                <button
-                  key={c.value}
-                  onClick={() => onTagClick(c.value)}
-                  className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer"
-                >
-                  {c.label}
-                </button>
-              ))}
+            {tagChips(model.tags).map((c) => (
+              <button
+                key={c.value}
+                onClick={() => onTagClick(c.value)}
+                className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer"
+              >
+                {c.label}
+              </button>
+            ))}
           </div>
         )}
-        {description && (
-          <div className="text-sm max-w-[1000px] text-gray-800 dark:text-gray-200">
-            <span><span className="font-bold">{t('model.description')}: </span>{expandedDescription ? description : <>{description.substring(0, 100)}...</>}
-              {description.length > 100 && (
-                <button
-                  onClick={() => setExpandedDescription(!expandedDescription)}
-                  className="ml-2 underline hover:text-gray-600 dark:hover:text-gray-400 text-xs cursor-pointer"
-                >
-                  {expandedDescription ? t('common.less') : t('common.more')}
-                </button>
-              )}
-            </span>
-          </div>
-        )}
-        {(() => {
-          const source = brandSource(model.brand, model.lnk, model.d[0]?.Tn);
-          return (
-            <a
-              href={source.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
-            >
-              {t('common.viewOnFandom')} {source.label}
-            </a>
-          );
-        })()}
+        {description && <Description text={description} />}
+        <a
+          href={source.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+        >
+          {t('common.viewOn')} {source.label}
+        </a>
       </div>
 
       {view === 'table' ? (
@@ -139,7 +139,7 @@ export default function ModelDescription({
           sortConfig={sortConfig}
           onSortChange={onSortChange}
           selectedYear={selectedYear}
-          onAddToCollection={onAddToCollection}
+          onToggleCollection={onToggleCollection}
           collection={collection}
           onSeriesClick={onSeriesClick}
           onYearClick={onYearClick}

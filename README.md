@@ -137,7 +137,8 @@ with `node` from the project root (e.g. `node scripts/images/audit-images.js`):
 - `lib/parse-casting.js` — shared wiki-page → variant-schema parser (imported by
   the others; also runnable directly for a single slug).
 - `tags/` — browse tags & model years: `build-tags.js` (make/region/theme/era +
-  year, writes `data/casting-tags.json` & `data/tags-index.json`),
+  year, embeds the tags in each casting of `data/<brand>.json` and writes
+  `data/tags-index.json`; a per-brand report goes to `scripts/output/`),
   `build-mainline-flags.js`, `propose-model-years.js`, `propose-model-years-v2.js`
   (Wikipedia + generation lookup), `check-casting-years.js`.
 - `sync/` — catalogue sync: `find-missing-castings.js`, `build-new-castings.js`,
@@ -155,18 +156,18 @@ manual years) and `data/model-year-estimates.json` (approximate `≈` years).
 
 ```
 app/
-  api/                # Route handlers (search, car, variants, auth)
-  components/         # React components (grid, table, modals, top panel, icons)
+  api/                # Route handlers (search, car, variants, year/series, options, stats, tags, auth)
+  components/         # React components (results views, tables, grids, modals, top panel)
+  hooks/              # useAppNavigation (view state + URL sync), useCollection, filters, persistence
   i18n/              # Translations and the `t()` helper
-  lib/               # Supabase client + cached carsdata loader
+  lib/               # Brand registry, cached data loader, search/year/tag logic, API helpers
   services/          # Client-side data access (cars, collections)
   consts.ts          # Field definitions, year list, language list
   types.ts           # Shared types
   utils.ts           # Image URLs, name formatting, keyboard remapping
-  page.tsx           # Main page (search/grid/model/collection state machine)
+  page.tsx           # Main page: wires useAppNavigation into TopPanel + MainContent
 data/
   hw|mb|mj|we.json           # The catalogue, one file per brand (server-only)
-  casting-tags.json          # Per-casting browse tags (make/region/theme/era/year)
   tags-index.json            # Tag browser index (categories → makes)
   model-year-overrides.json  # Authoritative manual model years
   model-year-estimates.json  # Approximate (≈) model years

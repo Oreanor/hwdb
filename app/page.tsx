@@ -6,7 +6,7 @@ import Spinner from './components/Spinner';
 import { useTheme } from './hooks/useTheme';
 import { useLanguage } from './hooks/useLanguage';
 import { useFieldOptions } from './hooks/useFieldOptions';
-import { useAppNavigation, BrandScope } from './hooks/useAppNavigation';
+import { useAppNavigation } from './hooks/useAppNavigation';
 
 export default function Home() {
   const { theme, toggleTheme } = useTheme();
@@ -25,7 +25,7 @@ export default function Home() {
             <TopPanel
               selectedField={nav.selectedField}
               selectedBrand={nav.selectedBrand}
-              onBrandChange={(b) => nav.setSelectedBrand(b as BrandScope)}
+              onBrandChange={nav.handleBrandChange}
               selectedYear={nav.selectedYear}
               searchQuery={nav.searchQuery}
               onFieldChange={nav.handleFieldChange}
@@ -60,7 +60,7 @@ export default function Home() {
               selectedYear={nav.selectedYear}
               sortConfig={nav.sortConfig}
               onSortChange={nav.setSortConfig}
-              onAddToCollection={nav.handleAddToCollection}
+              onToggleCollection={nav.handleToggleCollection}
               onSeriesClick={nav.handleSeriesClick}
               onDesignerClick={nav.handleDesignerClick}
               onYearClick={nav.handleYearClick}
@@ -69,7 +69,6 @@ export default function Home() {
               onCloseTable={nav.handleCloseTable}
               onBackHome={nav.handleLogoClick}
               onTagClick={nav.handleTagClick}
-              isLoggedIn={nav.isLoggedIn}
             />
           </div>
         </div>

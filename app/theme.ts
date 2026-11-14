@@ -1,4 +1,5 @@
 import { THEME_STORAGE_KEY } from './consts';
+import { writeStorage } from './lib/storage';
 
 export type Theme = 'light' | 'dark';
 
@@ -12,5 +13,5 @@ export const getActiveTheme = (): Theme =>
 // Apply a theme: toggle the <html> class and persist the choice.
 export const applyTheme = (theme: Theme) => {
   document.documentElement.classList.toggle('dark', theme === 'dark');
-  localStorage.setItem(THEME_STORAGE_KEY, theme);
+  writeStorage(THEME_STORAGE_KEY, theme);
 };

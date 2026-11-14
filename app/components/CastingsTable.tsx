@@ -2,12 +2,13 @@
 
 import { memo, useMemo, useState } from 'react';
 import { CarData } from '../types';
-import { formatCarName, getImageUrl, getPreviewUrl } from '../utils';
+import { formatCarName, getVariantImages, hasImage } from '../utils';
+import { matchesYear, yearSpan, formatYearSpan } from '../lib/years';
 import { t } from '../i18n';
 import Thumbnail from './Thumbnail';
 import LinkButton from './LinkButton';
 import BrandBadge from './BrandBadge';
-import { BRANDS, byBrand } from '../lib/brands';
+import { byBrand, castingKey } from '../lib/brands';
 
 interface CastingsTableProps {
   cars: CarData[];
@@ -25,25 +26,23 @@ interface Row {
   car: CarData;
   name: string;
   designer: string;
-  imageUrl?: string;
-  previewUrl?: string;
+  full?: string;
+  preview?: string;
   firstYear: string;
-  lastYear: string;
+  years: string; // "1998–2004"
   count: number;
 }
 
 const buildRow = (car: CarData, selectedYear?: string): Row => {
-  const variants = selectedYear ? car.d.filter((v) => v.y === selectedYear) : car.d;
-  const withImage = variants.find((v) => v.p === 't') ?? car.d.find((v) => v.p === 't');
-  const years = variants.map((v) => v.y).filter(Boolean).sort();
+  const variants = car.d.filter((v) => matchesYear(v, selectedYear));
+  const span = yearSpan(variants);
   return {
     car,
     name: formatCarName(car.lnk),
     designer: car.ds ?? '',
-    imageUrl: withImage ? getImageUrl(withImage) : undefined,
-    previewUrl: withImage ? getPreviewUrl(withImage) : undefined,
-    firstYear: years[0] ?? '',
-    lastYear: years[years.length - 1] ?? '',
+    ...getVariantImages(variants.find(hasImage) ?? car.d.find(hasImage)),
+    firstYear: span.first,
+    years: formatYearSpan(span),
     count: variants.length,
   };
 };
@@ -118,13 +117,13 @@ const CastingsTable = memo(function CastingsTable({ cars, onModelClick, selected
             <tr
               // Brands share slugs ("Ford_GT" exists in both HW and MB), so the
               // key needs the brand or React drops one of the rows.
-              key={`${row.car.brand ?? BRANDS[0].key}:${row.car.lnk}`}
+              key={castingKey(row.car)}
               className="hover:bg-gray-50 dark:hover:bg-gray-700 [content-visibility:auto] [contain-intrinsic-size:auto_84px]"
             >
               <td className="p-2 whitespace-nowrap">
                 <Thumbnail
-                  url={row.previewUrl}
-                  fallbackUrl={row.imageUrl}
+                  url={row.preview}
+                  fallbackUrl={row.full}
                   alt={row.name}
                   onClick={() => onModelClick(row.car)}
                   className="w-16 h-16"
@@ -142,7 +141,7 @@ const CastingsTable = memo(function CastingsTable({ cars, onModelClick, selected
                 <td className="p-2 text-sm text-gray-900 dark:text-gray-200 break-words">{row.designer || '-'}</td>
               )}
               <td className="p-2 text-sm text-gray-900 dark:text-gray-200 whitespace-nowrap">
-                {row.firstYear ? (row.firstYear === row.lastYear ? row.firstYear : `${row.firstYear}–${row.lastYear}`) : '-'}
+                {row.years || '-'}
               </td>
               <td className="p-2 text-sm text-gray-500 dark:text-gray-400">{row.count}</td>
             </tr>

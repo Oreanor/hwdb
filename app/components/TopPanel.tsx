@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { SEARCH_FIELDS, YEARS } from '../consts';
+import { SEARCH_FIELDS, ALL_YEARS } from '../consts';
 import { BRANDS } from '../lib/brands';
 import { t, Language } from '../i18n';
 import { Theme } from '../theme';
@@ -54,8 +54,6 @@ export default function TopPanel({
   suggestions,
   onSuggestionSelect,
 }: TopPanelProps) {
-  const isYearAvailable = (year: string) => (availableYears ? availableYears.includes(year) : true);
-
   // One "search by" selector: name first (autocompletes makes), then "By year"
   // (select-only), then the remaining typed fields.
   const brandOptions = [
@@ -71,8 +69,9 @@ export default function TopPanel({
   ];
 
   // Newest year first.
-  const yearPickOptions = YEARS.filter((y) => y.value !== '' && isYearAvailable(y.value))
-    .map((y) => ({ value: y.value, label: y.label }))
+  const yearPickOptions = (availableYears ?? ALL_YEARS)
+    .filter((y) => ALL_YEARS.includes(y))
+    .map((y) => ({ value: y, label: y }))
     .reverse();
 
   const userControls = (

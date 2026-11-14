@@ -1,5 +1,9 @@
 import 'next-auth';
 
+// Catalog brands: Hot Wheels, Matchbox, Majorette, Welly. Metadata (names,
+// data files, source links) lives in lib/brands.ts.
+export type Brand = 'hw' | 'mb' | 'mj' | 'we';
+
 export type CarDataItem = {
   y: string;
   N?: string;
@@ -16,7 +20,7 @@ export type CarDataItem = {
   p?: string;
   id?: string;
   m?: number; // 1 = mainline (toy# is in a "List of YYYY Hot Wheels" page)
-  brand?: 'hw' | 'mb' | 'mj' | 'we'; // stamped on load; picks the image subfolder
+  brand?: Brand; // stamped on load; picks the image subfolder
 };
 
 export type CastingTags = {
@@ -34,7 +38,7 @@ export type CarData = {
   num?: string;
   dsc?: string;
   d: CarDataItem[];
-  brand?: 'hw' | 'mb' | 'mj' | 'we'; // source brand (Hot Wheels / Matchbox / Majorette); absent = hw
+  brand?: Brand; // source brand, stamped on load (absent = DEFAULT_BRAND)
   tags?: CastingTags; // browse tags, attached by /api/car
   s164?: boolean; // casting has >=1 standard 1:64 variant (set on casting search results)
   sOth?: boolean; // casting has >=1 non-1:64 (other-scale) variant
@@ -69,3 +73,5 @@ declare module 'next-auth' {
     }
   }
 } 
+// Per-brand catalog sizes from /api/stats.
+export type BrandStats = Partial<Record<Brand, { castings: number; variants: number }>>;
