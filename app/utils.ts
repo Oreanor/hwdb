@@ -1,27 +1,18 @@
 import { CarDataItem, CastingTags } from './types';
-import { supabase } from './lib/supabase';
 import { brandOf } from './lib/brands';
 
-// Image host. NEXT_PUBLIC_IMG_BASE serves every brand from one images/-shaped tree:
+// The one image host for every brand: an images/-shaped tree at NEXT_IMG_BASE.
 //   {base}/{brand}/{id}.webp           full size
 //   {base}/{brand}/preview/{id}.webp   ~320px preview for lists and grids
-// It is either "/localimg" (this app reads the local images/ folder) or an absolute
-// URL such as the home server (https://homeserver.../hwdb).
-// Without it, only Hot Wheels has images: the legacy Supabase bucket (webp2/{id}.webp).
-const IMG_BASE = process.env.NEXT_PUBLIC_IMG_BASE;
-const supaUrl = (relPath: string) => supabase.storage.from('images').getPublicUrl(relPath).data.publicUrl;
+// Either an absolute URL (the home server, https://homeserver.../hwdb) or
+// "/localimg" — this app serving the local images/ folder, the default.
+export const IMG_BASE = process.env.NEXT_IMG_BASE || '/localimg';
 
 // Only variants flagged `p: 't'` have a photo.
 export const hasImage = (item: CarDataItem): boolean => item.p === 't' && !!item.id;
 
-const imageUrl = (item: CarDataItem, preview: boolean): string | undefined => {
-  if (!hasImage(item)) return undefined;
-  const brand = brandOf(item);
-  const sub = preview ? 'preview/' : '';
-  if (IMG_BASE) return `${IMG_BASE}/${brand}/${sub}${item.id}.webp`;
-  if (brand === 'hw') return supaUrl(`webp2/${sub}${item.id}.webp`);
-  return undefined;
-};
+const imageUrl = (item: CarDataItem, preview: boolean): string | undefined =>
+  hasImage(item) ? `${IMG_BASE}/${brandOf(item)}/${preview ? 'preview/' : ''}${item.id}.webp` : undefined;
 
 export const getImageUrl = (item: CarDataItem) => imageUrl(item, false);
 export const getPreviewUrl = (item: CarDataItem) => imageUrl(item, true);

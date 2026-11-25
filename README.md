@@ -3,7 +3,7 @@
 A web app for browsing and searching a large catalogue of Hot Wheels cars and
 their variants, with per-user collections. Data comes from the
 [Hot Wheels Fandom wiki](https://hotwheels.fandom.com/); car images are served
-from Supabase Storage.
+from one self-hosted image folder (`NEXT_IMG_BASE`).
 
 Built with Next.js (App Router), React 19, TypeScript and Tailwind CSS.
 
@@ -29,7 +29,8 @@ Built with Next.js (App Router), React 19, TypeScript and Tailwind CSS.
 | Framework    | Next.js 15 (App Router)                 |
 | UI           | React 19, Tailwind CSS 4                |
 | Auth         | NextAuth (Google provider, JWT session) |
-| Storage / DB | Supabase (collections + image hosting)  |
+| Storage / DB | Supabase (collections)                  |
+| Images       | Static `images/` tree on a home server   |
 
 ## Getting started
 
@@ -50,9 +51,12 @@ npm install
 Create a `.env.local` file in the project root:
 
 ```bash
-# Supabase
+# Supabase (collections)
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+
+# Image host; defaults to /localimg (this app serves the local images/ folder)
+NEXT_IMG_BASE=https://your-image-server/hwdb
 
 # NextAuth
 NEXTAUTH_SECRET=your-random-secret      # e.g. `openssl rand -base64 32`
@@ -103,8 +107,9 @@ type CarDataItem = {
 };
 ```
 
-Variant images are read from the Supabase Storage `images` bucket at
-`webp2/<id>.webp`.
+Variant images are read from `NEXT_IMG_BASE`: `<base>/<brand>/<id>.webp`
+(full size) and `<base>/<brand>/preview/<id>.webp` (~320px preview), where
+`<brand>` is `hw`, `mb`, `mj` or `we` — the same layout as the local `images/` folder.
 
 ### Maintenance scripts
 
@@ -133,7 +138,7 @@ app/
   api/                # Route handlers (search, car, variants, auth)
   components/         # React components (grid, table, modals, top panel, icons)
   i18n/              # Translations and the `t()` helper
-  lib/               # Supabase client + cached carsdata loader
+  lib/               # Supabase client, cached dataset loader, search/tag/year helpers
   services/          # Client-side data access (cars, collections)
   consts.ts          # Field definitions, year list, language list
   types.ts           # Shared types
