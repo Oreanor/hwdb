@@ -1,7 +1,6 @@
 'use client';
 
 import { t } from '../i18n';
-import { SeriesFilter } from '../lib/seriesCategory';
 import { VariantFilterState } from '../hooks/useVariantFilter';
 import { ViewMode } from '../hooks/usePersistedView';
 import Select from './ui/Select';
@@ -14,14 +13,13 @@ interface VariantFilterControlsProps {
   viewModes: ViewMode[];
 }
 
-// Variants view filter bar: shared chrome (shown / scale / view) + the
-// All/Mainline/Premium selector. Used by every variants view so they match.
+// Variants filter bar: the shared controls + the All / Mainline / Premium selector.
 export default function VariantFilterControls({ filterState, view, setView, viewModes }: VariantFilterControlsProps) {
-  const { filter, setFilter, scale, setScale, counts, scaleCounts, shownCount } = filterState;
+  const { filter, setFilter, scale, setScale, counts, scaleCounts } = filterState;
 
   return (
     <ResultsControls
-      shownCount={shownCount}
+      shownCount={counts[filter]}
       scale={scale}
       onScaleChange={setScale}
       scaleCounts={scaleCounts}
@@ -31,7 +29,7 @@ export default function VariantFilterControls({ filterState, view, setView, view
     >
       <Select
         value={filter}
-        onValueChange={(v) => setFilter(v as SeriesFilter)}
+        onValueChange={setFilter}
         options={[
           { value: 'all', label: `${t('filter.all')} (${counts.all})` },
           { value: 'mainline', label: `${t('filter.mainline')} (${counts.mainline})` },

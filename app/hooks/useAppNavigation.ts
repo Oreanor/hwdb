@@ -5,6 +5,13 @@ import { signIn, useSession } from 'next-auth/react';
 import { t } from '../i18n';
 import { convertKeyboardLayout } from '../utils';
 import { carMatchesQuery, tokenize } from '../lib/carSearch';
+import { keepVariants } from '../lib/seriesCategory';
+import { variantHasYear, variantYears } from '../lib/years';
+import { tagLabel } from '../lib/tags';
+import { BrandScope, isBrandScope } from '../lib/brands';
+import { pushUrl } from '../lib/navigation';
+import { ALL_YEARS, FILTER_STORAGE_KEYS, isModelSearchField } from '../consts';
+import { CarData, SortConfig, TableView, ResultTitle } from '../types';
 import {
   fetchCars,
   fetchCarByLnk,
@@ -12,251 +19,192 @@ import {
   fetchSeriesCars,
   fetchYearCars,
 } from '../services/carService';
-import { YEARS, isModelSearchField, FILTER_STORAGE_KEYS } from '../consts';
-import { tagLabel } from '../lib/tags';
-import { usePersistedState } from './usePersistedState';
-import { Brand } from '../lib/brands';
-import { CarData, SortConfig, TableView, ResultTitle } from '../types';
-
-export type BrandScope = 'all' | Brand;
-const isBrandScope = (v: string): v is BrandScope => v === 'all' || v === 'hw' || v === 'mb' || v === 'mj';
 import { addToCollection, getCollection, removeFromCollection } from '../services/collectionService';
-import { ViewState, pushUrl } from '../lib/navigation';
+import { usePersistedState } from './usePersistedState';
+
+export type { BrandScope };
+
+type SearchOptions = { year?: string; query?: string; field?: string; fromHistory?: boolean };
+
+// Client-side filter of an already-loaded collection (same matching as the server search).
+function filterCollection(cars: CarData[], year: string, field: string, query: string): CarData[] {
+  let result = year ? keepVariants(cars, (v) => variantHasYear(v.y, year)) : cars;
+  if (query) {
+    const words = tokenize(query);
+    result = result.filter((car) => carMatchesQuery(car, field, words, query));
+  }
+  return result;
+}
 
 // Owns the app's search / view / collection state, the handlers that drive it,
 // and the URL <-> state syncing (shareable links, Back/Forward). The page just
 // wires the returned values into <TopPanel> and <MainContent>.
 export function useAppNavigation() {
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+
+  // What is shown. Priority (see MainContent): tableView > collection > model > castings > welcome.
   const [cars, setCars] = useState<CarData[]>([]);
-  // Header for the castings results view (e.g. "Designer: Larry Wood").
   const [castingsTitle, setCastingsTitle] = useState<ResultTitle | null>(null);
-  const [filteredCollectionCars, setFilteredCollectionCars] = useState<CarData[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedField, setSelectedField] = useState<string>('name');
-  // Brand scope (base switcher) — filters results to one brand's catalog.
-  const [selectedBrand, setSelectedBrand] = usePersistedState<BrandScope>(FILTER_STORAGE_KEYS.brand, 'all', isBrandScope);
-  const [selectedYear, setSelectedYear] = useState('');
-  const [sortConfig, setSortConfig] = useState<SortConfig>(null);
+  const [tableView, setTableView] = useState<TableView | null>(null);
   const [selectedModel, setSelectedModel] = useState<CarData | null>(null);
   const [showCollection, setShowCollection] = useState(false);
-  const { data: session } = useSession();
+  const [filteredCollectionCars, setFilteredCollectionCars] = useState<CarData[]>([]);
   const [collection, setCollection] = useState<string[]>([]);
-  const [tableView, setTableView] = useState<TableView | null>(null);
   const [pendingCollection, setPendingCollection] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [sortConfig, setSortConfig] = useState<SortConfig>(null);
 
-  // Mirror values that click handlers read at call-time, so the handlers stay
-  // referentially stable (and don't re-render the heavy lists on every keystroke).
-  const navStateRef = useRef({ selectedYear, searchQuery, selectedField });
-  navStateRef.current = { selectedYear, searchQuery, selectedField };
+  // The top panel's inputs.
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedField, setSelectedField] = useState('name');
+  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedBrand, setSelectedBrand] = usePersistedState<BrandScope>(FILTER_STORAGE_KEYS.brand, 'all', isBrandScope);
+
+  // Values the stable handlers read at call time, so they don't have to be
+  // re-created (and re-render the heavy lists) on every keystroke.
+  const latest = useRef({ selectedYear, searchQuery, selectedField, selectedBrand });
+  latest.current = { selectedYear, searchQuery, selectedField, selectedBrand };
 
   useEffect(() => {
-    if (session?.user?.id) {
-      getCollection(session.user.id).then(setCollection);
-    } else {
+    if (!userId) {
       setCollection([]);
+      return;
     }
-  }, [session?.user?.id]);
+    getCollection(userId)
+      .then(setCollection)
+      .catch((err) => console.error('Failed to load collection ids', err));
+  }, [userId]);
 
-  const availableYears = useMemo(() => {
-    if (selectedModel) {
-      return Array.from(new Set(selectedModel.d.map((item) => item.y).filter((year: string) => year))).sort();
-    }
-    return YEARS.map((year) => year.value);
-  }, [selectedModel]);
-
-  // Picking a suggestion searches that exact value (bypassing the stale query state).
-  const handleSuggestionSelect = (value: string) => {
-    setSearchQuery(value);
-    handleSearch(undefined, { query: value });
-  };
-
-  // Clicking a series opens a table of every variant of that series.
-  const handleSeriesClick = useCallback(async (series: string) => {
-    setSelectedModel(null);
+  // Runs one load with the shared spinner + error handling. Details go to the
+  // console; the user sees a translated message.
+  const run = useCallback(async (task: () => Promise<void>, errorKey = 'search.errors.failedToLoad') => {
+    setLoading(true);
+    setError(null);
     try {
-      setLoading(true);
-      setError(null);
-      const data = await fetchSeriesCars(series);
-      setTableView({ kind: 'series', value: series, cars: data });
-      pushUrl({ view: 'series', series });
+      await task();
     } catch (err) {
-      setError(err instanceof Error ? err.message : t('search.errors.failedToLoad'));
+      console.error(err);
+      setError(t(errorKey));
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const handleCloseTable = () => setTableView(null);
+  const openSeries = useCallback(
+    (series: string, push = true) => {
+      setSelectedModel(null);
+      return run(async () => {
+        setTableView({ kind: 'series', value: series, cars: await fetchSeriesCars(series) });
+        if (push) pushUrl({ view: 'series', series });
+      });
+    },
+    [run]
+  );
 
-  // Browse castings by a tag query (home page chips), e.g. "th:Supercar,mk:Nissan".
-  const handleTagClick = useCallback(async (value: string) => {
-    try {
-      setLoading(true);
-      setError(null);
+  const openYear = useCallback(
+    (year: string, push = true) => {
+      setSelectedModel(null);
+      setShowCollection(false);
+      setSelectedYear(year);
+      setCars([]);
+      return run(async () => {
+        setTableView({ kind: 'year', value: year, cars: await fetchYearCars(year, latest.current.selectedBrand) });
+        if (push) pushUrl({ view: 'year', year });
+      });
+    },
+    [run]
+  );
+
+  // Browse castings by a tag query (home page / model page chips), e.g. "th:Supercar,mk:Nissan".
+  const openTag = useCallback(
+    (tag: string, push = true) => {
       setSelectedModel(null);
       setTableView(null);
       setShowCollection(false);
       setSearchQuery('');
-      const data = await fetchCars('tag', value);
-      setCastingsTitle({ text: tagLabel(value) });
-      setCars(data);
-      pushUrl({ view: 'grid', tag: value });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t('search.errors.failedToLoad'));
       setCars([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  // Clicking a year cell opens the table of that whole year.
-  const handleYearClick = useCallback(async (year: string) => {
-    setSelectedModel(null);
-    setShowCollection(false);
-    setSelectedYear(year);
-    try {
-      setLoading(true);
-      setError(null);
-      setCars([]);
-      const data = await fetchYearCars(year, selectedBrand);
-      setTableView({ kind: 'year', value: year, cars: data });
-      pushUrl({ view: 'year', year });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t('search.errors.failedToLoad'));
-    } finally {
-      setLoading(false);
-    }
-  }, [selectedBrand]);
-
-  // Clicking a designer lists all of their castings (across all years).
-  const handleDesignerClick = useCallback(async (designer: string) => {
-    setTableView(null);
-    setSelectedModel(null);
-    setShowCollection(false);
-    setSelectedField('designer');
-    setSearchQuery(designer);
-    setSelectedYear('');
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await fetchCars('designer', designer, '');
-      setCars(data);
-      pushUrl({ view: 'grid', year: '', searchQuery: designer, selectedField: 'designer' });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t('search.errors.failedToLoad'));
-      setCars([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  const handleSearch = useCallback(
-    async (yearArg?: string | React.MouseEvent, opts: { fromHistory?: boolean; query?: string; field?: string } = {}) => {
-      const searchYear = typeof yearArg === 'string' ? yearArg : selectedYear;
-      // When restoring from history, query/field come from the saved state.
-      const fromHistory = opts.fromHistory ?? false;
-      const query = opts.query ?? searchQuery;
-      const field = opts.field ?? selectedField;
-
-      setTableView(null);
-
-      const pushState = (state: ViewState) => {
-        if (!fromHistory) pushUrl(state);
-      };
-
-      // In collection mode everything is already loaded, so filter on the client.
-      if (showCollection) {
-        let filteredCars = cars;
-        if (!searchYear && !query) {
-          setFilteredCollectionCars(filteredCars);
-          return;
-        }
-        if (searchYear) {
-          filteredCars = filteredCars
-            .map((car) => ({ ...car, d: car.d.filter((item) => item.y === searchYear) }))
-            .filter((car) => car.d.length > 0);
-        }
-        if (query && query.length > 0) {
-          const searchWords = tokenize(query);
-          filteredCars = filteredCars.filter((car) => carMatchesQuery(car, field, searchWords, query));
-        }
-        setFilteredCollectionCars(filteredCars);
-        return;
-      }
-
-      // A year is selected but no query: show that year's variants as a table.
-      if (searchYear && !query) {
-        try {
-          setLoading(true);
-          setError(null);
-          setSelectedModel(null);
-          setCars([]);
-          const data = await fetchYearCars(searchYear, selectedBrand);
-          setTableView({ kind: 'year', value: searchYear, cars: data });
-          pushState({ view: 'year', year: searchYear });
-        } catch (err) {
-          setError(err instanceof Error ? err.message : t('search.errors.failedToLoad'));
-        } finally {
-          setLoading(false);
-        }
-        return;
-      }
-
-      // No year and no query: show the welcome screen.
-      if (!searchYear && !query) {
-        setError(null);
-        setCars([]);
-        pushState({ view: 'welcome', year: '', searchQuery: '', selectedField: field });
-        return;
-      }
-
-      // Searching across all years requires at least 3 characters.
-      if (!searchYear && query.length < 3) {
-        setError(t('search.errors.minChars'));
-        setCars([]);
-        return;
-      }
-
-      try {
-        setLoading(true);
-        setError(null);
-        setSelectedModel(null);
-        // Remap the query from a Cyrillic keyboard layout to Latin if needed.
-        const convertedQuery = convertKeyboardLayout(query);
-        if (convertedQuery !== query) setSearchQuery(convertedQuery);
-        const data = await fetchCars(field, convertedQuery, searchYear);
-        // Model fields (series, wheels) yield a table of matching variants;
-        // casting fields (name, designer, description) yield a grid/table of castings.
-        if (isModelSearchField(field)) {
-          setCars([]);
-          setTableView({
-            kind: 'field',
-            value: convertedQuery,
-            cars: data,
-            title: { field, query: convertedQuery },
-          });
-        } else {
-          setCastingsTitle({ field, query: convertedQuery });
-          setCars(data);
-        }
-        pushState({ view: 'grid', year: searchYear, searchQuery: convertedQuery, selectedField: field });
-      } catch (err) {
-        setError(err instanceof Error ? err.message : t('search.errors.failedToLoad'));
-        setCars([]);
-      } finally {
-        setLoading(false);
-      }
+      return run(async () => {
+        const data = await fetchCars('tag', tag);
+        setCastingsTitle({ text: tagLabel(tag) });
+        setCars(data);
+        if (push) pushUrl({ view: 'grid', tag });
+      });
     },
-    [selectedField, searchQuery, selectedYear, showCollection, cars, selectedBrand]
+    [run]
   );
 
-  // Restore the whole app view from the URL. Used on first load AND on browser
-  // Back/Forward. We read window.location — NOT history.state — because Next's
-  // App Router overwrites history.state with its own internal object, which
-  // would drop our view and leave Back/Forward showing nothing (refresh worked
-  // because that path always read the URL).
+  // A server search. Model fields (series, wheels) yield a table of matching
+  // variants; casting fields (name, designer, description) yield castings.
+  const searchServer = useCallback(
+    (field: string, query: string, year: string, push = true) => {
+      setSelectedModel(null);
+      setTableView(null);
+      setCars([]);
+      return run(async () => {
+        const data = await fetchCars(field, query, year);
+        if (isModelSearchField(field)) {
+          setTableView({ kind: 'field', value: query, cars: data, title: { field, query } });
+        } else {
+          setCastingsTitle({ field, query });
+          setCars(data);
+        }
+        if (push) pushUrl({ view: 'grid', year, searchQuery: query, selectedField: field });
+      });
+    },
+    [run]
+  );
+
+  const openCollection = useCallback(
+    (uid: string) =>
+      run(async () => {
+        const ids = await getCollection(uid);
+        const variants = await fetchVariantsByIds(ids);
+        setCollection(ids);
+        setCars(variants);
+        setFilteredCollectionCars(variants);
+        setShowCollection(true);
+      }, 'search.errors.failedToLoadCollection'),
+    [run]
+  );
+
+  // The search button / Enter / a picked suggestion / a picked year.
+  const handleSearch = (opts: SearchOptions = {}) => {
+    const year = opts.year ?? selectedYear;
+    const field = opts.field ?? selectedField;
+    const push = !opts.fromHistory;
+    const query = convertKeyboardLayout(opts.query ?? searchQuery);
+    if (query !== searchQuery) setSearchQuery(query);
+    setTableView(null);
+
+    // The collection is already loaded: filter it on the client.
+    if (showCollection) {
+      setFilteredCollectionCars(filterCollection(cars, year, field, query));
+      return;
+    }
+    if (!query) {
+      if (year) {
+        openYear(year, push);
+      } else {
+        setError(null);
+        setCars([]);
+        if (push) pushUrl({ view: 'welcome' });
+      }
+      return;
+    }
+    // Searching across all years needs at least 3 characters.
+    if (!year && query.length < 3) {
+      setError(t('search.errors.minChars'));
+      setCars([]);
+      return;
+    }
+    searchServer(field, query, year, push);
+  };
+
+  // Restore the whole view from the URL: on first load AND on Back/Forward. We
+  // read window.location, not history.state — Next's App Router overwrites
+  // history.state with its own object.
   const restoreFromLocation = useCallback(() => {
     const params = new URLSearchParams(window.location.search);
     const model = params.get('model');
@@ -264,196 +212,159 @@ export function useAppNavigation() {
     const tag = params.get('tag');
     const view = params.get('view');
     const q = params.get('q') || '';
-    // Default to name search on a fresh load; buildViewUrl omits the field param
-    // when it's 'name', so a missing field param always means a name search.
+    // buildViewUrl omits `field` for a name search, so a missing field means 'name'.
     const field = params.get('field') || 'name';
     const year = params.get('year') || '';
 
     setTableView(null);
     setSelectedModel(null);
-    setShowCollection(view === 'collection');
+    setShowCollection(false);
+    setError(null);
     setSelectedYear(year);
     setSearchQuery(tag ? '' : q);
     setSelectedField(field);
 
     if (model) {
-      setLoading(true);
-      fetchCarByLnk(model, params.get('brand') || undefined).then((c) => c && setSelectedModel(c)).finally(() => setLoading(false));
+      run(async () => setSelectedModel(await fetchCarByLnk(model, params.get('brand') || undefined)));
     } else if (series) {
-      setLoading(true);
-      fetchSeriesCars(series).then((d) => setTableView({ kind: 'series', value: series, cars: d })).finally(() => setLoading(false));
+      openSeries(series, false);
     } else if (tag) {
-      setLoading(true);
-      fetchCars('tag', tag).then((d) => { setCastingsTitle({ text: tagLabel(tag) }); setCars(d); }).finally(() => setLoading(false));
-    } else if (year && !q) {
-      handleSearch(year, { fromHistory: true, query: '' });
+      openTag(tag, false);
     } else if (view === 'collection') {
-      setPendingCollection(true);
+      setPendingCollection(true); // opened once the session is known
     } else if (q) {
-      handleSearch(year, { fromHistory: true, query: q, field });
+      searchServer(field, q, year, false);
+    } else if (year) {
+      openYear(year, false);
     } else {
-      setCars([]); // welcome
+      setCars([]);
     }
-  }, [handleSearch]);
+  }, [run, openSeries, openTag, openYear, searchServer]);
 
-  // Run once on mount (shareable links / refresh).
   useEffect(() => {
     restoreFromLocation();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Re-restore on Back/Forward; re-subscribe when the callback updates so it
-  // always closes over the latest handleSearch.
-  useEffect(() => {
     window.addEventListener('popstate', restoreFromLocation);
     return () => window.removeEventListener('popstate', restoreFromLocation);
   }, [restoreFromLocation]);
 
-  // Open the collection once the session is ready (for a shared ?view=collection link).
+  // A shared ?view=collection link: open it once the session is ready.
   useEffect(() => {
-    if (!pendingCollection || !session?.user?.id) return;
+    if (!pendingCollection || !userId) return;
     setPendingCollection(false);
-    (async () => {
-      try {
-        setLoading(true);
-        const ids = await getCollection(session.user!.id!);
-        setCollection(ids);
-        const variants = ids.length ? await fetchVariantsByIds(ids) : [];
-        setFilteredCollectionCars(variants);
-        setCars(variants);
-        setShowCollection(true);
-      } finally {
-        setLoading(false);
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pendingCollection, session?.user?.id]);
+    openCollection(userId);
+  }, [pendingCollection, userId, openCollection]);
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      const convertedQuery = convertKeyboardLayout(searchQuery);
-      if (convertedQuery !== searchQuery) setSearchQuery(convertedQuery);
-      handleSearch();
-    }
-  };
+  const handleModelClick = useCallback(
+    (car: CarData) =>
+      run(async () => {
+        const full = await fetchCarByLnk(car.lnk, car.brand);
+        setTableView(null);
+        setSelectedModel(full);
+        const { selectedYear, searchQuery, selectedField } = latest.current;
+        pushUrl({ view: 'model', model: car.lnk, brand: car.brand, year: selectedYear, searchQuery, selectedField });
+      }),
+    [run]
+  );
 
-  const handleYearChange = (year: string) => {
-    setSelectedYear(year);
-    if (!selectedModel) handleSearch(year);
-  };
-
-  // Switching the search parameter: 'year' is a select-only mode, the rest are
-  // typed — so the two never apply at once.
-  const handleFieldChange = (field: string) => {
-    setSelectedField(field);
-    if (field === 'year') setSearchQuery('');
-    else setSelectedYear('');
-  };
-
-  const handleModelClick = useCallback(async (car: CarData) => {
-    try {
-      setLoading(true);
-      const fullCarData = await fetchCarByLnk(car.lnk, car.brand);
-      setTableView(null);
-      setSelectedModel(fullCarData);
-      const { selectedYear, searchQuery, selectedField } = navStateRef.current;
-      pushUrl({ view: 'model', model: car.lnk, brand: car.brand, year: selectedYear, searchQuery, selectedField });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t('search.errors.failedToLoad'));
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const handleDesignerClick = useCallback(
+    (designer: string) => {
+      setShowCollection(false);
+      setSelectedField('designer');
+      setSearchQuery(designer);
+      setSelectedYear('');
+      searchServer('designer', designer, '');
+    },
+    [searchServer]
+  );
 
   const handleBackToSearch = () => {
     setSelectedModel(null);
     pushUrl({ view: 'grid', year: selectedYear, searchQuery, selectedField });
   };
 
-  const handleCollectionClick = async () => {
-    if (!session?.user?.id) {
+  const handleCollectionClick = () => {
+    if (!userId) {
       signIn('google');
       return;
     }
-    setLoading(true);
     setTableView(null);
-    try {
-      setSelectedYear('');
-      setSearchQuery('');
-      setSelectedModel(null);
-      if (!showCollection) {
-        const variants = collection.length > 0 ? await fetchVariantsByIds(collection) : [];
-        setFilteredCollectionCars(variants);
-        setCars(variants);
-        pushUrl({ view: 'collection' });
-      } else {
-        setFilteredCollectionCars([]);
-        setCars([]);
-        pushUrl({ view: 'grid', year: selectedYear, searchQuery, selectedField });
-      }
-      setShowCollection(!showCollection);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t('search.errors.failedToLoadCollection'));
+    setSelectedModel(null);
+    setSelectedYear('');
+    setSearchQuery('');
+    if (showCollection) {
       setShowCollection(false);
-      setFilteredCollectionCars([]);
       setCars([]);
-    } finally {
-      setLoading(false);
+      setFilteredCollectionCars([]);
+      pushUrl({ view: 'welcome' });
+    } else {
+      openCollection(userId);
+      pushUrl({ view: 'collection' });
     }
   };
 
   const handleLogoClick = () => {
     setTableView(null);
-    setSelectedYear('');
-    setSearchQuery('');
     setSelectedModel(null);
     setShowCollection(false);
+    setSelectedYear('');
+    setSearchQuery('');
+    setError(null);
     setCars([]);
     pushUrl({ view: 'welcome' });
   };
 
   const handleAddToCollection = useCallback(
     async (itemId: string) => {
-      if (!session?.user?.id) return;
-      const isCollected = collection.includes(itemId);
-      if (isCollected) {
-        if (window.confirm(t('collection.confirmDelete'))) {
-          try {
-            const updated = await removeFromCollection(session.user.id, itemId);
-            setCollection(updated);
-            setCars((prev) => prev.filter((car) => !car.d.some((item) => item.id === itemId)));
-            setFilteredCollectionCars((prev) => prev.filter((car) => !car.d.some((item) => item.id === itemId)));
-          } catch (err) {
-            setError(err instanceof Error ? err.message : t('collection.errors.failedToRemove'));
-          }
+      if (!userId) return;
+      const removing = collection.includes(itemId);
+      if (removing && !window.confirm(t('collection.confirmDelete'))) return;
+      try {
+        if (removing) {
+          setCollection(await removeFromCollection(userId, itemId));
+          const drop = (prev: CarData[]) => keepVariants(prev, (v) => v.id !== itemId);
+          setCars(drop);
+          setFilteredCollectionCars(drop);
+        } else {
+          setCollection(await addToCollection(userId, itemId));
         }
-      } else {
-        try {
-          const updated = await addToCollection(session.user.id, itemId);
-          setCollection(updated);
-        } catch (err) {
-          setError(err instanceof Error ? err.message : t('collection.errors.failedToAdd'));
-        }
+      } catch (err) {
+        console.error(err);
+        setError(t(removing ? 'collection.errors.failedToRemove' : 'collection.errors.failedToAdd'));
       }
     },
-    [session?.user?.id, collection]
+    [userId, collection]
+  );
+
+  // Year picker options: the open casting's own years, or every year.
+  const availableYears = useMemo(
+    () => (selectedModel ? [...new Set(selectedModel.d.flatMap((v) => variantYears(v.y)))].sort() : ALL_YEARS),
+    [selectedModel]
   );
 
   return {
-    // search / top panel
+    // top panel
     selectedField,
-    setSelectedField,
-    handleFieldChange,
     selectedBrand,
-    setSelectedBrand,
     selectedYear,
     searchQuery,
-    setSearchQuery,
     availableYears,
-    handleSearch,
-    handleKeyPress,
-    handleYearChange,
-    handleSuggestionSelect,
+    setSearchQuery,
+    handleBrandChange: (brand: string) => isBrandScope(brand) && setSelectedBrand(brand),
+    // 'year' is a select-only mode, the rest are typed — the two never apply at once.
+    handleFieldChange: (field: string) => {
+      setSelectedField(field);
+      if (field === 'year') setSearchQuery('');
+      else setSelectedYear('');
+    },
+    handleYearChange: (year: string) => {
+      setSelectedYear(year);
+      if (!selectedModel) handleSearch({ year });
+    },
+    handleSearch: () => handleSearch(),
+    handleSuggestionSelect: (value: string) => {
+      setSearchQuery(value);
+      handleSearch({ query: value });
+    },
     handleLogoClick,
     handleCollectionClick,
     // content
@@ -468,14 +379,14 @@ export function useAppNavigation() {
     collection,
     sortConfig,
     setSortConfig,
+    isLoggedIn: !!userId,
     handleAddToCollection,
-    handleSeriesClick,
+    handleSeriesClick: openSeries,
+    handleYearClick: openYear,
+    handleTagClick: openTag,
     handleDesignerClick,
-    handleYearClick,
-    handleTagClick,
     handleModelClick,
     handleBackToSearch,
-    handleCloseTable,
-    isLoggedIn: !!session?.user?.id,
+    handleCloseTable: () => setTableView(null),
   };
 }

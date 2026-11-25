@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { jsonError, serverError } from '../../lib/http';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { CarData } from '../../types';
@@ -14,7 +15,7 @@ import { invalidateCarsData, CARS_DATA_PATH } from '../../lib/carsData';
  */
 export async function POST(request: Request) {
   if (process.env.NODE_ENV === 'production') {
-    return NextResponse.json({ error: 'disabled in production' }, { status: 403 });
+    return jsonError('disabled in production', 403);
   }
 
   try {
@@ -46,7 +47,7 @@ export async function POST(request: Request) {
       }
     }
 
-    const backup = path.join(process.cwd(), 'scripts', 'output', 'carsdata.pre-series-cleanup.json');
+    const backup = path.join(process.cwd(), 'scripts', 'output', 'hw.pre-series-cleanup.json');
     await fs.mkdir(path.dirname(backup), { recursive: true });
     await fs.copyFile(CARS_DATA_PATH, backup);
     await fs.writeFile(CARS_DATA_PATH, JSON.stringify(cars, null, 2), 'utf-8');
@@ -60,6 +61,6 @@ export async function POST(request: Request) {
       renamedSeries: renameMap.size,
     });
   } catch (e) {
-    return NextResponse.json({ error: e instanceof Error ? e.message : 'Unknown error' }, { status: 500 });
+    return serverError('series-cleanup', e);
   }
 }

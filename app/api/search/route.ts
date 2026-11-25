@@ -1,82 +1,55 @@
-import { NextResponse } from 'next/server';
 import { CarData } from '../../types';
 import { VARIANT_FIELDS, isModelSearchField } from '../../consts';
 import { loadCarsData } from '../../lib/carsData';
 import { carMatchesQuery, includesAll, tokenize } from '../../lib/carSearch';
-import { castingMatchesTag } from '../../lib/tagsData';
-import { isStandardScale } from '../../lib/seriesCategory';
+import { castingMatchesTag } from '../../lib/tags';
+import { isStandardScale, keepVariants } from '../../lib/seriesCategory';
 import { variantHasYear } from '../../lib/years';
-import { STATIC_CACHE_HEADERS } from '../../lib/http';
+import { serverError, staticJson } from '../../lib/http';
 
-// Casting results only need year/image flag/id per variant (for the card preview).
-const trimVariants = (car: CarData): CarData => ({
+// A casting as a search result: per variant only what the card needs, plus the
+// flags/tags the castings view filters and sorts by (variant `Sr` is dropped,
+// so the scale is flagged here).
+const asCasting = (car: CarData): CarData => ({
   ...car,
-  d: car.d.map(item => ({ y: item.y, p: item.p, id: item.id, brand: item.brand })),
+  d: car.d.map(({ y, p, id, brand }) => ({ y, p, id, brand })),
+  s164: car.d.some(isStandardScale),
+  sOth: car.d.some((v) => !isStandardScale(v)),
+  tags: { mk: car.tags?.mk, yr: car.tags?.yr, ye: car.tags?.ye },
 });
 
+// GET ?field=&value=[&year=]
+//   field=tag             -> castings matching a tag query ("th:Supercar,mk:Nissan")
+//   series / wheels       -> castings with only the matching variants (full fields)
+//   name / designer / ... -> matching castings, trimmed by asCasting
 export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const field = searchParams.get('field');
-    const value = searchParams.get('value');
-    const year = searchParams.get('year');
+    const params = new URL(request.url).searchParams;
+    const field = params.get('field');
+    const value = params.get('value')?.trim();
+    const year = params.get('year');
+    if (!field || !value) return staticJson([]);
 
-    const carsData = await loadCarsData();
-    // Casting results carry make + model year (from the embedded tags) so the
-    // grid can sort by them.
-    const asCasting = (car: CarData): CarData => {
-      // Scale (from `Sr`) is dropped by trimVariants, so flag here whether the
-      // casting has any standard 1:64 variant — drives the grid's scale filter.
-      return {
-        ...trimVariants(car),
-        s164: car.d.some(isStandardScale),
-        sOth: car.d.some((v) => !isStandardScale(v)),
-        tags: { mk: car.tags?.mk, yr: car.tags?.yr, ye: car.tags?.ye },
-      };
-    };
+    let cars = await loadCarsData();
+    if (year) cars = cars.filter((car) => car.d.some((v) => variantHasYear(v.y, year)));
 
-    let filteredData = carsData;
-
-    // Narrow to cars that have at least one variant from the requested year.
-    if (year) {
-      filteredData = filteredData.filter((car) => car.d.some((item) => variantHasYear(item.y, year)));
+    if (field === 'tag') {
+      return staticJson(cars.filter((car) => castingMatchesTag(car.tags, value)).map(asCasting));
     }
 
-    // Tag browse (home page): castings matching every token of the tag query.
-    if (field === 'tag' && value && value.trim() !== '') {
-      const result = filteredData.filter((car) => castingMatchesTag(car.tags, value)).map(asCasting);
-      return NextResponse.json(result, { headers: STATIC_CACHE_HEADERS });
-    }
-
-    if (field && value && value.trim() !== '') {
-      const words = tokenize(value);
-      // Model-field searches (series, wheels) return a table of the matching
-      // variants, so keep the full variant fields and drop non-matching variants.
-      // Casting-field searches (name, designer, ...) return whole castings, trimmed.
-      const modelSearch = isModelSearchField(field);
-      const variantField = VARIANT_FIELDS[field];
-      filteredData = filteredData
-        .filter(car => carMatchesQuery(car, field, words, value))
-        .map(car => {
-          if (!modelSearch || !variantField) return asCasting(car);
-          const d = car.d.filter(item => {
-            const v = item[variantField];
-            return typeof v === 'string' && includesAll(v, words);
-          });
-          return { ...car, d };
+    const words = tokenize(value);
+    const matches = cars.filter((car) => carMatchesQuery(car, field, words, value));
+    const variantField = VARIANT_FIELDS[field];
+    if (isModelSearchField(field) && variantField) {
+      return staticJson(
+        keepVariants(matches, (v) => {
+          const s = v[variantField];
+          return typeof s === 'string' && includesAll(s, words);
         })
-        .filter(car => car.d.length > 0);
-    } else {
-      // No search term: return nothing (the year-only listing is handled above).
-      filteredData = [];
+      );
     }
-
-    return NextResponse.json(filteredData, { headers: STATIC_CACHE_HEADERS });
-  } catch (error) {
-    console.error('Error processing search request:', error);
-    return NextResponse.json(
-      { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
-      { status: 500 }
-    );
+    return staticJson(matches.map(asCasting));
+  } catch (err) {
+    return serverError('search', err);
   }
 }

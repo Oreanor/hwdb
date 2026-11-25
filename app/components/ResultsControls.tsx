@@ -5,23 +5,21 @@ import { t } from '../i18n';
 import { ScaleFilter } from '../lib/seriesCategory';
 import { ViewMode } from '../hooks/usePersistedView';
 import Select from './ui/Select';
-import ViewSelect from './ViewSelect';
 
 interface ResultsControlsProps {
   shownCount: number;
   scale: ScaleFilter;
   onScaleChange: (scale: ScaleFilter) => void;
-  scaleCounts: { only164: number; other: number; all: number };
+  scaleCounts: Record<ScaleFilter, number>;
   view: ViewMode;
   setView: (mode: ViewMode) => void;
   viewModes: ViewMode[];
-  // View-specific middle controls: the series (mainline/premium) filter for the
-  // variants view, the make/model-year sort for the castings grid.
+  // View-specific controls between the scale filter and the view picker: the
+  // series (mainline/premium) filter for variants, the sort for castings.
   children?: ReactNode;
 }
 
-// Shared chrome for both results filter bars so they stay identical: "Shown: N"
-// + scale filter + the view-specific controls + the view picker.
+// The filter bar every results view shares: "Shown: N", scale, extras, view picker.
 export default function ResultsControls({
   shownCount,
   scale,
@@ -33,13 +31,13 @@ export default function ResultsControls({
   children,
 }: ResultsControlsProps) {
   return (
-    <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
-      <span className="mr-2.5 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
+    <>
+      <span className="mr-1 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
         {t('filter.shown')}: {shownCount}
       </span>
       <Select
         value={scale}
-        onValueChange={(v) => onScaleChange(v as ScaleFilter)}
+        onValueChange={onScaleChange}
         options={[
           { value: 'only164', label: `1:64 (${scaleCounts.only164})` },
           { value: 'other', label: `${t('filter.otherScales')} (${scaleCounts.other})` },
@@ -48,7 +46,12 @@ export default function ResultsControls({
         ariaLabel={t('filter.allScales')}
       />
       {children}
-      <ViewSelect view={view} setView={setView} modes={viewModes} />
-    </div>
+      <Select
+        value={view}
+        onValueChange={setView}
+        options={viewModes.map((m) => ({ value: m, label: t(`view.${m}`) }))}
+        ariaLabel={t('view.label')}
+      />
+    </>
   );
 }

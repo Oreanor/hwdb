@@ -1,22 +1,32 @@
+'use client';
+
 import { useState, useMemo, memo } from 'react';
+import { Plus, X, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { CarData, CarDataItem, SortConfig } from '../types';
 import { formatCarName, getImageUrl, getPreviewUrl } from '../utils';
-import { FIELD_ORDER, COLLAPSED_COLUMNS_COOKIE } from '../consts';
-import { Plus, X } from 'lucide-react';
-import { useSession } from 'next-auth/react';
+import { variantsInYear } from '../lib/years';
+import { VARIANT_COLUMNS, VariantColumn, COLLAPSED_COLUMNS_KEY } from '../consts';
 import { t } from '../i18n';
-import { useImageCarousel } from '../hooks/useImageCarousel';
-import CarouselModal from './CarouselModal';
+import { carouselPhotos, useImageCarousel } from '../hooks/useImageCarousel';
+import ImageModal from './ImageModal';
 import Thumbnail from './Thumbnail';
 import LinkButton from './LinkButton';
 import ClampCell from './ClampCell';
+import { SortLabel, nextSort } from './SortLabel';
+import * as s from './ui/styles';
 
+// Sort key for the casting-name column (the rest sort by their VariantColumn).
+const CASTING_SORT = 'casting';
+
+// Free-text columns that get a minimum width so long values don't make rows very tall.
+const WIDE_COLUMNS = new Set<string>(['Sr', 'c', 'Tm', 'Wh', 'Nt']);
 
 interface ModelsTableProps {
   cars: CarData[];
   sortConfig: SortConfig;
-  onSortChange: (config: SortConfig | ((prev: SortConfig) => SortConfig)) => void;
+  onSortChange: (config: SortConfig) => void;
   selectedYear?: string;
+  // Present only for a signed-in user: adds the add/remove column.
   onAddToCollection?: (id: string) => void;
   collection: string[];
   onSeriesClick?: (series: string) => void;
@@ -29,7 +39,7 @@ interface ModelsTableProps {
 interface TableRowProps {
   car: CarData;
   item: CarDataItem;
-  collapsedColumns: Set<string>;
+  collapsed: Set<string>;
   onImageClick: (url: string) => void;
   isCollected: boolean;
   onAddToCollection?: (id: string) => void;
@@ -39,134 +49,86 @@ interface TableRowProps {
   showCastingName?: boolean;
 }
 
-const TableRow = memo(({ car, item, collapsedColumns, onImageClick, isCollected, onAddToCollection, onSeriesClick, onModelClick, onYearClick, showCastingName }: TableRowProps) => {
-  const { data: session } = useSession();
-  const imageUrl = item.p === 't' ? getImageUrl(item) : undefined;
-  const previewUrl = item.p === 't' ? getPreviewUrl(item) : undefined;
+const TableRow = memo(function TableRow({
+  car,
+  item,
+  collapsed,
+  onImageClick,
+  isCollected,
+  onAddToCollection,
+  onSeriesClick,
+  onModelClick,
+  onYearClick,
+  showCastingName,
+}: TableRowProps) {
+  const imageUrl = getImageUrl(item);
+  const name = formatCarName(car.lnk);
+
+  const cell = (key: VariantColumn) => {
+    const value = item[key];
+    if (!value) return '—';
+    if (key === 'Sr' && onSeriesClick) return <LinkButton onClick={() => onSeriesClick(value)}>{value}</LinkButton>;
+    if (key === 'y' && onYearClick) return <LinkButton onClick={() => onYearClick(value)}>{value}</LinkButton>;
+    return <ClampCell text={value} />;
+  };
 
   return (
-    <tr
-      key={`${item.id}`}
-      // content-visibility skips layout/paint for off-screen rows (year views
-      // can reach ~1750 rows); contain-intrinsic-size reserves an estimated height.
-      className={`hover:bg-gray-50 dark:hover:bg-gray-700 [content-visibility:auto] [contain-intrinsic-size:auto_84px] ${
-        isCollected ? 'bg-gray-100 dark:bg-gray-700' : ''
-      }`}
-    >
-      {session?.user && (
-        <td className="p-2 whitespace-nowrap">
+    <tr className={`${s.tr} ${isCollected ? 'bg-blue-50/70 dark:bg-blue-950/30' : ''}`}>
+      {onAddToCollection && (
+        <td className="p-2">
           <button
-            className={`w-6 h-6 transition-colors cursor-pointer ${
-              isCollected
-                ? 'text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300'
-                : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'
-            }`}
+            type="button"
+            onClick={() => item.id && onAddToCollection(item.id)}
             title={isCollected ? t('collection.remove') : t('collection.add')}
-            onClick={() => onAddToCollection && item.id && onAddToCollection(item.id)}
+            aria-label={isCollected ? t('collection.remove') : t('collection.add')}
+            className={`flex size-7 items-center justify-center rounded-md transition-colors cursor-pointer ${
+              isCollected
+                ? 'text-red-500 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40'
+                : 'text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-gray-200'
+            }`}
           >
-            {isCollected ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+            {isCollected ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
           </button>
         </td>
       )}
-      <td className="p-2 whitespace-nowrap">
+      <td className="p-2">
         <Thumbnail
-          url={previewUrl}
+          url={getPreviewUrl(item)}
           fallbackUrl={imageUrl}
-          alt={formatCarName(car.lnk)}
+          alt={name}
           onClick={imageUrl ? () => onImageClick(imageUrl) : undefined}
-          className="w-16 h-16"
+          className="size-16"
         />
       </td>
       {showCastingName && (
-        <td className="p-2 text-sm font-medium break-words min-w-[120px]">
-          {onModelClick ? (
-            <LinkButton onClick={() => onModelClick(car)}>{formatCarName(car.lnk)}</LinkButton>
-          ) : (
-            <span className="text-gray-900 dark:text-gray-200">{formatCarName(car.lnk)}</span>
-          )}
+        <td className={`${s.td} font-medium break-words min-w-[120px]`}>
+          {onModelClick ? <LinkButton onClick={() => onModelClick(car)}>{name}</LinkButton> : name}
         </td>
       )}
-      {FIELD_ORDER.map(field => {
-        const value = item[field.key] || '-';
-        const clickableSeries = field.key === 'Sr' && onSeriesClick && item.Sr;
-        const clickableYear = field.key === 'y' && onYearClick && item.y;
-        return (
-          <td
-            key={field.key}
-            className={`p-2 text-sm text-gray-900 dark:text-gray-200 ${
-              collapsedColumns.has(field.key) ? 'w-[40px] min-w-[40px] max-w-[40px] p-0 bg-gray-50 dark:bg-gray-700 overflow-hidden' : 'break-words'
-            }`}
-          >
-            <div className={collapsedColumns.has(field.key) ? 'h-0 overflow-hidden' : ''}>
-              {clickableSeries ? (
-                <LinkButton onClick={() => onSeriesClick(item.Sr as string)}>{value}</LinkButton>
-              ) : clickableYear ? (
-                <LinkButton onClick={() => onYearClick(item.y)}>{value}</LinkButton>
-              ) : (
-                <ClampCell text={String(value)} />
-              )}
-            </div>
+      {VARIANT_COLUMNS.map((key) =>
+        collapsed.has(key) ? (
+          <td key={key} className="w-10 bg-gray-50 dark:bg-gray-800" />
+        ) : (
+          <td key={key} className={`${s.td} break-words ${WIDE_COLUMNS.has(key) ? 'min-w-40' : ''}`}>
+            {cell(key)}
           </td>
-        );
-      })}
+        )
+      )}
     </tr>
   );
 });
 
-TableRow.displayName = 'TableRow';
+const loadCollapsed = (): Set<string> => {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(COLLAPSED_COLUMNS_KEY) || '[]'));
+  } catch {
+    return new Set();
+  }
+};
 
-const TableHeader = memo(({
-  field,
-  sortConfig,
-  onSort,
-  collapsedColumns,
-  onToggleCollapse
-}: {
-  field: (typeof FIELD_ORDER)[number];
-  sortConfig: SortConfig | null;
-  onSort: (field: string) => void;
-  collapsedColumns: Set<string>;
-  onToggleCollapse: (field: string) => void;
-}) => {
-  const isSorted = sortConfig?.field === field.key;
-  const isCollapsed = collapsedColumns.has(field.key);
-
-  return (
-    <th
-      className={`p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 ${
-        isCollapsed ? 'w-[30px] min-w-[30px] max-w-[30px] p-0 overflow-hidden' : ''
-      } border-r border-gray-200 dark:border-gray-600`}
-    >
-      <div className="flex items-center justify-between">
-        {isCollapsed ? (
-          <span className="text-gray-600 dark:text-gray-400">{t(`table.col.${field.key}`).charAt(0)}</span>
-        ) : (
-          <span
-            className="cursor-pointer hover:text-gray-600 dark:hover:text-gray-400"
-            onClick={() => onSort(field.key)}
-          >
-            {t(`table.col.${field.key}`)}
-            {isSorted && (
-              <span className="ml-1">
-                {sortConfig?.direction === 'asc' ? '↑' : '↓'}
-              </span>
-            )}
-          </span>
-        )}
-        <button
-          onClick={() => onToggleCollapse(field.key)}
-          className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 cursor-pointer font-bold"
-        >
-          {isCollapsed ? '→' : '←'}
-        </button>
-      </div>
-    </th>
-  );
-});
-
-TableHeader.displayName = 'TableHeader';
-
-const ModelsTable: React.FC<ModelsTableProps> = ({
+// Variants as a table: one row per variant, sortable and collapsible columns,
+// photos open the viewer.
+const ModelsTable = memo(function ModelsTable({
   cars,
   sortConfig,
   onSortChange,
@@ -177,141 +139,94 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
   onModelClick,
   onYearClick,
   showCastingName,
-  stickyTop = 0
-}) => {
-  const { data: session } = useSession();
-  const [collapsedColumns, setCollapsedColumns] = useState<Set<string>>(() => {
-    if (typeof window === 'undefined') return new Set();
-    const saved = localStorage.getItem(COLLAPSED_COLUMNS_COOKIE);
-    return new Set(saved ? JSON.parse(saved) : []);
-  });
+  stickyTop = 0,
+}: ModelsTableProps) {
+  const [collapsed, setCollapsed] = useState<Set<string>>(() =>
+    typeof window === 'undefined' ? new Set() : loadCollapsed()
+  );
+  const collected = useMemo(() => new Set(collection), [collection]);
 
-  // Every image shown in the table, in order, for the modal's prev/next carousel.
-  const photos = useMemo(() => {
-    const result: { url: string; year: string; series?: string; name: string }[] = [];
-    cars.forEach(car => {
-      const name = formatCarName(car.lnk);
-      car.d
-        .filter(item => !selectedYear || item.y === selectedYear)
-        .filter(item => item.p === 't')
-        .forEach(item => {
-          const url = getImageUrl(item);
-          if (url) result.push({ url, year: item.y, series: item.Sr, name });
-        });
-    });
-    return result;
-  }, [cars, selectedYear]);
+  const photos = useMemo(() => carouselPhotos(cars, selectedYear), [cars, selectedYear]);
   const carousel = useImageCarousel(photos);
 
-  const handleSort = (field: string) => {
-    if (collapsedColumns.has(field)) {
-      onSortChange(null);
-      return;
-    }
-
-    if (sortConfig?.field === field) {
-      if (sortConfig.direction === 'asc') {
-        onSortChange({ field, direction: 'desc' });
-      } else {
-        onSortChange(null);
-      }
+  const toggleCollapse = (key: string) => {
+    const next = new Set(collapsed);
+    if (next.has(key)) {
+      next.delete(key);
     } else {
-      onSortChange({ field, direction: 'asc' });
+      next.add(key);
+      if (sortConfig?.field === key) onSortChange(null); // a hidden column can't stay sorted
     }
+    setCollapsed(next);
+    localStorage.setItem(COLLAPSED_COLUMNS_KEY, JSON.stringify([...next]));
   };
 
-  const handleToggleCollapse = (field: string) => {
-    const newCollapsed = new Set(collapsedColumns);
-    if (newCollapsed.has(field)) {
-      newCollapsed.delete(field);
-    } else {
-      newCollapsed.add(field);
-      // Collapsing the sorted column clears the sort.
-      if (sortConfig?.field === field) {
-        onSortChange(null);
-      }
-    }
-    setCollapsedColumns(newCollapsed);
-    localStorage.setItem(COLLAPSED_COLUMNS_COOKIE, JSON.stringify(Array.from(newCollapsed)));
-  };
-
-  const allRows = useMemo(() => {
-    const rows = cars.flatMap(car =>
-      car.d
-        .filter(item => !selectedYear || item.y === selectedYear)
-        .map((item, index) => ({
-          car,
-          item,
-          index
-        }))
-    );
-
-    if (sortConfig) {
-      rows.sort((a, b) => {
-        let aValue: string;
-        let bValue: string;
-
-        if (sortConfig.field === 'model') {
-          aValue = a.car.lnk;
-          bValue = b.car.lnk;
-        } else {
-          aValue = (a.item[sortConfig.field as keyof CarDataItem] as string) || '';
-          bValue = (b.item[sortConfig.field as keyof CarDataItem] as string) || '';
-        }
-
-        if (aValue === bValue) return 0;
-
-        const comparison = aValue.localeCompare(bValue);
-        return sortConfig.direction === 'asc' ? comparison : -comparison;
-      });
-    }
-
-    return rows;
+  const rows = useMemo(() => {
+    const all = cars.flatMap((car) => variantsInYear(car.d, selectedYear).map((item) => ({ car, item })));
+    if (!sortConfig) return all;
+    const { field, direction } = sortConfig;
+    const value = (r: (typeof all)[number]) =>
+      field === CASTING_SORT ? formatCarName(r.car.lnk) : String(r.item[field as keyof CarDataItem] ?? '');
+    const dir = direction === 'asc' ? 1 : -1;
+    return [...all].sort((a, b) => value(a).localeCompare(value(b)) * dir);
   }, [cars, sortConfig, selectedYear]);
 
+  const sortArrow = (field: string) => (sortConfig?.field === field ? sortConfig.direction : undefined);
+
   return (
-    // No overflow wrapper here: a scroll container would re-anchor the sticky
-    // header to itself. The page's content area (flex-1) scrolls both axes, so
-    // the sticky thead pins just below the (also sticky) ResultsHeader bar.
-    <div>
-      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-        <thead className="sticky z-20 bg-gray-50 dark:bg-gray-700" style={{ top: stickyTop }}>
+    // No overflow wrapper: a scroll container would re-anchor the sticky header.
+    // <main> scrolls both axes, so the thead pins just below the ResultsHeader.
+    <>
+      <table className={s.table}>
+        <thead className={s.thead} style={{ top: stickyTop }}>
           <tr>
-            {session?.user && (
-              <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 w-[40px] border-r border-gray-200 dark:border-gray-600">
-                {t('table.add')}
-              </th>
-            )}
-            <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 w-[100px] border-r border-gray-200 dark:border-gray-600">
-              {t('table.image')}
-            </th>
+            {onAddToCollection && <th className={`${s.th} w-10`}>{t('table.add')}</th>}
+            <th className={`${s.th} w-[100px]`}>{t('table.image')}</th>
             {showCastingName && (
-              <th className="p-2 text-left text-sm font-semibold text-gray-900 dark:text-gray-200 whitespace-nowrap bg-gray-50 dark:bg-gray-700 border-r border-gray-200 dark:border-gray-600">
-                {t('table.casting')}
+              <th className={s.thSortable} onClick={() => onSortChange(nextSort(sortConfig, CASTING_SORT))}>
+                <SortLabel label={t('table.casting')} direction={sortArrow(CASTING_SORT)} />
               </th>
             )}
-            {FIELD_ORDER.map(field => (
-              <TableHeader
-                key={field.key}
-                field={field}
-                sortConfig={sortConfig}
-                onSort={handleSort}
-                collapsedColumns={collapsedColumns}
-                onToggleCollapse={handleToggleCollapse}
-              />
-            ))}
+            {VARIANT_COLUMNS.map((key) => {
+              const label = t(`table.col.${key}`);
+              const isCollapsed = collapsed.has(key);
+              return (
+                <th key={key} className={`${s.th} ${isCollapsed ? 'w-10 px-0' : ''}`}>
+                  <div className="flex items-center justify-between gap-1">
+                    {!isCollapsed && (
+                      <button
+                        type="button"
+                        onClick={() => onSortChange(nextSort(sortConfig, key))}
+                        className="cursor-pointer hover:text-blue-600 dark:hover:text-blue-400"
+                      >
+                        <SortLabel label={label} direction={sortArrow(key)} />
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => toggleCollapse(key)}
+                      title={label}
+                      aria-label={label}
+                      className="mx-auto flex items-center text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200 cursor-pointer"
+                    >
+                      {isCollapsed ? <ChevronsRight className="w-4 h-4" /> : <ChevronsLeft className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </th>
+              );
+            })}
           </tr>
         </thead>
-        <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-          {allRows.map(({ car, item, index }) => (
+        <tbody className={s.tbody}>
+          {rows.map(({ car, item }, i) => (
             <TableRow
-              key={`${car.lnk}-${index}`}
+              key={item.id ?? `${car.lnk}-${i}`}
               car={car}
               item={item}
-              collapsedColumns={collapsedColumns}
+              collapsed={collapsed}
               onImageClick={carousel.open}
-              isCollected={collection.some(c => c === item.id)}
-              onAddToCollection={() => onAddToCollection && item.id && onAddToCollection(item.id)}
+              isCollected={!!item.id && collected.has(item.id)}
+              onAddToCollection={onAddToCollection}
               onSeriesClick={onSeriesClick}
               onModelClick={onModelClick}
               onYearClick={onYearClick}
@@ -320,9 +235,9 @@ const ModelsTable: React.FC<ModelsTableProps> = ({
           ))}
         </tbody>
       </table>
-      <CarouselModal carousel={carousel} />
-    </div>
+      <ImageModal carousel={carousel} />
+    </>
   );
-};
+});
 
-export default memo(ModelsTable);
+export default ModelsTable;

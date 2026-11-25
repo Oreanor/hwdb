@@ -1,95 +1,52 @@
-import { CarData } from '../types';
+import { BrandStats, CarData } from '../types';
 import { BrandTagsIndex } from '../lib/tags';
 
-// Browse index for the home page (category -> makes with counts). `no-store`
-// bypasses any stale browser-cached copy (the index is tiny).
-export const fetchTagsIndex = async (): Promise<BrandTagsIndex | null> => {
-  const response = await fetch('/api/tags', { cache: 'no-store' });
-  if (!response.ok) return null;
-  return response.json();
-};
-
-// Per-brand catalog sizes (castings + variants) for the welcome screen.
-export const fetchStats = async (): Promise<Record<string, { castings: number; variants: number }> | null> => {
-  const response = await fetch('/api/stats', { cache: 'no-store' });
-  if (!response.ok) return null;
-  return response.json();
-};
-
-export const fetchCars = async (field?: string, value?: string, year?: string): Promise<CarData[]> => {
-  const params = new URLSearchParams();
-  if (field && value) {
-    params.append('field', field);
-    params.append('value', value);
-  }
-  if (year) {
-    params.append('year', year);
-  }
-
-  const response = await fetch(`/api/search?${params.toString()}`);
+// GET/POST JSON from our own API; any non-2xx answer becomes an Error carrying
+// the route's { error } message, so callers handle every failure the same way.
+async function apiJson<T>(url: string, body?: unknown): Promise<T> {
+  const response = await fetch(
+    url,
+    body === undefined
+      ? undefined
+      : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
+  );
   if (!response.ok) {
-    throw new Error('Failed to fetch data');
+    const { error } = await response.json().catch(() => ({ error: undefined }));
+    throw new Error(error || `${url} failed (${response.status})`);
   }
   return response.json();
+}
+
+// Query string with the empty / "all" values left out.
+const query = (params: Record<string, string | undefined>) => {
+  const p = new URLSearchParams();
+  for (const [k, v] of Object.entries(params)) if (v && v !== 'all') p.set(k, v);
+  return p.toString();
 };
 
-export const fetchCarsByLinks = async (links: string[], brand?: string): Promise<CarData[]> => {
-  const response = await fetch('/api/car', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ links, brand }),
-  });
+// Castings matching a search field (or a tag query when field is 'tag').
+export const fetchCars = (field: string, value: string, year?: string) =>
+  apiJson<CarData[]>(`/api/search?${query({ field, value, year })}`);
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch car data');
-  }
-  return response.json();
-};
+// One casting with all its variants. A lnk can repeat across brands, so pass the brand.
+export const fetchCarByLnk = async (lnk: string, brand?: string): Promise<CarData> =>
+  (await apiJson<CarData[]>('/api/car', { links: [lnk], brand }))[0];
 
-export const fetchCarByLnk = async (lnk: string, brand?: string): Promise<CarData> => {
-  const cars = await fetchCarsByLinks([lnk], brand);
-  return cars[0];
-};
+// Every variant of an exact series.
+export const fetchSeriesCars = (series: string) => apiJson<CarData[]>(`/api/series-cars?${query({ series })}`);
 
-// Full cars (with variants) belonging to an exact series.
-export const fetchSeriesCars = async (series: string): Promise<CarData[]> => {
-  const response = await fetch(`/api/series-cars?series=${encodeURIComponent(series)}`);
-  if (!response.ok) return [];
-  return response.json();
-};
+// Every variant released in a year, scoped to the selected base.
+export const fetchYearCars = (year: string, brand?: string) =>
+  apiJson<CarData[]>(`/api/year-cars?${query({ year, brand })}`);
 
-// Full cars (with variants) released in a given year, scoped to the selected base.
-export const fetchYearCars = async (year: string, brand?: string): Promise<CarData[]> => {
-  const params = new URLSearchParams({ year });
-  if (brand && brand !== 'all') params.append('brand', brand);
-  const response = await fetch(`/api/year-cars?${params.toString()}`);
-  if (!response.ok) return [];
-  return response.json();
-};
+// Variants by id (a user's collection).
+export const fetchVariantsByIds = (ids: string[]) =>
+  ids.length ? apiJson<CarData[]>('/api/variants', { ids }) : Promise.resolve([]);
 
-// Distinct values for an autocomplete field (name / designer / wheels / series),
-// scoped to the selected base.
-export const fetchFieldOptions = async (field: string, brand?: string): Promise<string[]> => {
-  const params = new URLSearchParams({ field });
-  if (brand && brand !== 'all') params.append('brand', brand);
-  const response = await fetch(`/api/options?${params.toString()}`);
-  if (!response.ok) return [];
-  return response.json();
-};
+// Distinct values for an autocomplete field, scoped to the selected base.
+export const fetchFieldOptions = (field: string, brand?: string) =>
+  apiJson<string[]>(`/api/options?${query({ field, brand })}`);
 
-// Fetch variants by their ids (used to render a user's collection).
-export const fetchVariantsByIds = async (ids: string[]): Promise<CarData[]> => {
-  const response = await fetch('/api/variants', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ ids }),
-  });
-  if (!response.ok) {
-    throw new Error('Failed to fetch variants by ids');
-  }
-  return response.json();
-};
+// Welcome screen: browse index (category -> makes) and per-brand catalog sizes.
+export const fetchTagsIndex = () => apiJson<BrandTagsIndex>('/api/tags');
+export const fetchStats = () => apiJson<BrandStats>('/api/stats');

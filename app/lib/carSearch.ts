@@ -1,6 +1,7 @@
 import { CarData } from '../types';
 import { MAIN_OBJECT_FIELDS, VARIANT_FIELDS } from '../consts';
 import { formatCarName } from '../utils';
+import { variantHasYear } from './years';
 
 /** Splits a query into lowercase words, dropping empty tokens. */
 export const tokenize = (value: string): string[] =>
@@ -66,7 +67,7 @@ export const carMatchesQuery = (
 ): boolean => {
   // Exact-match fields.
   if (field === 'link') return car.lnk === rawValue;
-  if (field === 'year') return car.d.some(item => item.y === rawValue);
+  if (field === 'year') return car.d.some((item) => variantHasYear(item.y, rawValue));
 
   // The model name is derived from its wiki link.
   if (field === 'name') return includesAll(formatCarName(car.lnk), words);

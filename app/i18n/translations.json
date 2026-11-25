@@ -2,17 +2,12 @@
   "ru": {
     "common": {
       "loading": "Загрузка...",
-      "error": "Ошибка",
       "back": "Назад",
       "more": "Больше",
       "less": "Меньше",
-      "search": "Поиск",
       "searchPlaceholder": "Поиск...",
-      "allYears": "Все годы",
-      "viewOnFandom": "Посмотреть на",
+      "viewOn": "Посмотреть на",
       "allModels": "Все модели",
-      "backToSearch": "Назад к результатам поиска",
-      "toggleTheme": "Сменить тему",
       "language": "Язык",
       "clear": "Очистить",
       "settings": "Настройки",
@@ -32,10 +27,8 @@
       "myCollection": "Моя коллекция"
     },
     "model": {
-      "number": "Номер",
       "designer": "Дизайнер",
       "description": "Описание",
-      "backToModels": "Назад к моделям",
       "years": "Годы",
       "modelYear": "Год модели"
     },
@@ -57,9 +50,6 @@
       }
     },
     "welcome": {
-      "title": "Hot Wheels Database",
-      "subtitle": "Эта база данных сделана на основе данных с Hot Wheels Fandom для более удобного просмотра и добавления в свою коллекцию.",
-      "subtitle2": "Вы можете просматривать данные без авторизации, но для того чтобы добавить модель в свою коллекцию, вам необходимо авторизоваться.",
       "byStyle": "Стиль",
       "byRegion": "Марка / регион",
       "byEra": "Эпоха",
@@ -119,17 +109,12 @@
   "en": {
     "common": {
       "loading": "Loading...",
-      "error": "Error",
       "back": "Back",
       "more": "More",
       "less": "Less",
-      "search": "Search",
       "searchPlaceholder": "Search...",
-      "allYears": "All Years",
-      "viewOnFandom": "View on",
+      "viewOn": "View on",
       "allModels": "All Models",
-      "backToSearch": "Back to search results",
-      "toggleTheme": "Toggle theme",
       "language": "Language",
       "clear": "Clear",
       "settings": "Settings",
@@ -149,10 +134,8 @@
       "myCollection": "My Collection"
     },
     "model": {
-      "number": "Number",
       "designer": "Designer",
       "description": "Description",
-      "backToModels": "Back to models",
       "years": "Years",
       "modelYear": "Model year"
     },
@@ -174,9 +157,6 @@
       }
     },
     "welcome": {
-      "title": "Hot Wheels Database",
-      "subtitle": "This database is based on data from Hot Wheels Fandom for more convenient viewing and adding to your own collection.",
-      "subtitle2": "You can browse the data without logging in, but to add a model to your collection, you need to log in.",
       "byStyle": "Style",
       "byRegion": "Make / region",
       "byEra": "Era",
@@ -236,17 +216,12 @@
   "de": {
     "common": {
       "loading": "Laden...",
-      "error": "Fehler",
       "back": "Zurück",
       "more": "Mehr",
       "less": "Weniger",
-      "search": "Suchen",
       "searchPlaceholder": "Suchen...",
-      "allYears": "Alle Jahre",
-      "viewOnFandom": "Ansehen auf",
+      "viewOn": "Ansehen auf",
       "allModels": "Alle Modelle",
-      "backToSearch": "Zurück zu Suchergebnissen",
-      "toggleTheme": "Design wechseln",
       "language": "Sprache",
       "clear": "Löschen",
       "settings": "Einstellungen",
@@ -266,10 +241,8 @@
       "myCollection": "Meine Sammlung"
     },
     "model": {
-      "number": "Nummer",
       "designer": "Designer",
       "description": "Beschreibung",
-      "backToModels": "Zurück zu Modellen",
       "years": "Jahre",
       "modelYear": "Modelljahr"
     },
@@ -291,9 +264,6 @@
       }
     },
     "welcome": {
-      "title": "Hot Wheels Database",
-      "subtitle": "Diese Datenbank basiert auf Daten von Hot Wheels Fandom und dient der komfortableren Ansicht und dem Hinzufügen zu deiner eigenen Sammlung.",
-      "subtitle2": "Du kannst die Daten ohne Anmeldung durchsuchen, aber um ein Modell zu deiner Sammlung hinzuzufügen, musst du dich anmelden.",
       "byStyle": "Stil",
       "byRegion": "Marke / Region",
       "byEra": "Ära",
@@ -353,17 +323,12 @@
   "es": {
     "common": {
       "loading": "Cargando...",
-      "error": "Error",
       "back": "Atrás",
       "more": "Más",
       "less": "Menos",
-      "search": "Buscar",
       "searchPlaceholder": "Buscar...",
-      "allYears": "Todos los años",
-      "viewOnFandom": "Ver en",
+      "viewOn": "Ver en",
       "allModels": "Todos los modelos",
-      "backToSearch": "Volver a resultados de búsqueda",
-      "toggleTheme": "Cambiar tema",
       "language": "Idioma",
       "clear": "Borrar",
       "settings": "Ajustes",
@@ -383,10 +348,8 @@
       "myCollection": "Mi colección"
     },
     "model": {
-      "number": "Número",
       "designer": "Diseñador",
       "description": "Descripción",
-      "backToModels": "Volver a modelos",
       "years": "Años",
       "modelYear": "Año del modelo"
     },
@@ -408,9 +371,6 @@
       }
     },
     "welcome": {
-      "title": "Hot Wheels Database",
-      "subtitle": "Esta base de datos está hecha a partir de los datos de Hot Wheels Fandom para una visualización y adición más cómoda a tu propia colección.",
-      "subtitle2": "Puedes ver los datos sin iniciar sesión, pero para añadir un modelo a tu colección necesitas iniciar sesión.",
       "byStyle": "Estilo",
       "byRegion": "Marca / región",
       "byEra": "Época",
@@ -470,17 +430,12 @@
   "fr": {
     "common": {
       "loading": "Chargement...",
-      "error": "Erreur",
       "back": "Retour",
       "more": "Plus",
       "less": "Moins",
-      "search": "Rechercher",
       "searchPlaceholder": "Rechercher...",
-      "allYears": "Toutes les années",
-      "viewOnFandom": "Voir sur",
+      "viewOn": "Voir sur",
       "allModels": "Tous les modèles",
-      "backToSearch": "Retour aux résultats de recherche",
-      "toggleTheme": "Changer de thème",
       "language": "Langue",
       "clear": "Effacer",
       "settings": "Paramètres",
@@ -500,10 +455,8 @@
       "myCollection": "Ma collection"
     },
     "model": {
-      "number": "Numéro",
       "designer": "Designer",
       "description": "Description",
-      "backToModels": "Retour aux modèles",
       "years": "Années",
       "modelYear": "Année modèle"
     },
@@ -525,9 +478,6 @@
       }
     },
     "welcome": {
-      "title": "Hot Wheels Database",
-      "subtitle": "Cette base de données est basée sur les données de Hot Wheels Fandom pour une consultation et un ajout plus pratiques à votre propre collection.",
-      "subtitle2": "Vous pouvez parcourir les données sans vous connecter, mais pour ajouter un modèle à votre collection, vous devez vous connecter.",
       "byStyle": "Style",
       "byRegion": "Marque / région",
       "byEra": "Époque",
@@ -587,17 +537,12 @@
   "pt": {
     "common": {
       "loading": "Carregando...",
-      "error": "Erro",
       "back": "Voltar",
       "more": "Mais",
       "less": "Menos",
-      "search": "Pesquisar",
       "searchPlaceholder": "Pesquisar...",
-      "allYears": "Todos os anos",
-      "viewOnFandom": "Ver em",
+      "viewOn": "Ver em",
       "allModels": "Todos os modelos",
-      "backToSearch": "Voltar aos resultados da pesquisa",
-      "toggleTheme": "Alternar tema",
       "language": "Idioma",
       "clear": "Limpar",
       "settings": "Configurações",
@@ -617,10 +562,8 @@
       "myCollection": "Minha coleção"
     },
     "model": {
-      "number": "Número",
       "designer": "Designer",
       "description": "Descrição",
-      "backToModels": "Voltar aos modelos",
       "years": "Anos",
       "modelYear": "Ano do modelo"
     },
@@ -642,9 +585,6 @@
       }
     },
     "welcome": {
-      "title": "Hot Wheels Database",
-      "subtitle": "Esta base de dados é feita com base nos dados do Hot Wheels Fandom para uma visualização e adição mais conveniente à sua própria coleção.",
-      "subtitle2": "Você pode navegar pelos dados sem fazer login, mas para adicionar um modelo à sua coleção, é necessário fazer login.",
       "byStyle": "Estilo",
       "byRegion": "Marca / região",
       "byEra": "Época",
@@ -704,17 +644,12 @@
   "nl": {
     "common": {
       "loading": "Laden...",
-      "error": "Fout",
       "back": "Terug",
       "more": "Meer",
       "less": "Minder",
-      "search": "Zoeken",
       "searchPlaceholder": "Zoeken...",
-      "allYears": "Alle jaren",
-      "viewOnFandom": "Bekijk op",
+      "viewOn": "Bekijk op",
       "allModels": "Alle modellen",
-      "backToSearch": "Terug naar zoekresultaten",
-      "toggleTheme": "Thema wisselen",
       "language": "Taal",
       "clear": "Wissen",
       "settings": "Instellingen",
@@ -734,10 +669,8 @@
       "myCollection": "Mijn collectie"
     },
     "model": {
-      "number": "Nummer",
       "designer": "Ontwerper",
       "description": "Beschrijving",
-      "backToModels": "Terug naar modellen",
       "years": "Jaren",
       "modelYear": "Modeljaar"
     },
@@ -759,9 +692,6 @@
       }
     },
     "welcome": {
-      "title": "Hot Wheels Database",
-      "subtitle": "Deze database is gebaseerd op gegevens van Hot Wheels Fandom voor gemakkelijker bekijken en toevoegen aan je eigen collectie.",
-      "subtitle2": "Je kunt de gegevens bekijken zonder in te loggen, maar om een model aan je collectie toe te voegen, moet je inloggen.",
       "byStyle": "Stijl",
       "byRegion": "Merk / regio",
       "byEra": "Tijdperk",
@@ -821,17 +751,12 @@
   "uk": {
     "common": {
       "loading": "Завантаження...",
-      "error": "Помилка",
       "back": "Назад",
       "more": "Більше",
       "less": "Менше",
-      "search": "Пошук",
       "searchPlaceholder": "Пошук...",
-      "allYears": "Всі роки",
-      "viewOnFandom": "Переглянути на",
+      "viewOn": "Переглянути на",
       "allModels": "Всі моделі",
-      "backToSearch": "Назад до результатів пошуку",
-      "toggleTheme": "Змінити тему",
       "language": "Мова",
       "clear": "Очистити",
       "settings": "Налаштування",
@@ -851,10 +776,8 @@
       "myCollection": "Моя колекція"
     },
     "model": {
-      "number": "Номер",
       "designer": "Дизайнер",
       "description": "Опис",
-      "backToModels": "Назад до моделей",
       "years": "Роки",
       "modelYear": "Рік моделі"
     },
@@ -876,9 +799,6 @@
       }
     },
     "welcome": {
-      "title": "Hot Wheels Database",
-      "subtitle": "Ця база даних створена на основі даних з Hot Wheels Fandom для зручнішого перегляду та додавання у власну колекцію.",
-      "subtitle2": "Ви можете переглядати дані без авторизації, але щоб додати модель у свою колекцію, потрібно авторизуватися.",
       "byStyle": "Стиль",
       "byRegion": "Марка / регіон",
       "byEra": "Епоха",

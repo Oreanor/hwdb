@@ -1,8 +1,12 @@
-import { CarData } from '../types';
-import { getImageUrl, getPreviewUrl, formatCarName } from '../utils';
+'use client';
+
 import { memo, useMemo } from 'react';
+import { CarData } from '../types';
+import { formatCarName, formatModelYear, getImageUrl, getPreviewUrl, hasImage } from '../utils';
+import { variantsInYear, yearRange } from '../lib/years';
 import { t } from '../i18n';
 import Thumbnail from './Thumbnail';
+import { card, cardMeta, cardTitle } from './ui/styles';
 
 interface ModelCardProps {
   car: CarData;
@@ -11,60 +15,39 @@ interface ModelCardProps {
   showBrand?: boolean;
 }
 
+// One casting in the castings grid: photo, name (variant count), model year, release years.
 const ModelCard = memo(function ModelCard({ car, onModelClick, selectedYear, showBrand }: ModelCardProps) {
-  const firstVariantWithImage = useMemo(
-    () => selectedYear 
-      ? car.d.find(item => item.y === selectedYear && item.p === 't')
-      : car.d.find(item => item.p === 't'),
-    [car.d, selectedYear]
-  );
-  const imageUrl = firstVariantWithImage ? getImageUrl(firstVariantWithImage) : undefined;
-  const previewUrl = firstVariantWithImage ? getPreviewUrl(firstVariantWithImage) : undefined;
-  const formattedName = formatCarName(car.lnk);
-
-  // Count variants, respecting the selected-year filter.
-  const variantCount = useMemo(
-    () => selectedYear 
-      ? car.d.filter(item => item.y === selectedYear).length 
-      : car.d.length,
-    [car.d, selectedYear]
-  );
-
-  // First and last production years for the range label.
-  const years = useMemo(
-    () => car.d
-      .map(item => item.y)
-      .filter(year => year)
-      .sort(),
-    [car.d]
-  );
-  const firstYear = years[0];
-  const lastYear = years[years.length - 1];
-  const yearsDisplay = firstYear === lastYear ? firstYear : `${firstYear}–${lastYear}`;
+  const variants = useMemo(() => variantsInYear(car.d, selectedYear), [car.d, selectedYear]);
+  const photo = variants.find(hasImage);
+  const name = formatCarName(car.lnk);
+  const modelYear = formatModelYear(car.tags);
+  const years = yearRange(car.d);
 
   return (
     <div
-      className="relative flex flex-col items-center p-2 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow cursor-pointer"
+      role="button"
+      tabIndex={0}
       onClick={() => onModelClick(car)}
+      onKeyDown={(e) => e.key === 'Enter' && onModelClick(car)}
+      className={`${card} cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500`}
     >
       {showBrand && car.brand && (
-        <span className="absolute top-1 left-1 z-10 rounded bg-gray-900/70 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-white">
+        <span className="absolute top-1.5 left-1.5 z-10 rounded bg-gray-900/70 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-white">
           {car.brand}
         </span>
       )}
-      <Thumbnail url={previewUrl} fallbackUrl={imageUrl} alt={formattedName} className="w-full h-48" />
-      <p className="text-sm text-center font-bold text-gray-900 dark:text-gray-100 line-clamp-1">
-        {formattedName} <span className="text-gray-500 dark:text-gray-400 font-medium text-xs">({variantCount})</span>
+      <Thumbnail url={photo && getPreviewUrl(photo)} fallbackUrl={photo && getImageUrl(photo)} alt={name} className="w-full h-48" />
+      <p className={cardTitle} title={name}>
+        {name} <span className="text-xs font-medium text-gray-500 dark:text-gray-400">({variants.length})</span>
       </p>
-
-      {car.tags?.yr && (
-        <p className="text-xs text-gray-600 dark:text-gray-300">
-          {t('model.modelYear')}: <span className="font-semibold">{car.tags.ye ? '≈' : ''}{car.tags.yr}</span>
+      {modelYear && (
+        <p className={cardMeta}>
+          {t('model.modelYear')}: <span className="font-semibold text-gray-700 dark:text-gray-200">{modelYear}</span>
         </p>
       )}
-      {yearsDisplay && <p className="text-xs text-gray-500 dark:text-gray-400">{yearsDisplay}</p>}
+      {years && <p className={cardMeta}>{years}</p>}
     </div>
   );
 });
 
-export default ModelCard; 
+export default ModelCard;

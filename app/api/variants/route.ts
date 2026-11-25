@@ -1,30 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { CarData, CarDataItem } from '@/app/types';
-import { loadCarsData } from '@/app/lib/carsData';
+import { NextResponse } from 'next/server';
+import { loadCarsData } from '../../lib/carsData';
+import { keepVariants } from '../../lib/seriesCategory';
+import { jsonError, serverError } from '../../lib/http';
 
-export async function POST(req: NextRequest) {
+// The castings holding the given variant ids, each with only those variants (a user's collection).
+export async function POST(request: Request) {
   try {
-    const { ids } = await req.json();
-    if (!Array.isArray(ids)) {
-      return NextResponse.json({ error: 'ids must be an array' }, { status: 400 });
-    }
-
-    const cars = await loadCarsData();
-
-    // Return each car with only the variants whose id is in the requested set.
-    const result: CarData[] = [];
-    for (const car of cars) {
-      const filteredVariants = car.d.filter((variant: CarDataItem) => ids.includes(variant.id));
-      if (filteredVariants.length > 0) {
-        result.push({ ...car, d: filteredVariants });
-      }
-    }
-
-    return NextResponse.json(result);
-  } catch (error) {
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Unknown error' },
-      { status: 500 }
-    );
+    const { ids } = await request.json();
+    if (!Array.isArray(ids)) return jsonError('ids must be an array', 400);
+    const wanted = new Set<string>(ids);
+    return NextResponse.json(keepVariants(await loadCarsData(), (v) => !!v.id && wanted.has(v.id)));
+  } catch (err) {
+    return serverError('variants', err);
   }
 }

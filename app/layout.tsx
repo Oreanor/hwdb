@@ -1,44 +1,39 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Fragment } from 'react';
+import { Geist } from 'next/font/google';
+import './globals.css';
 import { Providers } from './providers';
 import { THEME_STORAGE_KEY } from './consts';
-import { Fragment } from 'react';
-
-// Hosts the thumbnails come from (see utils.ts): warm up their connections so the
-// first image loads faster. NEXT_PUBLIC_IMG_BASE, when absolute, replaces the cloud hosts.
-const originOf = (url?: string) => {
-  try { return url ? new URL(url).origin : undefined; } catch { return undefined; }
-};
-const IMAGE_ORIGINS = [
-  ...new Set(
-    (process.env.NEXT_PUBLIC_IMG_BASE
-      ? [originOf(process.env.NEXT_PUBLIC_IMG_BASE)]
-      : [originOf(process.env.NEXT_PUBLIC_SUPABASE_URL), originOf(process.env.NEXT_PUBLIC_CLOUDINARY_BASE)]
-    ).filter((o): o is string => !!o),
-  ),
-];
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin', 'cyrillic'],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// Hosts the thumbnails come from (see utils.ts): warm up their connections so the
+// first image loads faster. Relative bases ("/localimg") are same-origin already.
+const originOf = (url?: string) => {
+  try {
+    return url ? new URL(url).origin : undefined;
+  } catch {
+    return undefined;
+  }
+};
+const IMAGE_ORIGINS = [
+  originOf(process.env.NEXT_PUBLIC_IMG_BASE ? process.env.NEXT_PUBLIC_IMG_BASE : process.env.NEXT_PUBLIC_SUPABASE_URL),
+].filter((o): o is string => !!o);
+
+// Applies the saved (or OS-preferred) theme before first paint, so there is no flash.
+const THEME_BOOT_SCRIPT = `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`;
+
+const FAVICON_SIZES = [16, 32, 64, 128];
 
 export const metadata: Metadata = {
-  title: "Hot Wheels DataBase",
-  description: "Explore the complete collection of Hot Wheels cars from different years",
+  title: 'HWDB — die-cast model database',
+  description: 'Browse Hot Wheels, Matchbox, Majorette and Welly castings and variants, and keep your own collection.',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -48,19 +43,12 @@ export default function RootLayout({
             <link rel="dns-prefetch" href={origin} />
           </Fragment>
         ))}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`,
-          }}
-        />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon_16x16.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon_32x32.png" />
-        <link rel="icon" type="image/png" sizes="64x64" href="/favicon/favicon_64x64.png" />
-        <link rel="icon" type="image/png" sizes="128x128" href="/favicon/favicon_128x128.png" />
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+        {FAVICON_SIZES.map((s) => (
+          <link key={s} rel="icon" type="image/png" sizes={`${s}x${s}`} href={`/favicon/favicon_${s}x${s}.png`} />
+        ))}
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>

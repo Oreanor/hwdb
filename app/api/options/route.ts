@@ -1,66 +1,45 @@
-import { NextResponse } from 'next/server';
 import { CarData } from '../../types';
 import { loadCarsData } from '../../lib/carsData';
+import { inBrandScope } from '../../lib/brands';
 import { AUTOCOMPLETE_FIELDS } from '../../consts';
 import { formatCarName } from '../../utils';
-import { STATIC_CACHE_HEADERS } from '../../lib/http';
-
-const cache: Record<string, string[]> = {};
+import { jsonError, staticJson } from '../../lib/http';
 
 // Designer values are often collaborations ("Larry Wood and Bob Rosas",
 // "Chris Watson, Shawn Moghadam and Manson Cheung", sometimes with a
 // "(Collaboration)" / "(Retool)" note). Split them into individual names so the
-// dropdown lists one designer per entry; searching a single name still matches
-// the collabs (the search does a substring match on the raw designer field).
-function splitDesigners(ds: string): string[] {
-  return ds
+// list has one designer per entry; searching one name still matches the collabs.
+const splitDesigners = (ds: string): string[] =>
+  ds
     .replace(/\([^)]*\)/g, ',') // drop parenthetical notes, treat as a boundary
-    .split(/\s*,\s*|\s+and\s+|\s*&(?:amp;)?\s*/i) // comma / "and" / "&" / "&amp;"
-    .map((s) => s.trim())
-    .filter((s) => s && !s.includes('?')); // drop "?" / "???" unknown placeholders
-}
+    .split(/\s*,\s*|\s+and\s+|\s*&(?:amp;)?\s*/i); // comma / "and" / "&" / "&amp;"
 
-function collect(field: string, cars: CarData[]): string[] {
+// The raw values of a field across the given castings.
+const fieldValues: Record<string, (c: CarData) => (string | undefined)[]> = {
+  // The name search matches the formatted casting name, so suggest exactly that.
+  name: (c) => [formatCarName(c.lnk)],
+  designer: (c) => (c.ds ? splitDesigners(c.ds) : []),
+  wheels: (c) => c.d.map((v) => v.Wh),
+  series: (c) => c.d.map((v) => v.Sr),
+};
+
+// Distinct values, sorted; drops empties and "?" placeholders for unknowns.
+const collect = (cars: CarData[], values: (c: CarData) => (string | undefined)[]): string[] => {
   const set = new Set<string>();
-  if (field === 'designer') {
-    for (const c of cars) if (c.ds) for (const name of splitDesigners(c.ds)) set.add(name);
-  } else if (field === 'wheels') {
-    for (const c of cars) for (const v of c.d ?? []) if (v.Wh) set.add(String(v.Wh).trim());
-  } else {
-    for (const c of cars) for (const v of c.d ?? []) if (v.Sr) set.add(String(v.Sr).trim());
-  }
-  // Drop empties and any value with a "?" (unknown / uncertain placeholders).
-  return [...set].filter((s) => s && !s.includes('?')).sort((a, b) => a.localeCompare(b));
-}
+  for (const c of cars) for (const v of values(c)) if (v?.trim()) set.add(v.trim());
+  return [...set].filter((s) => !s.includes('?')).sort((a, b) => a.localeCompare(b));
+};
 
+const cache = new Map<string, string[]>();
+
+// GET ?field=&brand= -> autocomplete values for a search field, scoped to a brand.
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const field = searchParams.get('field');
-  const brand = searchParams.get('brand');
+  const params = new URL(request.url).searchParams;
+  const field = params.get('field') ?? '';
+  const brand = params.get('brand') || 'all';
+  if (!AUTOCOMPLETE_FIELDS.includes(field)) return jsonError('unsupported field', 400);
 
-  if (!field || !AUTOCOMPLETE_FIELDS.includes(field)) {
-    return NextResponse.json({ error: 'unsupported field' }, { status: 400 });
-  }
-
-  // Scope the option list to the selected base so the dropdowns suggest values
-  // from that brand only (cached per field+brand).
-  const key = `${field}:${brand || 'all'}`;
-  if (!cache[key]) {
-    const all = await loadCarsData();
-    const cars = brand && brand !== 'all' ? all.filter((c) => (c.brand ?? 'hw') === brand) : all;
-    if (field === 'name') {
-      // Name search autocompletes the casting names (the search matches the
-      // formatted name, so suggest exactly that). Covers brands and sub-brands
-      // (e.g. "Acura") that aren't top-level makes.
-      const set = new Set<string>();
-      for (const c of cars) {
-        const n = formatCarName(c.lnk).trim();
-        if (n) set.add(n);
-      }
-      cache[key] = [...set].filter((s) => !s.includes('?')).sort((a, b) => a.localeCompare(b));
-    } else {
-      cache[key] = collect(field, cars);
-    }
-  }
-  return NextResponse.json(cache[key], { headers: STATIC_CACHE_HEADERS });
+  const key = `${field}:${brand}`;
+  if (!cache.has(key)) cache.set(key, collect(inBrandScope(await loadCarsData(), brand), fieldValues[field]));
+  return staticJson(cache.get(key));
 }

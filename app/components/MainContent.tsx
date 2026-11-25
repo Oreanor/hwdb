@@ -1,129 +1,104 @@
 'use client';
 
-import { CarData, SortConfig, TableView, ResultTitle } from '../types';
+import { TriangleAlert } from 'lucide-react';
 import { t } from '../i18n';
 import { formatResultTitle } from '../lib/resultTitle';
+import { useAppNavigation } from '../hooks/useAppNavigation';
 import Spinner from './Spinner';
 import ResultsView from './ResultsView';
 import ModelDescription from './ModelDescription';
 import WelcomeMessage from './WelcomeMessage';
 
-interface MainContentProps {
-  error: string | null;
-  loading: boolean;
-  brandScope: string;
-  tableView: TableView | null;
-  showCollection: boolean;
-  selectedModel: CarData | null;
-  cars: CarData[];
-  castingsTitle: ResultTitle | null;
-  filteredCollectionCars: CarData[];
-  collection: string[];
-  selectedYear: string;
-  sortConfig: SortConfig;
-  onSortChange: (config: SortConfig | ((prev: SortConfig) => SortConfig)) => void;
-  onAddToCollection: (id: string) => void;
-  onSeriesClick: (series: string) => void;
-  onDesignerClick: (designer: string) => void;
-  onYearClick: (year: string) => void;
-  onModelClick: (car: CarData) => void;
-  onBackToSearch: () => void;
-  onCloseTable: () => void;
-  onBackHome: () => void;
-  onTagClick: (value: string) => void;
-  isLoggedIn: boolean;
-}
+type Nav = ReturnType<typeof useAppNavigation>;
 
-export default function MainContent(props: MainContentProps) {
-  const {
-    error,
-    loading,
-    brandScope,
-    tableView,
-    showCollection,
-    selectedModel,
-    cars,
-    castingsTitle,
-    filteredCollectionCars,
-    collection,
-    selectedYear,
-    sortConfig,
-    onSortChange,
-    onAddToCollection,
-    onSeriesClick,
-    onDesignerClick,
-    onYearClick,
-    onModelClick,
-    onBackToSearch,
-    onCloseTable,
-    onBackHome,
-    onTagClick,
-    isLoggedIn,
-  } = props;
+// Picks what the main area shows, in priority order:
+// a variants table (series / year / variant search) > the collection > one
+// casting > casting search results > the welcome screen.
+export default function MainContent({ nav }: { nav: Nav }) {
+  const { tableView, showCollection, selectedModel, cars, castingsTitle } = nav;
+
+  // Props every variants table shares.
+  const variantsProps = {
+    sortConfig: nav.sortConfig,
+    onSortChange: nav.setSortConfig,
+    onAddToCollection: nav.isLoggedIn ? nav.handleAddToCollection : undefined,
+    collection: nav.collection,
+    onSeriesClick: nav.handleSeriesClick,
+    onYearClick: nav.handleYearClick,
+  };
+
+  const content = () => {
+    if (nav.loading) return <Spinner />;
+    if (tableView) {
+      const title =
+        tableView.kind === 'series'
+          ? `${t('search.fields.series')}: ${tableView.value}`
+          : tableView.title
+            ? formatResultTitle(tableView.title)
+            : tableView.value;
+      return (
+        <ResultsView
+          mode="models"
+          {...variantsProps}
+          cars={tableView.cars}
+          title={title}
+          selectedYear={tableView.kind === 'year' ? tableView.value : nav.selectedYear}
+          onModelClick={nav.handleModelClick}
+          onBack={tableView.kind === 'series' ? nav.handleCloseTable : nav.handleLogoClick}
+        />
+      );
+    }
+    if (showCollection) {
+      return (
+        <ResultsView
+          mode="models"
+          {...variantsProps}
+          cars={nav.filteredCollectionCars}
+          selectedYear={nav.selectedYear}
+          onModelClick={nav.handleModelClick}
+        />
+      );
+    }
+    if (selectedModel) {
+      return (
+        <ModelDescription
+          {...variantsProps}
+          model={selectedModel}
+          selectedYear={nav.selectedYear}
+          onBack={nav.handleBackToSearch}
+          onDesignerClick={nav.handleDesignerClick}
+          onTagClick={nav.handleTagClick}
+        />
+      );
+    }
+    if (cars.length > 0) {
+      return (
+        <ResultsView
+          mode="castings"
+          cars={cars}
+          title={castingsTitle ? formatResultTitle(castingsTitle) : undefined}
+          selectedYear={nav.selectedYear}
+          brandScope={nav.selectedBrand}
+          onModelClick={nav.handleModelClick}
+          onBack={nav.handleLogoClick}
+        />
+      );
+    }
+    return <WelcomeMessage brandScope={nav.selectedBrand} onTagClick={nav.handleTagClick} />;
+  };
 
   return (
     <>
-      {error && <div className="p-4 mb-4 text-red-700 dark:text-red-400 rounded">{error}</div>}
-
-      {loading ? (
-        <Spinner />
-      ) : (
-        <div className="flex-1 h-full">
-          {tableView ? (
-            <ResultsView
-              mode="models"
-              cars={tableView.cars}
-              sortConfig={sortConfig}
-              onSortChange={onSortChange}
-              onAddToCollection={onAddToCollection}
-              selectedYear={tableView.kind === 'year' ? tableView.value : selectedYear}
-              collection={collection}
-              onSeriesClick={onSeriesClick}
-              onModelClick={onModelClick}
-              onYearClick={onYearClick}
-              title={
-                tableView.kind === 'series'
-                  ? `${t('search.fields.series')}: ${tableView.value}`
-                  : tableView.kind === 'field' && tableView.title
-                    ? formatResultTitle(tableView.title)
-                    : tableView.value
-              }
-              onBack={tableView.kind === 'series' ? onCloseTable : onBackHome}
-            />
-          ) : showCollection ? (
-            <ResultsView
-              mode="models"
-              cars={filteredCollectionCars}
-              sortConfig={sortConfig}
-              onSortChange={onSortChange}
-              onAddToCollection={onAddToCollection}
-              selectedYear={selectedYear}
-              collection={collection}
-              onSeriesClick={onSeriesClick}
-              onModelClick={onModelClick}
-              onYearClick={onYearClick}
-            />
-          ) : selectedModel ? (
-            <ModelDescription
-              model={selectedModel}
-              sortConfig={sortConfig}
-              onSortChange={onSortChange}
-              selectedYear={selectedYear}
-              onAddToCollection={onAddToCollection}
-              collection={collection}
-              backToSearch={onBackToSearch}
-              onSeriesClick={onSeriesClick}
-              onDesignerClick={onDesignerClick}
-              onYearClick={onYearClick}
-              onTagClick={onTagClick}
-            />
-          ) : cars.length > 0 ? (
-            <ResultsView mode="castings" cars={cars} onModelClick={onModelClick} selectedYear={selectedYear} brandScope={brandScope} title={castingsTitle ? formatResultTitle(castingsTitle) : undefined} onBack={onBackHome} />
-          ) : (
-            <WelcomeMessage isLoggedIn={isLoggedIn} brandScope={brandScope} onTagClick={onTagClick} />
-          )}
+      {nav.error && (
+        <div
+          role="alert"
+          className="mt-4 flex items-center gap-2 rounded-md border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/40 px-4 py-3 text-sm text-red-700 dark:text-red-300"
+        >
+          <TriangleAlert className="w-4 h-4 shrink-0" />
+          {nav.error}
         </div>
       )}
+      {content()}
     </>
   );
 }

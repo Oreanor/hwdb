@@ -4,18 +4,19 @@ import { useEffect, useState } from 'react';
 import { Language, setLanguage } from '../i18n';
 import { LANGUAGES, LANGUAGE_STORAGE_KEY } from '../consts';
 
-// Current UI language. `ready` flips once the saved language has been read, so
-// the page can avoid rendering text in the default language first.
+const isLanguage = (v: string | null): v is Language => LANGUAGES.some((l) => l.code === v);
+
+// Current UI language, persisted in localStorage. `ready` flips once the saved
+// language has been read, so the page doesn't render English text first.
 export function useLanguage() {
   const [currentLang, setCurrentLang] = useState<Language>('en');
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-    const allowed = LANGUAGES.map((l) => l.code);
-    if (saved && allowed.includes(saved as Language)) {
-      setLanguage(saved as Language);
-      setCurrentLang(saved as Language);
+    if (isLanguage(saved)) {
+      setLanguage(saved);
+      setCurrentLang(saved);
     }
     setReady(true);
   }, []);

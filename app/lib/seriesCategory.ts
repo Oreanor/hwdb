@@ -1,4 +1,4 @@
-import { CarDataItem } from '../types';
+import { CarData, CarDataItem } from '../types';
 import { LARGE_SCALE_SERIES, LARGE_SCALE_PATTERNS } from '../consts';
 
 export type SeriesFilter = 'all' | 'mainline' | 'premium';
@@ -22,7 +22,7 @@ export function matchesScaleFilter(v: CarDataItem, filter: ScaleFilter): boolean
 }
 
 // Mainline membership is authoritative: the `m` flag is set from the
-// "List of YYYY Hot Wheels" wiki pages (see scripts/build-mainline-flags.js).
+// "List of YYYY Hot Wheels" wiki pages (see scripts/tags/build-mainline-flags.js).
 // Everything else counts as premium / special.
 export const isMainline = (v: CarDataItem): boolean => v.m === 1;
 
@@ -30,3 +30,7 @@ export function matchesVariantFilter(v: CarDataItem, filter: SeriesFilter): bool
   if (filter === 'all') return true;
   return filter === 'mainline' ? isMainline(v) : !isMainline(v);
 }
+
+// Each casting with only the variants that pass `keep`; castings left empty are dropped.
+export const keepVariants = (cars: CarData[], keep: (v: CarDataItem) => boolean): CarData[] =>
+  cars.map((c) => ({ ...c, d: c.d.filter(keep) })).filter((c) => c.d.length > 0);

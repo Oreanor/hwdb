@@ -1,12 +1,15 @@
 'use client';
 
 import { useCallback, useMemo, useState } from 'react';
+import { CarData } from '../types';
+import { formatCarName, getImageUrl } from '../utils';
+import { variantsInYear } from '../lib/years';
 
 export interface CarouselPhoto {
   url: string;
+  name: string;
   year?: string;
   series?: string;
-  name?: string;
 }
 
 export interface ImageCarousel {
@@ -20,19 +23,23 @@ export interface ImageCarousel {
   next: () => void;
 }
 
-// One place for the "click a thumbnail -> open a full-screen carousel" behaviour,
-// shared by the variants table and the variants gallery.
+// Every photo of the shown variants, in display order.
+export const carouselPhotos = (cars: CarData[], year?: string): CarouselPhoto[] =>
+  cars.flatMap((car) => {
+    const name = formatCarName(car.lnk);
+    return variantsInYear(car.d, year).flatMap((v) => {
+      const url = getImageUrl(v);
+      return url ? [{ url, name, year: v.y, series: v.Sr }] : [];
+    });
+  });
+
+// "Click a thumbnail -> full-screen viewer with prev/next", shared by the
+// variants table and the variants gallery (render it with <ImageModal>).
 export function useImageCarousel(photos: CarouselPhoto[]): ImageCarousel {
   const [index, setIndex] = useState(-1);
   const urls = useMemo(() => photos.map((p) => p.url), [photos]);
 
-  const open = useCallback(
-    (url: string) => {
-      const i = urls.indexOf(url);
-      if (i !== -1) setIndex(i);
-    },
-    [urls]
-  );
+  const open = useCallback((url: string) => setIndex(urls.indexOf(url)), [urls]);
   const close = useCallback(() => setIndex(-1), []);
   const prev = useCallback(() => setIndex((i) => Math.max(0, i - 1)), []);
   const next = useCallback(() => setIndex((i) => Math.min(urls.length - 1, i + 1)), [urls.length]);
@@ -42,7 +49,7 @@ export function useImageCarousel(photos: CarouselPhoto[]): ImageCarousel {
     isOpen,
     current: isOpen ? photos[index] : null,
     hasPrev: index > 0,
-    hasNext: index < urls.length - 1,
+    hasNext: index < photos.length - 1,
     open,
     close,
     prev,

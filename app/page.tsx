@@ -6,76 +6,45 @@ import Spinner from './components/Spinner';
 import { useTheme } from './hooks/useTheme';
 import { useLanguage } from './hooks/useLanguage';
 import { useFieldOptions } from './hooks/useFieldOptions';
-import { useAppNavigation, BrandScope } from './hooks/useAppNavigation';
+import { useAppNavigation } from './hooks/useAppNavigation';
 
 export default function Home() {
   const { theme, toggleTheme } = useTheme();
-  const { currentLang, changeLanguage, ready: isInitialized } = useLanguage();
+  const { currentLang, changeLanguage, ready } = useLanguage();
   const nav = useAppNavigation();
   const suggestions = useFieldOptions(nav.selectedField, nav.selectedBrand);
 
+  if (!ready) return <Spinner />;
+
   return (
-    <div className="h-screen w-full flex flex-col bg-white dark:bg-gray-900">
-      {isInitialized ? (
-        // Remount the whole tree on language change so memoized children
-        // (tables, grids, cards) re-render in the new language. `contents`
-        // keeps the flex layout intact.
-        <div key={currentLang} className="contents">
-          <div className="min-h-[82px]">
-            <TopPanel
-              selectedField={nav.selectedField}
-              selectedBrand={nav.selectedBrand}
-              onBrandChange={(b) => nav.setSelectedBrand(b as BrandScope)}
-              selectedYear={nav.selectedYear}
-              searchQuery={nav.searchQuery}
-              onFieldChange={nav.handleFieldChange}
-              onYearChange={nav.handleYearChange}
-              onSearchChange={nav.setSearchQuery}
-              onSearch={nav.handleSearch}
-              onKeyPress={nav.handleKeyPress}
-              onLogoClick={nav.handleLogoClick}
-              onCollectionClick={nav.handleCollectionClick}
-              availableYears={nav.availableYears}
-              showCollection={nav.showCollection}
-              onLanguageChange={changeLanguage}
-              currentLang={currentLang}
-              theme={theme}
-              onThemeToggle={toggleTheme}
-              suggestions={suggestions}
-              onSuggestionSelect={nav.handleSuggestionSelect}
-            />
-          </div>
-          <div className="flex-1 overflow-y-auto px-4 sm:px-10 pb-2 sm:pb-4">
-            <MainContent
-              error={nav.error}
-              loading={nav.loading}
-              brandScope={nav.selectedBrand}
-              tableView={nav.tableView}
-              showCollection={nav.showCollection}
-              selectedModel={nav.selectedModel}
-              cars={nav.cars}
-              castingsTitle={nav.castingsTitle}
-              filteredCollectionCars={nav.filteredCollectionCars}
-              collection={nav.collection}
-              selectedYear={nav.selectedYear}
-              sortConfig={nav.sortConfig}
-              onSortChange={nav.setSortConfig}
-              onAddToCollection={nav.handleAddToCollection}
-              onSeriesClick={nav.handleSeriesClick}
-              onDesignerClick={nav.handleDesignerClick}
-              onYearClick={nav.handleYearClick}
-              onModelClick={nav.handleModelClick}
-              onBackToSearch={nav.handleBackToSearch}
-              onCloseTable={nav.handleCloseTable}
-              onBackHome={nav.handleLogoClick}
-              onTagClick={nav.handleTagClick}
-              isLoggedIn={nav.isLoggedIn}
-            />
-          </div>
-        </div>
-      ) : (
-        <Spinner />
-      )}
+    // Remount the whole tree on language change so memoized children (tables,
+    // grids, cards) re-render in the new language.
+    <div key={currentLang} className="h-dvh flex flex-col">
+      <TopPanel
+        selectedBrand={nav.selectedBrand}
+        onBrandChange={nav.handleBrandChange}
+        selectedField={nav.selectedField}
+        onFieldChange={nav.handleFieldChange}
+        selectedYear={nav.selectedYear}
+        onYearChange={nav.handleYearChange}
+        availableYears={nav.availableYears}
+        searchQuery={nav.searchQuery}
+        onSearchChange={nav.setSearchQuery}
+        onSearch={nav.handleSearch}
+        suggestions={suggestions}
+        onSuggestionSelect={nav.handleSuggestionSelect}
+        onLogoClick={nav.handleLogoClick}
+        showCollection={nav.showCollection}
+        onCollectionClick={nav.handleCollectionClick}
+        currentLang={currentLang}
+        onLanguageChange={changeLanguage}
+        theme={theme}
+        onThemeToggle={toggleTheme}
+      />
+      {/* The one scroll container: results headers and table heads stick to its top. */}
+      <main className="flex-1 overflow-auto px-3 sm:px-10 pb-4">
+        <MainContent nav={nav} />
+      </main>
     </div>
   );
 }

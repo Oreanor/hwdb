@@ -2,7 +2,15 @@
 
 import { useMemo } from 'react';
 import { CarData } from '../types';
-import { SeriesFilter, ScaleFilter, matchesVariantFilter, matchesScaleFilter, isMainline, isStandardScale } from '../lib/seriesCategory';
+import {
+  SeriesFilter,
+  ScaleFilter,
+  matchesVariantFilter,
+  matchesScaleFilter,
+  isMainline,
+  isStandardScale,
+  keepVariants,
+} from '../lib/seriesCategory';
 import { usePersistedState } from './usePersistedState';
 import { FILTER_STORAGE_KEYS } from '../consts';
 
@@ -15,59 +23,50 @@ export interface VariantFilterState {
   scale: ScaleFilter;
   setScale: (scale: ScaleFilter) => void;
   filteredCars: CarData[];
-  counts: { all: number; mainline: number; premium: number };
-  scaleCounts: { only164: number; other: number; all: number };
-  shownCount: number;
+  counts: Record<SeriesFilter, number>;
+  scaleCounts: Record<ScaleFilter, number>;
 }
 
-// Shared All / Mainline / Premium + scale (1:64-only / all scales) filtering for
-// any variants view (collection, series, year, single casting). Keeps the
-// filters, per-bucket counts and the filtered list in one place.
+// Counts variants overall and those passing `pred`.
+const countVariants = (cars: CarData[], pred: (v: CarData['d'][number]) => boolean) => {
+  let all = 0;
+  let hit = 0;
+  for (const c of cars) {
+    for (const v of c.d) {
+      all++;
+      if (pred(v)) hit++;
+    }
+  }
+  return { all, hit };
+};
+
+// Shared All / Mainline / Premium + scale (1:64-only / other / all) filtering for
+// every variants view (collection, series, year, single casting): the filters,
+// per-option counts and the filtered list in one place.
 export function useVariantFilter(cars: CarData[]): VariantFilterState {
   const [filter, setFilter] = usePersistedState<SeriesFilter>(FILTER_STORAGE_KEYS.series, 'all', isSeriesFilter);
-  // default: standard 1:64 only; shared with the castings grid scale filter.
+  // Default: standard 1:64 only; shared with the castings grid scale filter.
   const [scale, setScale] = usePersistedState<ScaleFilter>(FILTER_STORAGE_KEYS.scale, 'only164', isScaleFilter);
 
   // Scale is applied first; the mainline filter and its counts work within it.
-  const scaleCars = useMemo(() => {
-    if (scale === 'all') return cars;
-    return cars
-      .map((c) => ({ ...c, d: c.d.filter((v) => matchesScaleFilter(v, scale)) }))
-      .filter((c) => c.d.length > 0);
-  }, [cars, scale]);
-
-  const filteredCars = useMemo(() => {
-    if (filter === 'all') return scaleCars;
-    return scaleCars
-      .map((c) => ({ ...c, d: c.d.filter((v) => matchesVariantFilter(v, filter)) }))
-      .filter((c) => c.d.length > 0);
-  }, [scaleCars, filter]);
+  const scaleCars = useMemo(
+    () => (scale === 'all' ? cars : keepVariants(cars, (v) => matchesScaleFilter(v, scale))),
+    [cars, scale]
+  );
+  const filteredCars = useMemo(
+    () => (filter === 'all' ? scaleCars : keepVariants(scaleCars, (v) => matchesVariantFilter(v, filter))),
+    [scaleCars, filter]
+  );
 
   const counts = useMemo(() => {
-    let all = 0;
-    let mainline = 0;
-    for (const c of scaleCars) {
-      for (const v of c.d) {
-        all++;
-        if (isMainline(v)) mainline++;
-      }
-    }
-    return { all, mainline, premium: all - mainline };
+    const { all, hit } = countVariants(scaleCars, isMainline);
+    return { all, mainline: hit, premium: all - hit };
   }, [scaleCars]);
 
   const scaleCounts = useMemo(() => {
-    let all = 0;
-    let only164 = 0;
-    for (const c of cars) {
-      for (const v of c.d) {
-        all++;
-        if (isStandardScale(v)) only164++;
-      }
-    }
-    return { all, only164, other: all - only164 };
+    const { all, hit } = countVariants(cars, isStandardScale);
+    return { all, only164: hit, other: all - hit };
   }, [cars]);
 
-  const shownCount = filter === 'all' ? counts.all : filter === 'mainline' ? counts.mainline : counts.premium;
-
-  return { filter, setFilter, scale, setScale, filteredCars, counts, scaleCounts, shownCount };
+  return { filter, setFilter, scale, setScale, filteredCars, counts, scaleCounts };
 }

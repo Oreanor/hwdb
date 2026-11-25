@@ -4,6 +4,7 @@ import { useSession, signIn } from 'next-auth/react';
 import { t, Language } from '../i18n';
 import { Theme } from '../theme';
 import SettingsMenu from './SettingsMenu';
+import { primaryButton } from './ui/styles';
 
 interface UserControlsProps {
   showCollection: boolean;
@@ -14,37 +15,22 @@ interface UserControlsProps {
   onThemeToggle: () => void;
 }
 
-const primaryBtn =
-  'flex items-center gap-2 px-2 xs:px-3 py-1.5 xs:py-2 rounded-lg text-xs xs:text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 transition-colors cursor-pointer';
-
-export default function UserControls({
-  showCollection,
-  onCollectionClick,
-  onLanguageChange,
-  currentLang,
-  theme,
-  onThemeToggle,
-}: UserControlsProps) {
+// Login / "My collection" toggle + the settings menu.
+export default function UserControls({ showCollection, onCollectionClick, ...settings }: UserControlsProps) {
   const { data: session } = useSession();
 
   return (
     <>
-      {!session ? (
-        <button onClick={() => signIn('google')} className={primaryBtn}>
-          {t('auth.login')}
+      {session ? (
+        <button onClick={onCollectionClick} className={primaryButton}>
+          {showCollection ? t('common.allModels') : t('auth.myCollection')}
         </button>
       ) : (
-        <button onClick={onCollectionClick} className={primaryBtn}>
-          {!showCollection ? t('auth.myCollection') : t('common.allModels')}
+        <button onClick={() => signIn('google')} className={primaryButton}>
+          {t('auth.login')}
         </button>
       )}
-      <SettingsMenu
-        isLoggedIn={!!session}
-        currentLang={currentLang}
-        onLanguageChange={onLanguageChange}
-        theme={theme}
-        onThemeToggle={onThemeToggle}
-      />
+      <SettingsMenu {...settings} />
     </>
   );
 }

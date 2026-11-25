@@ -2,14 +2,11 @@
 
 import { memo, useMemo, useState } from 'react';
 import { CarData, CarDataItem } from '../types';
-import { YEARS } from '../consts';
-import { formatCarName, getPreviewUrl, getImageUrl } from '../utils';
+import { ALL_YEARS } from '../consts';
+import { formatCarName, getPreviewUrl, getImageUrl, hasImage } from '../utils';
 import { variantYears } from '../lib/years';
 import Thumbnail from './Thumbnail';
 import { t } from '../i18n';
-
-// All real years (drop the leading "All Years" sentinel), 1968 -> current.
-const YEAR_LIST = YEARS.filter((y) => y.value).map((y) => y.value);
 
 // Fixed width (px) of each year column.
 const YEAR_COL_W = 20;
@@ -100,7 +97,7 @@ const Row = memo(function Row({
 });
 
 function HoverPreview({ hover }: { hover: HoverState }) {
-  const withImg = hover.items.filter((it) => it.p === 't');
+  const withImg = hover.items.filter(hasImage);
   // Keep the popover on-screen near the cell.
   const left = Math.min(hover.left, (typeof window !== 'undefined' ? window.innerWidth : 1200) - 290);
   return (
@@ -151,7 +148,7 @@ export default function CastingsYearMatrix({ cars, onModelClick, stickyTop = 0 }
         }
       }
     }
-    if (!isFinite(min)) return YEAR_LIST;
+    if (!isFinite(min)) return ALL_YEARS;
     return Array.from({ length: max - min + 1 }, (_, i) => String(min + i));
   }, [cars]);
 

@@ -1,39 +1,26 @@
 import translations from './translations.json';
-import { LANGUAGE_STORAGE_KEY } from '../consts';
 
 export type Language = 'ru' | 'en' | 'de' | 'es' | 'fr' | 'pt' | 'nl' | 'uk';
-export type TranslationKey = string;
 
-export type TranslationValue = string | { [key: string]: TranslationValue };
+type TranslationValue = string | { [key: string]: TranslationValue };
 
-// Default language. Must match the initial `currentLang` state in page.tsx so
-// the settings selection and the rendered text agree before a saved language is
-// read. The client switches to the saved language after hydration.
+// Module-level current language. English until useLanguage() reads the saved
+// choice (persisting it is the hook's job, not this module's).
 let currentLanguage: Language = 'en';
 
 export const setLanguage = (lang: Language) => {
   currentLanguage = lang;
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
-  }
 };
 
-export const getLanguage = (): Language => {
-  return currentLanguage;
-};
-
-export const t = (key: TranslationKey): string => {
-  const keys = key.split('.');
+// Looks up a dotted key ("search.fields.name"); a missing key renders as itself.
+export const t = (key: string): string => {
   let value: TranslationValue = translations[currentLanguage];
-
-  for (const k of keys) {
-    if (value && typeof value === 'object' && k in value) {
-      value = value[k];
-    } else {
+  for (const k of key.split('.')) {
+    if (typeof value !== 'object' || !(k in value)) {
       console.warn(`Translation key not found: ${key}`);
       return key;
     }
+    value = value[k];
   }
-
   return typeof value === 'string' ? value : key;
-}; 
+};

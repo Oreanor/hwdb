@@ -3,35 +3,35 @@
 import { ArrowLeft } from 'lucide-react';
 import { forwardRef } from 'react';
 import { t } from '../i18n';
+import { control } from './ui/styles';
 
 interface ResultsHeaderProps {
   onBack?: () => void;
   title?: string;
-  // Right-aligned controls (filter, view toggle). Responsible for their own ml-auto.
+  // Right-aligned controls (filters, view picker).
   children?: React.ReactNode;
 }
 
 // Sticky bar shared by every results view: optional back button + title + controls.
+// It bleeds into <main>'s side padding so it spans the full width while pinned;
 // z-30 so a sticky table header (z-20) pinned just below it slides underneath.
 const ResultsHeader = forwardRef<HTMLDivElement, ResultsHeaderProps>(function ResultsHeader(
   { onBack, title, children },
   ref
 ) {
   return (
-    <div ref={ref} className="sticky top-0 z-30 -mx-4 sm:-mx-10 px-4 sm:px-10 pt-2 sm:pt-4 pb-2 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex items-center gap-3">
+    <div
+      ref={ref}
+      className="sticky top-0 z-30 -mx-3 sm:-mx-10 px-3 sm:px-10 py-2 sm:py-3 flex flex-wrap items-center gap-x-3 gap-y-2 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700"
+    >
       {onBack && (
-        <button
-          onClick={onBack}
-          className="flex items-center gap-1.5 h-8 sm:h-9 px-3 text-sm rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors cursor-pointer"
-        >
+        <button onClick={onBack} className={control}>
           <ArrowLeft className="w-4 h-4" />
           {t('common.back')}
         </button>
       )}
-      {title !== undefined && (
-        <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100 truncate">{title}</h1>
-      )}
-      {children}
+      {title && <h1 className="min-w-0 truncate text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">{title}</h1>}
+      {children && <div className="ml-auto flex flex-wrap items-center justify-end gap-2">{children}</div>}
     </div>
   );
 });
