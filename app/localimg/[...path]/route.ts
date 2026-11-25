@@ -2,9 +2,8 @@ import { NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
 
-// Dev-only static image host: serves files from the local images/ folder so all
-// brands' webp show on localhost without a cloud bucket. Enabled by pointing
-// NEXT_PUBLIC_IMG_BASE at "/localimg" (see utils.ts).
+// Serves the local images/ folder so every brand shows without a remote host.
+// Used when NEXT_PUBLIC_IMG_BASE="/localimg" (see utils.ts).
 export async function GET(_req: Request, ctx: { params: Promise<{ path: string[] }> }) {
   const { path: parts } = await ctx.params;
   const rel = parts.join('/');

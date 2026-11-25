@@ -1,3 +1,12 @@
+function imgBasePattern() {
+  try {
+    const u = new URL(process.env.NEXT_PUBLIC_IMG_BASE || '');
+    return [{ protocol: u.protocol.replace(':', ''), hostname: u.hostname }];
+  } catch {
+    return []; // unset or relative ("/localimg")
+  }
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -11,6 +20,8 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'localhost',
       },
+      // Self-hosted image server (NEXT_PUBLIC_IMG_BASE as an absolute URL).
+      ...imgBasePattern(),
     ],
     formats: ['image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],

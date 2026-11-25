@@ -6,7 +6,10 @@ const brandDir = (brand?: string) => brand || 'hw';
 // Two image hosts in production (Cloudinary's free tier can't fit everything):
 //   Hot Wheels  -> Supabase storage, legacy flat layout webp2/{id}.webp
 //   MB/MJ/Welly -> Cloudinary,        {brand}/{id}.webp (+ on-the-fly preview)
-// In dev, NEXT_PUBLIC_IMG_BASE ("/localimg") serves every brand from images/.
+// NEXT_PUBLIC_IMG_BASE, when set, overrides both and serves every brand from one
+// images/-shaped tree: {base}/{brand}/{id}.webp and {base}/{brand}/preview/{id}.webp.
+// It is either "/localimg" (this app reads the local images/ folder) or an absolute
+// URL such as the home server (https://homeserver.../hwdb).
 const IMG_BASE = process.env.NEXT_PUBLIC_IMG_BASE;
 const CLD_BASE = process.env.NEXT_PUBLIC_CLOUDINARY_BASE;
 const supaUrl = (relPath: string) => supabase.storage.from('images').getPublicUrl(relPath).data.publicUrl;

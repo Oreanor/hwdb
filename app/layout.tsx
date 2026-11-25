@@ -3,6 +3,21 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from './providers';
 import { THEME_STORAGE_KEY } from './consts';
+import { Fragment } from 'react';
+
+// Hosts the thumbnails come from (see utils.ts): warm up their connections so the
+// first image loads faster. NEXT_PUBLIC_IMG_BASE, when absolute, replaces the cloud hosts.
+const originOf = (url?: string) => {
+  try { return url ? new URL(url).origin : undefined; } catch { return undefined; }
+};
+const IMAGE_ORIGINS = [
+  ...new Set(
+    (process.env.NEXT_PUBLIC_IMG_BASE
+      ? [originOf(process.env.NEXT_PUBLIC_IMG_BASE)]
+      : [originOf(process.env.NEXT_PUBLIC_SUPABASE_URL), originOf(process.env.NEXT_PUBLIC_CLOUDINARY_BASE)]
+    ).filter((o): o is string => !!o),
+  ),
+];
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,13 +42,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Warm up the connection to the image host so the first thumbnail loads faster. */}
-        {process.env.NEXT_PUBLIC_SUPABASE_URL && (
-          <>
-            <link rel="preconnect" href={process.env.NEXT_PUBLIC_SUPABASE_URL} crossOrigin="anonymous" />
-            <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_SUPABASE_URL} />
-          </>
-        )}
+        {IMAGE_ORIGINS.map((origin) => (
+          <Fragment key={origin}>
+            <link rel="preconnect" href={origin} crossOrigin="anonymous" />
+            <link rel="dns-prefetch" href={origin} />
+          </Fragment>
+        ))}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`,
