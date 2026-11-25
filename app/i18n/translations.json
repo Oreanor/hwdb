@@ -53,7 +53,8 @@
       "byStyle": "Стиль",
       "byRegion": "Марка / регион",
       "byEra": "Эпоха",
-      "castings": "кастингов"
+      "castings": "кастингов",
+      "variants": "вариантов"
     },
     "collection": {
       "empty": "У вас пока нет моделей в коллекции",
@@ -160,7 +161,8 @@
       "byStyle": "Style",
       "byRegion": "Make / region",
       "byEra": "Era",
-      "castings": "castings"
+      "castings": "castings",
+      "variants": "variants"
     },
     "collection": {
       "empty": "You don't have any models in your collection yet",
@@ -267,7 +269,8 @@
       "byStyle": "Stil",
       "byRegion": "Marke / Region",
       "byEra": "Ära",
-      "castings": "Castings"
+      "castings": "Castings",
+      "variants": "Varianten"
     },
     "view": {
       "label": "Ansicht",
@@ -374,7 +377,8 @@
       "byStyle": "Estilo",
       "byRegion": "Marca / región",
       "byEra": "Época",
-      "castings": "castings"
+      "castings": "castings",
+      "variants": "variantes"
     },
     "view": {
       "label": "Vista",
@@ -481,7 +485,8 @@
       "byStyle": "Style",
       "byRegion": "Marque / région",
       "byEra": "Époque",
-      "castings": "castings"
+      "castings": "castings",
+      "variants": "variantes"
     },
     "view": {
       "label": "Vue",
@@ -588,7 +593,8 @@
       "byStyle": "Estilo",
       "byRegion": "Marca / região",
       "byEra": "Época",
-      "castings": "castings"
+      "castings": "castings",
+      "variants": "variantes"
     },
     "view": {
       "label": "Visualização",
@@ -695,7 +701,8 @@
       "byStyle": "Stijl",
       "byRegion": "Merk / regio",
       "byEra": "Tijdperk",
-      "castings": "castings"
+      "castings": "castings",
+      "variants": "varianten"
     },
     "collection": {
       "empty": "Je hebt nog geen modellen in je collectie",
@@ -802,7 +809,8 @@
       "byStyle": "Стиль",
       "byRegion": "Марка / регіон",
       "byEra": "Епоха",
-      "castings": "кастингів"
+      "castings": "кастингів",
+      "variants": "варіантів"
     },
     "collection": {
       "empty": "У вас поки немає моделей у колекції",

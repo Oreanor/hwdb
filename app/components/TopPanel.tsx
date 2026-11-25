@@ -84,14 +84,19 @@ export default function TopPanel({
     <header className="relative z-40 shrink-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm px-3 py-2 sm:px-10 sm:py-4">
       <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
         <div className="flex items-center justify-between">
-          <button onClick={onLogoClick} className="flex items-center cursor-pointer" aria-label="HWDB">
-            <span className="relative size-8">
-              <Image src="/logo.png" alt="" fill className="object-contain" sizes="32px" />
-            </span>
-            <span className="-ml-3 text-xl md:text-3xl italic tracking-wider text-gray-500 dark:text-gray-400 font-['Impact','Arial_Narrow',Arial,sans-serif]">
-              HWDB
-            </span>
-          </button>
+          {/* Sized in em off the wordmark's font size, so the logo scales as a whole:
+              at 30px text it is the original 32px icon, 4px gap, 12px overlap. */}
+          <div
+            className="flex items-center gap-[0.133em] cursor-pointer text-2xl md:text-3xl"
+            onClick={onLogoClick}
+          >
+            <div className="relative size-[1.067em]">
+              <Image src="/logo.png" alt="HWDB" fill className="object-contain" sizes="32px" />
+            </div>
+            <div className="relative block -ml-[0.4em]">
+              <h1 className="font-['Impact','Arial_Narrow',Arial,sans-serif] text-[#82807C] tracking-wider italic">HWDB</h1>
+            </div>
+          </div>
           <div className="flex items-center gap-2 sm:hidden">{userControls}</div>
         </div>
 

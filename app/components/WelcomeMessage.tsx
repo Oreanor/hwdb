@@ -126,8 +126,10 @@ export default function WelcomeMessage({ brandScope, onTagClick }: WelcomeMessag
             >
               <div className="font-semibold text-gray-900 dark:text-gray-100">{b.name}</div>
               <div className="text-xs text-gray-500 dark:text-gray-400">
-                {stats![b.key].castings.toLocaleString()} {t('welcome.castings')} ·{' '}
-                {stats![b.key].variants.toLocaleString()} {t('table.variants')}
+                {stats![b.key].castings.toLocaleString()} {t('welcome.castings')}
+              </div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                {stats![b.key].variants.toLocaleString()} {t('welcome.variants')}
               </div>
             </div>
           ))}
